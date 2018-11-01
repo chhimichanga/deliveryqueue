@@ -24,7 +24,7 @@ Window::Window()
     filterCaseSensitivityCheckBox = new QCheckBox(tr("Case sensitive filter"));
 
     filterPatternLineEdit = new QLineEdit;
-    filterPatternLabel = new QLabel(tr("&Filter pattern:"));
+    filterPatternLabel = new QLabel(tr("Filter &pattern:"));
     filterPatternLabel->setBuddy(filterPatternLineEdit);
 
     // add comboboxes
@@ -35,7 +35,7 @@ Window::Window()
     filterSyntaxLabel = new QLabel(tr("Filter &syntax:"));
     filterSyntaxLabel->setBuddy(filterSyntaxComboBox);
 
-    //filter columns
+    // filter combo
     filterColumnComboBox = new QComboBox;
     filterColumnComboBox->addItem(tr("Required Delivery Date"));
     filterColumnComboBox->addItem(tr("Location"));
@@ -78,7 +78,7 @@ Window::Window()
 
     QVBoxLayout *mainLayout = new QVBoxLayout;
 
-//    mainLayout->addWidget(sourceGroupBox);
+// k
     mainLayout->addWidget(proxyGroupBox);
 
     setLayout(mainLayout);
