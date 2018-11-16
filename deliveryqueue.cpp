@@ -76,9 +76,9 @@ void DeliveryQueue::deleteDelivery()
     int rowidx = dqui->treeView->selectionModel()->currentIndex().row(); // selected index number
     QString selected = deliveryTable->index(rowidx , 0).data().toString(); // save the selected ID
 
-    ifstream file1("/Users/mac/Desktop/save.csv");
+    ifstream file1("C:/Users/thekn/Documents/DeliveryQueueMaster/save.csv");
     ofstream temp;
-    temp.open("/Users/mac/Desktop/temp.csv"); // wirting contents except the deleted line in to a temp file
+    temp.open("C:/Users/thekn/Documents/DeliveryQueueMaster/temp.csv"); // wirting contents except the deleted line in to a temp file
     string line;
 
 
@@ -93,8 +93,8 @@ void DeliveryQueue::deleteDelivery()
     }
     temp.close();
     file1.close();
-    remove("/Users/mac/Desktop/save.csv"); // delete the original file
-    rename("/Users/mac/Desktop/temp.csv","/Users/mac/Desktop/save.csv"); // change the name of temp file to save.csv
+    remove("C:/Users/thekn/Documents/DeliveryQueueMaster/save.csv"); // delete the original file
+    rename("C:/Users/thekn/Documents/DeliveryQueueMaster/temp.csv","C:/Users/thekn/Documents/DeliveryQueueMaster/save.csv"); // change the name of temp file to save.csv
     refreshQueue();
 
 
