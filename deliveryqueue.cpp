@@ -4,7 +4,9 @@
 #include "ui_frmDeliveryQueue.h"
 #include "adddelivery.h"
 #include "editdelivery.h"
-
+#include "QString"
+#include <fstream>
+#include <sstream>
 #define MAX_DELIVERIES 100 // maximum number of deliveries
 
 // creates a delivery queue widget in a main window
