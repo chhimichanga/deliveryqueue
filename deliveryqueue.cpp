@@ -49,6 +49,7 @@ DeliveryQueue::DeliveryQueue(QWidget *parent) :
     connect(dqui->chkSortCS, &QAbstractButton::toggled, this, &DeliveryQueue::sortChanged);
     connect(dqui->actRefreshQueue, &QAction::triggered, this, &DeliveryQueue::refreshQueue);
     connect(dqui->actEditDelivery, &QAction::triggered, this, &DeliveryQueue::editDelivery);
+    connect(dqui->actDeleteDelivery, &QAction::triggered, this, &DeliveryQueue::deleteDelivery);
 }
 
 // add a new delivery to the queue
@@ -68,6 +69,34 @@ void DeliveryQueue::editDelivery()
 // delete an existing delivery from the queue
 void DeliveryQueue::deleteDelivery()
 {
+        // check if user have selected a delivery
+    if(!dqui->treeView->selectionModel()->currentIndex().isValid()){
+        QMessageBox::information(this, "Failure", "You haven't selected the delivery to be deleted.");
+    }
+    int rowidx = dqui->treeView->selectionModel()->currentIndex().row(); // selected index number
+    QString selected = deliveryTable->index(rowidx , 0).data().toString(); // save the selected ID
+
+    ifstream file1("/Users/mac/Desktop/save.csv");
+    ofstream temp;
+    temp.open("/Users/mac/Desktop/temp.csv"); // wirting contents except the deleted line in to a temp file
+    string line;
+
+
+    while(getline(file1, line)){ // read until reach end of file
+        istringstream iss(line);
+        string id;
+        getline(iss, id, ',');
+        if(id != selected.toStdString()){
+           temp << line << endl; // write line in to temp file
+        }
+
+    }
+    temp.close();
+    file1.close();
+    remove("/Users/mac/Desktop/save.csv"); // delete the original file
+    rename("/Users/mac/Desktop/temp.csv","/Users/mac/Desktop/save.csv"); // change the name of temp file to save.csv
+    refreshQueue();
+
 
 }
 
