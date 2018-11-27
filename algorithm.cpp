@@ -47,7 +47,7 @@ Algorithm::Algorithm(Delivery *currentDeliveries)
         count++;   // move on to next line in file
     }
 
-    //Sorting(currentDeliveries, count);
+    Sorting(currentDeliveries, count);
 
 }
 int Algorithm::get_Count(){
@@ -98,35 +98,47 @@ void Algorithm::Sorting(Delivery data[], int count){
                 n++;
             }
 
-            if(next_date_year <= nearest_date_year && next_date_month <= nearest_date_month && next_date_day < nearest_date_day){
+            if(next_date_year < nearest_date_year) {
                 nearest_date_day = next_date_day;
                 nearest_date_month = next_date_month;
                 nearest_date_year = next_date_year;
                 index = j;
             }
-
-            if(next_date_year<= nearest_date_year && next_date_month <= nearest_date_month && next_date_day == nearest_date_day){
-                if(next_classification > top_classification){
-                    top_classification = next_classification;
+            else if(next_date_year == nearest_date_year && next_date_month < nearest_date_month){
+                nearest_date_day = next_date_day;
+                nearest_date_month = next_date_month;
+                nearest_date_year = next_date_year;
+                index = j;
+                if(next_date_year == nearest_date_year && next_date_month <= nearest_date_month && next_date_day < nearest_date_day){
+                    nearest_date_day = next_date_day;
+                    nearest_date_month = next_date_month;
+                    nearest_date_year = next_date_year;
                     index = j;
+
                 }
-                if(next_classification == top_classification){
-                    if(next_Location > farest_Location){
-                        farest_Location = next_Location;
+                else if(next_date_year<= nearest_date_year && next_date_month <= nearest_date_month && next_date_day == nearest_date_day){
+                    if(next_classification > top_classification){
+                        top_classification = next_classification;
                         index = j;
                     }
-                    if(next_Location == farest_Location){
-                        if(next_num_items > max_num_items){
-                            max_num_items = next_num_items;
+                    else if(next_classification == top_classification){
+                        if(next_Location > farest_Location){
+                            farest_Location = next_Location;
                             index = j;
                         }
-                        if(next_num_items == max_num_items){
-                            if(next_valued_document > most_valued_document){
-                                most_valued_document = next_valued_document;
+                        else if(next_Location == farest_Location){
+                            if(next_num_items > max_num_items){
+                                max_num_items = next_num_items;
                                 index = j;
                             }
-                        }
+                            else if(next_num_items == max_num_items){
+                                if(next_valued_document > most_valued_document){
+                                    most_valued_document = next_valued_document;
+                                    index = j;
+                                }
+                            }
 
+                        }
                     }
                 }
             }
