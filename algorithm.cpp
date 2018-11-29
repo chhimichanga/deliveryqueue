@@ -26,7 +26,6 @@ Algorithm::Algorithm(Delivery *currentDeliveries)
         string token;
         int j = 0;
         while(getline(iss, token, ',')){    // while delimiter is being read
-
             if(j==0) currentDeliveries[count].set_ID(stoi(token));                // set Delivery ID
             else if(j == 1) currentDeliveries[count].set_DateDeliver(token);       // set required delivery date
             else if(j == 2) currentDeliveries[count].set_Location(token);          // set location
@@ -41,102 +40,13 @@ Algorithm::Algorithm(Delivery *currentDeliveries)
         currentDeliveries[count].set_DateShip(CalculateDateShip(currentDeliveries[count].get_DateDeliver(), currentDeliveries[count].get_Location()));
         count++;   // move on to next line in file
     }
-
-    //Sorting(currentDeliveries, count);
-
 }
+
 int Algorithm::get_Count(){
     return count;
 }
 
-void Algorithm::Sorting(Delivery data[], int count){
-
-    for(int i = 0; i < count; i++){
-
-        int index = i;
-        int nearest_date_day, nearest_date_month, nearest_date_year;
-        int top_classification = StringToValue(data[i].get_Classification());
-        int max_num_items = data[i].get_NumItems();
-        int farest_Location = StringToValue(data[i].get_Location());
-        int most_valued_document = StringToValue(data[i].get_MediaType());
-        istringstream rsd(data[i].get_DateShip());
-        string token;
-        int m = 0;
-
-        while (getline(rsd, token, '/')){
-            stringstream geek(token);
-            int x = 0;
-            geek >> x;
-            if(m==0) nearest_date_day = x;
-            if(m==1) nearest_date_month = x;
-            if(m==2) nearest_date_year = x;
-            m++;
-        }
-
-        for(int j = i + 1; j < count; j++){
-            int next_date_day, next_date_month, next_date_year;
-            int next_classification = StringToValue(data[j].get_Classification());
-            int next_num_items = data[j].get_NumItems();
-            int next_Location = StringToValue(data[j].get_Location());
-            int next_valued_document = StringToValue(data[j].get_MediaType());
-            istringstream next_rsd(data[j].get_DateShip());
-            string next_token;
-            int n = 0;
-
-            while (getline(next_rsd, next_token, '/')){
-                stringstream geek(next_token);
-                int x = 0;
-                geek >> x;
-                if(n==0) next_date_day = x;
-                if(n==1) next_date_month = x;
-                if(n==2) next_date_year = x;
-                n++;
-            }
-
-            if(next_date_year <= nearest_date_year && next_date_month <= nearest_date_month && next_date_day < nearest_date_day){
-                nearest_date_day = next_date_day;
-                nearest_date_month = next_date_month;
-                nearest_date_year = next_date_year;
-                index = j;
-            }
-
-            if(next_date_year<= nearest_date_year && next_date_month <= nearest_date_month && next_date_day == nearest_date_day){
-                if(next_classification > top_classification){
-                    top_classification = next_classification;
-                    index = j;
-                }
-                if(next_classification == top_classification){
-                    if(next_Location > farest_Location){
-                        farest_Location = next_Location;
-                        index = j;
-                    }
-                    if(next_Location == farest_Location){
-                        if(next_num_items > max_num_items){
-                            max_num_items = next_num_items;
-                            index = j;
-                        }
-                        if(next_num_items == max_num_items){
-                            if(next_valued_document > most_valued_document){
-                                most_valued_document = next_valued_document;
-                                index = j;
-                            }
-                        }
-
-                    }
-                }
-            }
-        }
-        if(index != i){
-           // cout << "swap";
-            Delivery swap = data[i];
-            data[i] = data[index];
-            data[index] = swap;
-
-        }
-    }
-}
-
-int Algorithm::StringToValue(string s){
+int Algorithm::StringToValue(string s){ // convert the string to numerical value for easier comparsion
     if(s == "Secret"|| s == "secret") return 3;
     else if(s == "Unclassified" ||s ==  "Unclassified") return 2;
     else if(s == "confidential" || s == "Confidential") return 1;
@@ -159,22 +69,20 @@ int Algorithm::DayOfTheWeek (int day, int month, int year){
     //Note: Return value of localtime is not threadsafe, because it might be
     // (and will be) reused in subsequent calls to std::localtime!
     const tm * time_out = localtime(&time_temp);
-    if (time_out->tm_wday == 0) return 4;
-    else if (time_out->tm_wday == 4) return 1;
-    else if (time_out->tm_wday == 5) return 2;
-    else if (time_out->tm_wday == 6) return 3;
+  
+    if (time_out->tm_wday == 0) return 4; // if it is sunday moving the schedule forward by 4 days
+    else if (time_out->tm_wday == 4) return 1;  // if it is thursday moving the schedule forward by 1 days
+    else if (time_out->tm_wday == 5) return 2;   // if it is friday moving the schedule forward by 2 days
+    else if (time_out->tm_wday == 6) return 3;   // if it is saturday moving the schedule forward by 3 days
     else return 0;
     //Sunday == 0, Monday == 1, and so on ...
- //   cout << "Today is this day of the week: " << time_out->tm_wday << "\n";
-  //  cout << "(Sunday is 0, Monday is 1, and so on...)\n";
 
 }
 
-void Algorithm::DatePlusDays( struct tm* date, int days )
+void Algorithm::DatePlusDays( struct tm* date, int days ) // do the calculation of date, plus or minus a number of days on a date
 {
     // number of seconds in a day = 24 hours * 60 minutes * 60 seconds
     const time_t ONE_DAY = 24 * 60 * 60 ;
-
     // Seconds since start of epoch
     time_t date_seconds = mktime( date ) + (days * ONE_DAY) ;
 
@@ -188,11 +96,10 @@ string Algorithm::CalculateDateShip(string RDD, string Location){
     char buffer[80];
     string str; // return value
 
-    if(Location == "Rota Spain" || Location == "Rota Spain"){
+    if(Location == "Rota Spain" || Location == "Rota Spain"){ // if the location is outside US
         istringstream rdd(RDD);
         string token;
         int j = 0;
-
         while (getline(rdd, token, '/')){
             stringstream geek(token);
             int x = 0;
@@ -203,21 +110,22 @@ string Algorithm::CalculateDateShip(string RDD, string Location){
             j++;
 
         }
-
+      
         DatePlusDays(&date, -21);   // 3 weeks to arrive at location once shipped
-
-        if(DayOfTheWeek(date.tm_mday, date.tm_mon, date.tm_year) != 0){
+        if(DayOfTheWeek(date.tm_mday, date.tm_mon, date.tm_year) != 0){   // if the ship date is not Monday, Tuesday nor Wednesday, move the shcedule forward
             DatePlusDays(&date, -DayOfTheWeek(date.tm_mday, date.tm_mon, date.tm_year));
         }
-
+        // convert the date to string
         strftime(buffer,sizeof(buffer),"%d/%m/%Y", &date);
         str = buffer;
     }
+    // if the location is in US
     else if(Location == "King's Bay Georgia" || Location == "Area 51 Nevada"|| Location == "Pensacola Florida"||Location == "Great Lakes Illinois" || Location == "Bremerton Washington"){
         istringstream rdd(RDD);
         string token;
         int j = 0;
 
+        // separate the whole string of ship date into date, month and year
         while (getline(rdd, token, '/')){
             stringstream geek(token);
             int x = 0;
@@ -235,6 +143,12 @@ string Algorithm::CalculateDateShip(string RDD, string Location){
             DatePlusDays(&date, -DayOfTheWeek(date.tm_mday, date.tm_mon, date.tm_year));
         }
 
+        DatePlusDays(&date, -7);    // 1 week to arrive at location once shipped
+        // if the ship date is not Monday, Tuesday nor Wednesday, move the shcedule forward
+        if(DayOfTheWeek(date.tm_mday, date.tm_mon, date.tm_year) != 0){
+            DatePlusDays(&date, -DayOfTheWeek(date.tm_mday, date.tm_mon, date.tm_year));
+        }
+        // convert the date to string
         strftime(buffer,sizeof(buffer),"%d/%m/%Y", &date);
         str = buffer;
     }
@@ -254,9 +168,11 @@ string Algorithm::CalculateDateShip(string RDD, string Location){
 
         }
 
+        // if the ship date is not Monday, Tuesday nor Wednesday, move the shcedule forward
         if(DayOfTheWeek(date.tm_mday, date.tm_mon, date.tm_year) != 0){
             DatePlusDays(&date, -DayOfTheWeek(date.tm_mday, date.tm_mon, date.tm_year));
         }
+        // convert the date to string
         strftime(buffer,sizeof(buffer),"%d/%m/%Y", &date);
         str = buffer;
         }

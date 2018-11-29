@@ -8,7 +8,6 @@
 #include "QString"
 #include <fstream>
 #include <sstream>
-
 #define MAX_DELIVERIES 100 // maximum number of deliveries
 
 // creates a delivery queue widget in a main window
@@ -194,6 +193,7 @@ void DeliveryQueue::filterColumnChanged()
 // sort the queue
 void DeliveryQueue::sortChanged()
 {
+  
 }
 
 // refresh queue
