@@ -8,6 +8,7 @@
 #include "QString"
 #include <fstream>
 #include <sstream>
+
 #define MAX_DELIVERIES 100 // maximum number of deliveries
 
 // creates a delivery queue widget in a main window
@@ -71,7 +72,7 @@ void DeliveryQueue::addDelivery()
 // edit an existing delivery
 void DeliveryQueue::editDelivery()
 {
-    // check if user have selected a delivery
+    // check if user selected a delivery
     if(!dqui->treeView->selectionModel()->currentIndex().isValid())
         QMessageBox::information(this, "Failure", "You haven't selected the delivery to be edited.");
     else {
@@ -124,9 +125,7 @@ void DeliveryQueue::deleteDelivery()
     else {
         if(QMessageBox::question(this, "Delete?", "Are you sure you want to delete this delivery?", QMessageBox::Yes|QMessageBox::No) == QMessageBox::Yes){
             int row = dqui->treeView->selectionModel()->currentIndex().row();   // selected index number
-            qDebug() << "selected row index" << QString::number(row);
-            QString selected = deliveryTable->index(row, 0).data().toString();  // save the selected ID
-            qDebug() << "selected ID" << selected;
+            QString selected = deliveryModel->index(row, 0).data().toString();  // save the selected ID
 
             ifstream fileIn("C:/Users/thekn/Documents/DeliveryQueueMaster/save.csv");   // open save file
             ofstream fileOut;
@@ -136,9 +135,7 @@ void DeliveryQueue::deleteDelivery()
             while(getline(fileIn, line)){   // read until reach end of file
                 istringstream stringIn(line); // feed line to stream
                 getline(stringIn, id, ',');   // parse line using comma delimiter
-                qDebug() << QString::fromStdString(id);
                 if(id != selected.toStdString()){    // if not the delivery being deleted,
-                    qDebug() << QString::fromStdString(line);
                     fileOut << line << endl;         // write line to temp file
                 }
             }
@@ -173,27 +170,30 @@ void DeliveryQueue::importFile()
 
 }
 
-// change how input is read when syntax changes
+// filter queue when user checks case sensitive filtering or enters a search expression
 void DeliveryQueue::filterSyntaxChanged()
 {
-/*    QRegExp::PatternSyntax syntax =
-            QRegExp::PatternSyntax(ui->cboFilterSyntax->itemData(ui->cboFilterSyntax->currentIndex()).toInt());
+    // set filter syntax to fixed string
+    QRegExp::PatternSyntax syntax =
+            QRegExp::PatternSyntax(QRegExp::FixedString);
+    // set case sensitivity
     Qt::CaseSensitivity caseSensitivity =
-            ui->chkFilterCS->isChecked() ? Qt::CaseSensitive : Qt::CaseInsensitive;
-
-    QRegExp regExp(ui->ledFilterPattern->text(), caseSensitivity, syntax);
-*/}
+            dqui->chkFilterCS->isChecked() ? Qt::CaseSensitive : Qt::CaseInsensitive;
+    // apply search expression, case sensitivity, and syntax
+    QRegExp regExp(dqui->ledFilterPattern->text(), caseSensitivity, syntax);
+    deliveryModel->setFilterRegExp(regExp);
+}
 
 // set the column by which the queue is filtered
 void DeliveryQueue::filterColumnChanged()
 {
-
+    deliveryModel->setFilterKeyColumn(dqui->cboFilterColumn->currentIndex());
 }
 
-// sort the queue
+// set case sensitive sorting
 void DeliveryQueue::sortChanged()
 {
-  
+    deliveryModel->setSortCaseSensitivity(dqui->chkSortCS->isChecked() ? Qt::CaseSensitive : Qt::CaseInsensitive);
 }
 
 // refresh queue
