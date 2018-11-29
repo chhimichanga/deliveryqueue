@@ -8,6 +8,7 @@
 #include "QString"
 #include <fstream>
 #include <sstream>
+#include <QDir>
 
 #define MAX_DELIVERIES 100 // maximum number of deliveries
 
@@ -84,7 +85,7 @@ void DeliveryQueue::editDelivery()
         edit->deliveryID = selectedID.toInt();
 
         // open save file
-        ifstream fileIn("C:/Users/thekn/Documents/DeliveryQueueMaster/save.csv");
+        ifstream fileIn("save.csv");
         string line, id, token; // strings for reading each line, id, and the rest of the line after id
         int count;
 
@@ -127,9 +128,9 @@ void DeliveryQueue::deleteDelivery()
             int row = dqui->treeView->selectionModel()->currentIndex().row();   // selected index number
             QString selected = deliveryModel->index(row, 0).data().toString();  // save the selected ID
 
-            ifstream fileIn("C:/Users/thekn/Documents/DeliveryQueueMaster/save.csv");   // open save file
+            ifstream fileIn("save.csv");   // open save file
             ofstream fileOut;
-            fileOut.open("C:/Users/thekn/Documents/DeliveryQueueMaster/temp.csv"); // writing contents except the deleted line to a temp file
+            fileOut.open("temp.csv"); // writing contents except the deleted line to a temp file
             string line, id;
 
             while(getline(fileIn, line)){   // read until reach end of file
@@ -144,9 +145,9 @@ void DeliveryQueue::deleteDelivery()
             fileOut.close();
             fileIn.close();
             // delete original file
-            remove("C:/Users/thekn/Documents/DeliveryQueueMaster/save.csv");
+            remove("save.csv");
             // rename temp.csv to save.csv
-            rename("C:/Users/thekn/Documents/DeliveryQueueMaster/temp.csv","C:/Users/thekn/Documents/DeliveryQueueMaster/save.csv");
+            rename("temp.csv","save.csv");
             refreshQueue();
         }
     }

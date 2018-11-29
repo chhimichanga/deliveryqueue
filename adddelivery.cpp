@@ -33,7 +33,7 @@ void frmAddDelivery::submit()
     int intID = 0;
 
     // load save file to write to
-    QFile fileIn("C:/Users/thekn/Documents/DeliveryQueueMaster/save.csv");
+    QFile fileIn("save.csv");
     QTextStream fileOut(&fileIn);     // load output stream
 
     // error message if file cannot open

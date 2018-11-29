@@ -29,9 +29,9 @@ void frmEditDelivery::submit()
     string line, id;   // strings to read lines
 
     // load save file to write to
-    ifstream fileIn("C:/Users/thekn/Documents/DeliveryQueueMaster/save.csv");
+    ifstream fileIn("save.csv");
     ofstream fileOut;
-    fileOut.open("C:/Users/thekn/Documents/DeliveryQueueMaster/temp.csv"); // load output stream
+    fileOut.open("temp.csv"); // load output stream
 
     // error message if file cannot open
     if(!fileOut.is_open())
@@ -68,9 +68,9 @@ void frmEditDelivery::submit()
         fileOut.close();
         fileIn.close();
         // delete original file
-        remove("C:/Users/thekn/Documents/DeliveryQueueMaster/save.csv");
+        remove("save.csv");
         // rename temp.csv to save.csv
-        rename("C:/Users/thekn/Documents/DeliveryQueueMaster/temp.csv","C:/Users/thekn/Documents/DeliveryQueueMaster/save.csv");
+        rename("temp.csv","save.csv");
 
         QMessageBox::information(this, "Success", "Successfully edited a delivery.");
     }
