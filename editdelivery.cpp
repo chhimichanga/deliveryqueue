@@ -27,7 +27,6 @@ frmEditDelivery::frmEditDelivery(QWidget *parent) :
 void frmEditDelivery::submit()
 {
     string line, id;   // strings to read lines
-    QStringList columns;
 
     // load save file to write to
     ifstream fileIn("C:/Users/thekn/Documents/DeliveryQueueMaster/save.csv");
