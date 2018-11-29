@@ -20,97 +20,109 @@
       <property name="title">
        <string>Queue</string>
       </property>
-      <layout class="QGridLayout" name="gridLayout">
-       <item row="2" column="0" colspan="2">
-        <widget class="QCheckBox" name="chkSortCS">
-         <property name="text">
-          <string>Case sensitive sorting</string>
-         </property>
-         <property name="checked">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="2" colspan="2">
-        <widget class="QCheckBox" name="chkFilterCS">
-         <property name="text">
-          <string>Case sensitive filtering</string>
-         </property>
-         <property name="checked">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="lblFilterPattern">
-         <property name="text">
-          <string>Filter pattern:</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0" colspan="7">
-        <widget class="QTreeView" name="treeView">
-         <property name="editTriggers">
-          <set>QAbstractItemView::NoEditTriggers</set>
-         </property>
-         <property name="sortingEnabled">
-          <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1" colspan="2">
-        <widget class="QLineEdit" name="ledFilterPattern">
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="3">
-        <widget class="QLabel" name="lblFilterSyntax">
-         <property name="text">
-          <string>Filter syntax:</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="4">
-        <widget class="QComboBox" name="cboFilterSyntax">
-         <item>
-          <property name="text">
-           <string>Regular expression</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Wildcard</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Fixed string</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="1" column="5">
-        <widget class="QLabel" name="lblFilterColumn">
-         <property name="text">
-          <string>Filter column:</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="6">
-        <widget class="QComboBox" name="cboFilterColumn"/>
-       </item>
-      </layout>
+      <widget class="QTreeView" name="treeView">
+       <property name="geometry">
+        <rect>
+         <x>12</x>
+         <y>28</y>
+         <width>864</width>
+         <height>261</height>
+        </rect>
+       </property>
+       <property name="editTriggers">
+        <set>QAbstractItemView::NoEditTriggers</set>
+       </property>
+       <property name="sortingEnabled">
+        <bool>false</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="lblFilterColumn">
+       <property name="geometry">
+        <rect>
+         <x>440</x>
+         <y>310</y>
+         <width>111</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Search by column:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="cboFilterColumn">
+       <property name="geometry">
+        <rect>
+         <x>560</x>
+         <y>310</y>
+         <width>311</width>
+         <height>22</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="chkSortCS">
+       <property name="geometry">
+        <rect>
+         <x>12</x>
+         <y>340</y>
+         <width>151</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Case sensitive sorting</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="chkFilterCS">
+       <property name="geometry">
+        <rect>
+         <x>200</x>
+         <y>340</y>
+         <width>155</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Case sensitive filtering</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="lblFilterPattern">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>310</y>
+         <width>51</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Search:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="ledFilterPattern">
+       <property name="geometry">
+        <rect>
+         <x>70</x>
+         <y>310</y>
+         <width>361</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
      </widget>
     </item>
    </layout>
@@ -162,6 +174,9 @@
    <property name="text">
     <string>&amp;New Delivery</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
   </action>
   <action name="actEditDelivery">
    <property name="text">
@@ -171,6 +186,9 @@
   <action name="actDeleteDelivery">
    <property name="text">
     <string>&amp;Delete Delivery</string>
+   </property>
+   <property name="shortcut">
+    <string>Del</string>
    </property>
   </action>
   <action name="actArchiveDelivery">
@@ -187,9 +205,19 @@
    <property name="text">
     <string>&amp;Refresh Queue</string>
    </property>
+   <property name="shortcut">
+    <string>F5</string>
+   </property>
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <tabstops>
+  <tabstop>treeView</tabstop>
+  <tabstop>ledFilterPattern</tabstop>
+  <tabstop>cboFilterColumn</tabstop>
+  <tabstop>chkSortCS</tabstop>
+  <tabstop>chkFilterCS</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

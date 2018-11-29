@@ -32,7 +32,10 @@ private slots:
 
 private:
     Ui::DeliveryQueue *dqui;
+    QSortFilterProxyModel *deliveryModel;
     QStandardItemModel *deliveryTable;
+    QAbstractItemModel *createDeliveryModel(QObject *parent);
+    void colorCodeDeliveries();
 };
 
 #endif // DELIVERYQUEUE_H

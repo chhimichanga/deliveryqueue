@@ -1,7 +1,7 @@
 #include "delivery.h"
 
 Delivery::Delivery(){   // initialize Delivery variables
-    id = '\0';
+    id = 0;
     dateDeliver = '\0';
     location = '\0';
     classification = '\0';
@@ -13,7 +13,7 @@ Delivery::Delivery(){   // initialize Delivery variables
 }
 
 // all setter functions for each Delivery variable
-void Delivery::set_ID(string idNew){
+void Delivery::set_ID(int idNew){
     id = idNew;
 }
 

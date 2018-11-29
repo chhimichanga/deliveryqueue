@@ -334,6 +334,18 @@
    </property>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>cboLocation</tabstop>
+  <tabstop>cboClassification</tabstop>
+  <tabstop>cboMediaType</tabstop>
+  <tabstop>cboShipping</tabstop>
+  <tabstop>spnNumberObjects</tabstop>
+  <tabstop>cboStaffing</tabstop>
+  <tabstop>dteDeliveryDate</tabstop>
+  <tabstop>chkMediaReceived</tabstop>
+  <tabstop>btnSubmit</tabstop>
+  <tabstop>btnCancel</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
