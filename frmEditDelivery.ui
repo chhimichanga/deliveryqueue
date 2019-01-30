@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>360</width>
+    <width>400</width>
     <height>320</height>
    </rect>
   </property>
@@ -19,11 +19,16 @@
   <widget class="QCheckBox" name="chkMediaReceived">
    <property name="geometry">
     <rect>
-     <x>120</x>
+     <x>130</x>
      <y>230</y>
-     <width>121</width>
+     <width>141</width>
      <height>20</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
    </property>
    <property name="text">
     <string>Media Received</string>
@@ -34,9 +39,14 @@
     <rect>
      <x>80</x>
      <y>70</y>
-     <width>71</width>
+     <width>111</width>
      <height>20</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
    </property>
    <property name="text">
     <string>Media type:</string>
@@ -50,9 +60,14 @@
     <rect>
      <x>70</x>
      <y>160</y>
-     <width>81</width>
+     <width>121</width>
      <height>21</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
    </property>
    <property name="text">
     <string>Staffing Level:</string>
@@ -66,9 +81,14 @@
     <rect>
      <x>70</x>
      <y>10</y>
-     <width>81</width>
+     <width>121</width>
      <height>21</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
    </property>
    <property name="text">
     <string>Location:</string>
@@ -80,11 +100,16 @@
   <widget class="QPushButton" name="btnSubmit">
    <property name="geometry">
     <rect>
-     <x>60</x>
+     <x>80</x>
      <y>270</y>
      <width>93</width>
      <height>31</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
    </property>
    <property name="text">
     <string>&amp;Submit</string>
@@ -93,11 +118,16 @@
   <widget class="QComboBox" name="cboShipping">
    <property name="geometry">
     <rect>
-     <x>160</x>
+     <x>200</x>
      <y>100</y>
      <width>181</width>
      <height>21</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
    </property>
    <item>
     <property name="text">
@@ -113,11 +143,16 @@
   <widget class="QSpinBox" name="spnNumberObjects">
    <property name="geometry">
     <rect>
-     <x>160</x>
+     <x>200</x>
      <y>130</y>
      <width>71</width>
      <height>22</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
    </property>
    <property name="maximum">
     <number>50000</number>
@@ -126,11 +161,16 @@
   <widget class="QComboBox" name="cboLocation">
    <property name="geometry">
     <rect>
-     <x>160</x>
+     <x>200</x>
      <y>10</y>
      <width>181</width>
      <height>22</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
    </property>
    <item>
     <property name="text">
@@ -173,9 +213,14 @@
     <rect>
      <x>70</x>
      <y>40</y>
-     <width>81</width>
+     <width>121</width>
      <height>21</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
    </property>
    <property name="layoutDirection">
     <enum>Qt::LeftToRight</enum>
@@ -190,11 +235,16 @@
   <widget class="QDateEdit" name="dteDeliveryDate">
    <property name="geometry">
     <rect>
-     <x>160</x>
+     <x>200</x>
      <y>190</y>
      <width>110</width>
      <height>22</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
    </property>
    <property name="displayFormat">
     <string>dd MMM yyyy</string>
@@ -203,11 +253,16 @@
   <widget class="QComboBox" name="cboStaffing">
    <property name="geometry">
     <rect>
-     <x>160</x>
+     <x>200</x>
      <y>160</y>
      <width>41</width>
      <height>21</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
    </property>
    <item>
     <property name="text">
@@ -228,11 +283,16 @@
   <widget class="QComboBox" name="cboMediaType">
    <property name="geometry">
     <rect>
-     <x>160</x>
+     <x>200</x>
      <y>70</y>
      <width>181</width>
      <height>22</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
    </property>
    <item>
     <property name="text">
@@ -253,11 +313,16 @@
   <widget class="QComboBox" name="cboClassification">
    <property name="geometry">
     <rect>
-     <x>160</x>
+     <x>200</x>
      <y>40</y>
      <width>181</width>
      <height>21</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
    </property>
    <item>
     <property name="text">
@@ -278,11 +343,16 @@
   <widget class="QPushButton" name="btnCancel">
    <property name="geometry">
     <rect>
-     <x>210</x>
+     <x>230</x>
      <y>270</y>
      <width>93</width>
      <height>31</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
    </property>
    <property name="text">
     <string>&amp;Cancel</string>
@@ -293,9 +363,14 @@
     <rect>
      <x>60</x>
      <y>100</y>
-     <width>91</width>
+     <width>131</width>
      <height>21</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
    </property>
    <property name="text">
     <string>Transit Method:</string>
@@ -309,9 +384,14 @@
     <rect>
      <x>10</x>
      <y>190</y>
-     <width>141</width>
+     <width>181</width>
      <height>21</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
    </property>
    <property name="text">
     <string>Required Delivery Date:</string>
@@ -325,12 +405,20 @@
     <rect>
      <x>50</x>
      <y>130</y>
-     <width>101</width>
+     <width>141</width>
      <height>20</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
    <property name="text">
     <string>Number of Items:</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
    </property>
   </widget>
  </widget>

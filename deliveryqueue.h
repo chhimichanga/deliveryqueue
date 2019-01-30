@@ -29,6 +29,7 @@ private slots:
     void filterColumnChanged();
     void sortChanged();
     void refreshQueue();
+    //void contextMenu(const QPoint &);
 
 private:
     Ui::DeliveryQueue *dqui;

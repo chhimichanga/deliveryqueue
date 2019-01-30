@@ -4,6 +4,11 @@
 #
 #-------------------------------------------------
 
+# QTXlsx is an external library that allows developers to read from and write to Excel spreadsheets.
+# This library is licensed under the GNU Free Documentation License version 1.3, published by the Free Software Foundation.
+# This library is used for this project under the impression that this project will not be used for commercial profit.
+include(qtxlsx.pri)
+
 QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -30,14 +35,16 @@ SOURCES += \
     adddelivery.cpp \
     delivery.cpp \
     algorithm.cpp \
-    editdelivery.cpp
+    editdelivery.cpp \
+    schedule.cpp
 
 HEADERS += \
         deliveryqueue.h \
     adddelivery.h \
     delivery.h \
     algorithm.h \
-    editdelivery.h
+    editdelivery.h \
+    schedule.h
 
 FORMS += \
     frmDeliveryQueue.ui \

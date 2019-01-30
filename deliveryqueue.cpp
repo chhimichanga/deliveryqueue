@@ -3,6 +3,7 @@
 #include "deliveryqueue.h"
 #include "ui_frmDeliveryQueue.h"
 #include "adddelivery.h"
+#include "schedule.h"
 #include "editdelivery.h"
 #include <string>
 #include "QString"
@@ -207,7 +208,7 @@ void DeliveryQueue::refreshQueue(){
     // delivery details
     int id, numberOfItems;
     QString location, shippingMethod, classification, mediaType;
-    QDate dateDeliver, dateShip;
+    QDate dateDeliver, dateShip, dateStart;
 
     // go through current deliveries and transfer from save file to deliveryTable
     for(int row = 0; row < algorithm.get_Count(); row++){
@@ -220,6 +221,7 @@ void DeliveryQueue::refreshQueue(){
         numberOfItems = currentDeliveries[row].get_NumItems();
         mediaType = QString::fromStdString(currentDeliveries[row].get_MediaType());
         dateShip = QDate::fromString(QString::fromStdString(currentDeliveries[row].get_DateShip()), "dd/MM/yyyy");
+        dateStart = QDate::fromString(QString::fromStdString(currentDeliveries[row].get_DateStart()), "dd/MM/yyyy");
 
         // insert a row below the last current row in the list
         deliveryTable->insertRow(row);
@@ -232,6 +234,7 @@ void DeliveryQueue::refreshQueue(){
         deliveryTable->setData(deliveryTable->index(row, 5), numberOfItems);
         deliveryTable->setData(deliveryTable->index(row, 6), mediaType);
         deliveryTable->setData(deliveryTable->index(row, 7), dateShip);
+        deliveryTable->setData(deliveryTable->index(row, 8), dateStart);
     }
     colorCodeDeliveries();
 }
