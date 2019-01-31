@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>320</height>
+    <width>440</width>
+    <height>441</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,8 +19,8 @@
   <widget class="QCheckBox" name="chkMediaReceived">
    <property name="geometry">
     <rect>
-     <x>130</x>
-     <y>230</y>
+     <x>120</x>
+     <y>320</y>
      <width>141</width>
      <height>20</height>
     </rect>
@@ -100,8 +100,8 @@
   <widget class="QPushButton" name="btnSubmit">
    <property name="geometry">
     <rect>
-     <x>80</x>
-     <y>270</y>
+     <x>60</x>
+     <y>370</y>
      <width>93</width>
      <height>31</height>
     </rect>
@@ -131,7 +131,7 @@
    </property>
    <item>
     <property name="text">
-     <string>Shipping</string>
+     <string>Carrier</string>
     </property>
    </item>
    <item>
@@ -174,7 +174,7 @@
    </property>
    <item>
     <property name="text">
-     <string>Area 51 Nevada</string>
+     <string>Pearl Harbor Hawaii</string>
     </property>
    </item>
    <item>
@@ -184,7 +184,7 @@
    </item>
    <item>
     <property name="text">
-     <string>Great Lakes Illinois</string>
+     <string>San Diego California</string>
     </property>
    </item>
    <item>
@@ -204,7 +204,7 @@
    </item>
    <item>
     <property name="text">
-     <string>Rota Spain</string>
+     <string>Holy Loch Scotland</string>
     </property>
    </item>
   </widget>
@@ -344,7 +344,7 @@
    <property name="geometry">
     <rect>
      <x>230</x>
-     <y>270</y>
+     <y>370</y>
      <width>93</width>
      <height>31</height>
     </rect>
@@ -419,6 +419,97 @@
    </property>
    <property name="alignment">
     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="comboBox">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>230</y>
+     <width>121</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>USS Kamehameha SSN 642</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>USS Omaha SSN 692</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>USS New York City SSN 696</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>USS Indianapolis SSN 697</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>USS Ohio SSGN 726</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>USS Puffer SSN 652</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>USS Alabama SSBN 731</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>240</y>
+     <width>161</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Ship/Hull Number</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>280</y>
+     <width>113</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>280</y>
+     <width>151</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>ECN/TECN</string>
    </property>
   </widget>
  </widget>

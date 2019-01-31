@@ -33,12 +33,14 @@ DeliveryQueue::DeliveryQueue(QWidget *parent) :
     deliveryTable->setHeaderData(0, Qt::Horizontal, "ID");
     deliveryTable->setHeaderData(1, Qt::Horizontal, "Required Delivery Date");
     deliveryTable->setHeaderData(2, Qt::Horizontal, "Location");
-    deliveryTable->setHeaderData(3, Qt::Horizontal, "Shipping Method");
-    deliveryTable->setHeaderData(4, Qt::Horizontal, "Classification");
-    deliveryTable->setHeaderData(5, Qt::Horizontal, "# of Items");
-    deliveryTable->setHeaderData(6, Qt::Horizontal, "Media Type");
-    deliveryTable->setHeaderData(7, Qt::Horizontal, "Required Ship Date");
-    deliveryTable->setHeaderData(8, Qt::Horizontal, "Required Start Date");
+    deliveryTable->setHeaderData(3, Qt::Horizontal, "Ship/Hull Number");
+    deliveryTable->setHeaderData(4, Qt::Horizontal, "ECN/TECN");
+    deliveryTable->setHeaderData(5, Qt::Horizontal, "Shipping Method");
+    deliveryTable->setHeaderData(6, Qt::Horizontal, "Classification");
+    deliveryTable->setHeaderData(7, Qt::Horizontal, "# of Items");
+    deliveryTable->setHeaderData(8, Qt::Horizontal, "Media Type");
+    deliveryTable->setHeaderData(9, Qt::Horizontal, "Required Ship Date");
+    deliveryTable->setHeaderData(10, Qt::Horizontal, "Required Start Date");
 
     // set source model for deliveryModel
     deliveryModel->setSourceModel(deliveryTable);
