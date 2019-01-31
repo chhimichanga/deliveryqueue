@@ -27,7 +27,6 @@ private slots:
     void importFile();
     void filterSyntaxChanged();
     void filterColumnChanged();
-    void sortChanged();
     void refreshQueue();
     //void contextMenu(const QPoint &);
 

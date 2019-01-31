@@ -30,12 +30,12 @@ DeliveryQueue::DeliveryQueue(QWidget *parent) :
     deliveryTable = new QStandardItemModel(0, 9, parent);
 
     // add table headers
-    deliveryTable->setHeaderData(0, Qt::Horizontal, "ID");
+    deliveryTable->setHeaderData(0, Qt::Horizontal, "Transmission #");
     deliveryTable->setHeaderData(1, Qt::Horizontal, "Required Delivery Date");
     deliveryTable->setHeaderData(2, Qt::Horizontal, "Location");
     deliveryTable->setHeaderData(3, Qt::Horizontal, "Ship/Hull Number");
     deliveryTable->setHeaderData(4, Qt::Horizontal, "ECN/TECN");
-    deliveryTable->setHeaderData(5, Qt::Horizontal, "Shipping Method");
+    deliveryTable->setHeaderData(5, Qt::Horizontal, "Transit Method");
     deliveryTable->setHeaderData(6, Qt::Horizontal, "Classification");
     deliveryTable->setHeaderData(7, Qt::Horizontal, "# of Items");
     deliveryTable->setHeaderData(8, Qt::Horizontal, "Media Type");
@@ -52,12 +52,16 @@ DeliveryQueue::DeliveryQueue(QWidget *parent) :
     // sort deliveries by ship date
     dqui->treeView->sortByColumn(7, Qt::AscendingOrder);
 
+    // add context menu options
+    dqui->treeView->addAction(dqui->actEditDelivery);
+    dqui->treeView->addAction(dqui->actDeleteDelivery);
+    dqui->treeView->addAction(dqui->actDeleteDelivery);
+
     // connect delivery queue ui buttons and slots
     connect(dqui->actNewDelivery, &QAction::triggered, this, &DeliveryQueue::addDelivery);
     connect(dqui->ledFilterPattern, &QLineEdit::textChanged, this, &DeliveryQueue::filterSyntaxChanged);
     connect(dqui->cboFilterColumn, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &DeliveryQueue::filterColumnChanged);
     connect(dqui->chkFilterCS, &QAbstractButton::toggled, this, &DeliveryQueue::filterSyntaxChanged);
-    connect(dqui->chkSortCS, &QAbstractButton::toggled, this, &DeliveryQueue::sortChanged);
     connect(dqui->actRefreshQueue, &QAction::triggered, this, &DeliveryQueue::refreshQueue);
     connect(dqui->actEditDelivery, &QAction::triggered, this, &DeliveryQueue::editDelivery);
     connect(dqui->actDeleteDelivery, &QAction::triggered, this, &DeliveryQueue::deleteDelivery);
@@ -192,12 +196,6 @@ void DeliveryQueue::filterSyntaxChanged()
 void DeliveryQueue::filterColumnChanged()
 {
     deliveryModel->setFilterKeyColumn(dqui->cboFilterColumn->currentIndex());
-}
-
-// set case sensitive sorting
-void DeliveryQueue::sortChanged()
-{
-    deliveryModel->setSortCaseSensitivity(dqui->chkSortCS->isChecked() ? Qt::CaseSensitive : Qt::CaseInsensitive);
 }
 
 // refresh queue

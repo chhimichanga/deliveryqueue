@@ -23,6 +23,9 @@
       <layout class="QGridLayout" name="gridLayout">
        <item row="0" column="0" colspan="2">
         <widget class="QTreeView" name="treeView">
+         <property name="contextMenuPolicy">
+          <enum>Qt::ActionsContextMenu</enum>
+         </property>
          <property name="editTriggers">
           <set>QAbstractItemView::NoEditTriggers</set>
          </property>
@@ -112,16 +115,6 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="1">
-        <widget class="QCheckBox" name="chkSortCS">
-         <property name="text">
-          <string>Case sensitive sorting</string>
-         </property>
-         <property name="checked">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
       </layout>
      </widget>
     </item>
@@ -151,14 +144,7 @@
     </property>
     <addaction name="actAbout"/>
    </widget>
-   <widget class="QMenu" name="menu_Queue">
-    <property name="title">
-     <string>&amp;Queue</string>
-    </property>
-    <addaction name="actRefreshQueue"/>
-   </widget>
    <addaction name="menu_Delivery"/>
-   <addaction name="menu_Queue"/>
    <addaction name="menu_Help"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
@@ -168,6 +154,7 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actRefreshQueue"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actNewDelivery">
