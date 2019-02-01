@@ -27,7 +27,7 @@ DeliveryQueue::DeliveryQueue(QWidget *parent) :
     // create new sort filter model. allows user to sort and filter the delivery table
     deliveryModel = new QSortFilterProxyModel;
     // create an empty delivery table with 0 rows and 9 columns
-    deliveryTable = new QStandardItemModel(0, 9, parent);
+    deliveryTable = new QStandardItemModel(0, 11, parent);
 
     // add table headers
     deliveryTable->setHeaderData(0, Qt::Horizontal, "Transmission #");
@@ -41,6 +41,7 @@ DeliveryQueue::DeliveryQueue(QWidget *parent) :
     deliveryTable->setHeaderData(8, Qt::Horizontal, "Media Type");
     deliveryTable->setHeaderData(9, Qt::Horizontal, "Required Ship Date");
     deliveryTable->setHeaderData(10, Qt::Horizontal, "Required Start Date");
+    deliveryTable->setHeaderData(11, Qt::Horizontal, "Assignment");
 
     // set source model for deliveryModel
     deliveryModel->setSourceModel(deliveryTable);

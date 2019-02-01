@@ -19,8 +19,8 @@
   <widget class="QCheckBox" name="chkMediaReceived">
    <property name="geometry">
     <rect>
-     <x>140</x>
-     <y>310</y>
+     <x>150</x>
+     <y>360</y>
      <width>141</width>
      <height>20</height>
     </rect>
@@ -101,7 +101,7 @@
    <property name="geometry">
     <rect>
      <x>70</x>
-     <y>380</y>
+     <y>410</y>
      <width>93</width>
      <height>31</height>
     </rect>
@@ -343,8 +343,8 @@
   <widget class="QPushButton" name="btnCancel">
    <property name="geometry">
     <rect>
-     <x>290</x>
-     <y>380</y>
+     <x>300</x>
+     <y>420</y>
      <width>93</width>
      <height>31</height>
     </rect>
@@ -509,7 +509,55 @@
     </font>
    </property>
    <property name="text">
-    <string>ECN/TECN</string>
+    <string>ECN/TECN :</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="comboBox_2">
+   <property name="geometry">
+    <rect>
+     <x>180</x>
+     <y>300</y>
+     <width>161</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <item>
+    <property name="text">
+     <string>Employee 1</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Employee 2</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Employee 3</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>300</y>
+     <width>91</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Assignment:</string>
    </property>
   </widget>
  </widget>
