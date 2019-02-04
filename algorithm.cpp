@@ -35,21 +35,19 @@ Algorithm::Algorithm(Delivery *currentDeliveries)
             else if(j == 4) currentDeliveries[count].set_Classification(token);    // set classification
             else if(j == 5) currentDeliveries[count].set_NumItems(stoi(token));                       // set number of items
             else if(j == 6) currentDeliveries[count].set_MediaType(token);        // set media type
+            else if(j == 7) currentDeliveries[count].set_StaffingLevel(stoi(token));
             j++;    // move on to next field in line
         }
         currentDeliveries[count].set_DateShip(CalculateDateShip(currentDeliveries[count].get_DateDeliver(), currentDeliveries[count].get_Location()));
-
-//        Schedule newSchedule(currentDeliveries[count].get_DateDeliver()); // initialize a schedule object that holds a date
-//        sche.push_back(newSchedule); // push an instance of shcedule object into vector
 
         count++;   // move on to next line in file
     }
 
 //     after done calculating required ship date
 //     next, we are going to calculate the required start date by checking shedule
-    for(int k = 0; k < count; k++){
-        string shipDate = currentDeliveries[k].get_DateShip();
-        string startDate;
+    for(int k = 0; k < count; k++){ // go through each delivery
+        string shipDate = currentDeliveries[k].get_DateShip();// store the calculated shipping date in a variable
+        string startDate; // calculate the start date
         struct tm date = { 0, 0, 0, 0, 0, 0, 0, 0, -1 };
         char buffer[80];
         istringstream rsd(shipDate);
@@ -74,76 +72,147 @@ Algorithm::Algorithm(Delivery *currentDeliveries)
         strftime(buffer,sizeof(buffer),"%d/%m/%Y", &date);
         startDate = buffer;// now start date is set 3 days prior to ship date
 
-        int requiredhours = 0;
+        // for later calculation
+        int requiredminutes = 0;
+        int requiredpeople = 0;
+        int requiredapproval = 0;
         // calculate the amount of hours needed for preparing delivery
         if(currentDeliveries[k].get_NumItems() <= 10){
-            requiredhours = 4 + 2;  // 4 hours for preparing, 2 hours for approval
-        }
-        else if(currentDeliveries[k].get_NumItems() > 10 && currentDeliveries[k].get_NumItems() <= 50){
-            requiredhours = 8 + 2;  // 8 hours for preparing, 2 hours for approval
-        }
-        else if(currentDeliveries[k].get_NumItems() > 50 && currentDeliveries[k].get_NumItems() < 200){
-            requiredhours = 16 + 2;  // 16 hours(2 days) for preparing, 2 hours for approval
-        }
-        else{
-            requiredhours = 16 + 4; // 16 hours for preparing, 3-4 hours for approval
+            if(currentDeliveries[k].get_StaffingLevel() == 1){
+                requiredminutes = 240;  // one person needs 240 minutes for preparing
+                requiredpeople = 1;
+            }
+            else if(currentDeliveries[k].get_StaffingLevel() == 2){
+                requiredminutes = 120;  // each person needs 120 minutes for preparing
+                requiredpeople = 2;
+            }
+            else if(currentDeliveries[k].get_StaffingLevel() == 3){
+                requiredminutes = 80; // each person needs 80 minutes for preparing
+                requiredpeople = 3;
+            }
+            requiredapproval = 2; // it takes mailroom 2 hours to approve delivery less than 40 items
         }
 
+        else if(currentDeliveries[k].get_NumItems() > 10 && currentDeliveries[k].get_NumItems() <= 50){
+            if(currentDeliveries[k].get_StaffingLevel() == 1){
+                requiredminutes = 480;  // one person needs 480 minutes for preparing
+                requiredpeople = 1;
+            }
+            else if(currentDeliveries[k].get_StaffingLevel() == 2){
+                requiredminutes = 240;  // each person needs 240 minutes for preparing
+                requiredpeople = 2;
+            }
+            else if(currentDeliveries[k].get_StaffingLevel() == 3){
+
+                requiredminutes = 160; // each person needs 160 minutes for preparing
+                requiredpeople = 3;
+            }
+            requiredapproval = 2; // it takes mailroom 2 hours to approve delivery less than 50 items
+        }
+        else if(currentDeliveries[k].get_NumItems() > 50){
+            if(currentDeliveries[k].get_StaffingLevel() == 1){
+                requiredminutes = 960;  // one person needs 960 minutes for preparing
+                requiredpeople = 1;
+            }
+            else if(currentDeliveries[k].get_StaffingLevel() == 2){
+                requiredminutes = 480;  // each person needs 480 hours for preparing
+                requiredpeople = 2;
+            }
+            else if(currentDeliveries[k].get_StaffingLevel() == 3){
+
+                requiredminutes = 320; // each person needs 320 minutes for preparing
+                requiredpeople = 3;
+            }
+            requiredapproval = 4; // it takes mailroom 4 hours to approve delivery more than 50 items
+        }
+
+
         int found = 0;  // find the perfect day to start preparing
+        int totalwork = requiredminutes * requiredpeople;
 
         while(found == 0){
             auto it = find_if(sche.begin(), sche.end(), [&startDate](Schedule& obj) {return obj.get_date() == startDate;});// check if the schedule object that hold existed in the vector
             auto index = std::distance(sche.begin(), it); // the index where schedule locate at vector
-            if (it != sche.end()){ // if the schedule object is already created, check if this delivery fits in the schedule
-                if(sche.at(index).get_workinghours() + requiredhours >= sche.at(index).get_totalhours()){
-                    char new_buffer[80];
-                    // if the delivery requires more hours than the available hours on a certain date, move schedule forward by 1 day
-                    DatePlusDays(&date, -1);
-                    // check if it is on Monday, Tuesday, Wednesday
-                    if(DayOfTheWeek(date.tm_mday, date.tm_mon, date.tm_year) != 0)
-                        DatePlusDays(&date, -DayOfTheWeek(date.tm_mday, date.tm_mon, date.tm_year));
-                    strftime(new_buffer,sizeof(new_buffer),"%d/%m/%Y", &date);
-                    startDate = new_buffer; // update variable
 
-                    requiredhours = requiredhours - (sche.at(index).get_totalhours() - sche.at(index).get_workinghours());// fill up the schedule
-                    sche.at(index).set_workinghours(sche.at(index).get_totalhours() - sche.at(index).get_workinghours());
-                    // go back to loop and check the shcedule again
-                }
-                else{
-                    // required hours to prepare the delivery can fit in the schedule
-                    sche.at(index).set_workinghours(requiredhours);
-                    currentDeliveries[k].set_DateStart(startDate);
-                    found = 1;
-                    // end loop
-                }
-            }
-           else{
+            if (it == sche.end()){  // if the shcedule on a specifc date is not initialized yet
                 Schedule newSchedule(startDate); // create a new instance of shcedule and push it to the vector
                 sche.push_back(newSchedule);
-                if(sche.at(index).get_workinghours() + requiredhours >= sche.at(index).get_totalhours()){
-                    char new_buffer[80];
-                    // if the delivery requires more hours than the available hours on a certain date, move schedule forward by 1 day
-                    DatePlusDays(&date, -1);
-                    // check if it is on Monday, Tuesday, Wednesday
-                    if(DayOfTheWeek(date.tm_mday, date.tm_mon, date.tm_year) != 0)
-                        DatePlusDays(&date, -DayOfTheWeek(date.tm_mday, date.tm_mon, date.tm_year));
-                    strftime(new_buffer,sizeof(new_buffer),"%d/%m/%Y", &date);
-                    startDate = new_buffer; // update variable
+                char new_buffer[80]; // buffer to store the required start date
 
-                    requiredhours = requiredhours - (sche.at(index).get_totalhours() - sche.at(index).get_workinghours());// fill up the schedule
-                    sche.at(index).set_workinghours(sche.at(index).get_totalhours() - sche.at(index).get_workinghours());
-                    // go back to loop and check the shcedule again
-                }
-                else{
-                    // required hours to prepare the delivery can fit in the schedule
-                    sche.at(index).set_workinghours(requiredhours);
-                    currentDeliveries[k].set_DateStart(startDate);
-                    found = 1;
-                    // end loop
-                }
+                // check if it is on Monday, Tuesday, Wednesday
+                if(DayOfTheWeek(date.tm_mday, date.tm_mon, date.tm_year) != 0)
+                    DatePlusDays(&date, -DayOfTheWeek(date.tm_mday, date.tm_mon, date.tm_year));
+                strftime(new_buffer,sizeof(new_buffer),"%d/%m/%Y", &date);
+                startDate = new_buffer;
+
             }
-         }
 
+            else if (it != sche.end()){// if the schedule object is already created, check if this delivery fits in the schedule
+                int *available = sche.at(index).get_availableminutes();
+
+                bool staff[3] = {false, false, false};
+                for(int l = 0; l < 3; l++){
+
+                    if (requiredpeople == 0 || totalwork == 0){
+                        break;
+                    }
+                    if (available[l] >= requiredminutes && totalwork >= requiredminutes){ // worker has more available time than the required preparing time
+                        totalwork = totalwork - requiredminutes; // update the total amount of working hours for all staffs
+                        --requiredpeople; // done assigning the job to one of the staffs
+                        available[l] = available[l] - requiredminutes; // update the staff schedule
+                        sche.at(index).set_availableminutes(available); // passing to schedule object
+                        staff[l] = true; // staff number l can work on that delivery on that date
+                    }
+                    else if (available[l] >= totalwork && totalwork <= requiredminutes){ // the condition that worker has already done most of it on another day
+                        available[l] = available[l] - totalwork;
+                        sche.at(index).set_availableminutes(available); // passing to schedule object
+                        --requiredpeople;
+                        totalwork = 0;
+                        staff[l] = true;
+                    }
+
+                }
+                   
+                if (requiredpeople == 0 || totalwork == 0){ // the condition that required preparing time can be fitted in the delivery staff working schedule
+                    if(sche.at(index).get_approvalhours() >= requiredapproval){// if the mailroom has available time also
+
+                        sche.at(index).set_approvalhours(requiredapproval);
+                        requiredapproval = 0;
+                        found = 1; // the delivery has been fitted in the schedule, exit the loop
+                    }
+                    else{ // if mailroom does not have available time to approve the delivery
+                        char new_buffer[80]; // buffer to store the required start date
+                        DatePlusDays(&date, -1);
+                        strftime(new_buffer,sizeof(new_buffer),"%d/%m/%Y", &date);
+                        startDate = new_buffer;
+                    }
+
+                 }
+                else{ // there is still required preparing time left, meaning nobodys has not enough available time
+                    int temp = requiredpeople;
+                    for(int m = 0; m < 3; m ++){ // find one delivery staff who still has some available time left
+                        if(staff[m] == false && available[m] != 0){
+                            totalwork -= available[m];
+                            available[m] = 0;
+                            sche.at(index).set_availableminutes(available);
+                            staff[m] = true;
+                            --requiredpeople;
+                         }
+                         if(requiredpeople == 0){
+                            break;
+                         }
+                    }
+                    requiredpeople = temp;
+                    char new_buffer[80]; // buffer to store the required start date
+                    DatePlusDays(&date, -1);
+                    strftime(new_buffer,sizeof(new_buffer),"%d/%m/%Y", &date);
+                    startDate = new_buffer;
+                }    
+            }
+            qDebug() << QString::number(requiredpeople) + "--" + QString::number(totalwork);
+            qDebug() << QString::number(currentDeliveries[k].get_ID()) + "--" + QString::fromStdString(startDate);
+        }
+        currentDeliveries[k].set_DateStart(startDate); // once exit the loop, passing calculated start date to delivery object
     }
 }
 //void CheckSchedule(vector <Schedule>& newSchedule, string d){
@@ -155,14 +224,11 @@ int Algorithm::get_Count(){
 }
 
 int Algorithm::StringToValue(string s){
-    // return classification level as an integer value
-    if(s == "Secret") return 3;
-    else if(s == "Unclassified") return 2;
-    else if(s == "Confidential") return 1;
+
     // return destination as integer value
-    else if(s == "Rota Spain") return 3;
-    else if(s == "King's Bay Georgia" || s == "Area 51 Nevada" || s == "Pensacola Florida" ||
-            s == "Great Lakes Illinois" || s == "Bremerton Washington") return 2;
+    if(s == "Holy Loch Scotland") return 3;
+    else if(s == "Bremerton Washington" || s == "Pensacola Florida" || s == "San Diego California" ||
+            s == "King's Bay Georgia" || s == "Pearl Harbor Hawaii") return 2;
     else if(s == "New London Connecticut") return 1;
     // return media type as integer value
     else if(s == "Documentation") return 1;

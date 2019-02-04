@@ -62,6 +62,7 @@ void frmEditDelivery::submit()
         strDelivery += editui->cboClassification->currentText().toStdString() + ',';
         strDelivery += QString::number(editui->spnNumberObjects->value()).toStdString() + ',';
         strDelivery += editui->cboMediaType->currentText().toStdString() + ",";
+        strDelivery += editui->cboStaffing->currentText().toStdString() + ",";
         fileOut << strDelivery << endl;    // send delivery to save file
 
         // close both files
