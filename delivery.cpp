@@ -10,6 +10,7 @@ Delivery::Delivery(){   // initialize Delivery variables
     dateShip = '\0';
     dateStart = '\0';
     numItems = 0;
+    staffinglevel = 1;
 }
 
 // all setter functions for each Delivery variable
@@ -47,4 +48,7 @@ void Delivery::set_DateStart(string dateStartNew){
 
 void Delivery::set_NumItems(int numItemsNew){
     numItems = numItemsNew;
+}
+void Delivery::set_StaffingLevel(int staffinglevelNew){
+    staffinglevel = staffinglevelNew;
 }
