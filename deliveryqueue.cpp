@@ -10,6 +10,7 @@
 #include <fstream>
 #include <sstream>
 #include <QDir>
+#include "xlsxdocument.h"
 
 #define MAX_DELIVERIES 100 // maximum number of deliveries
 
@@ -55,7 +56,7 @@ DeliveryQueue::DeliveryQueue(QWidget *parent) :
     // add context menu options
     dqui->treeView->addAction(dqui->actEditDelivery);
     dqui->treeView->addAction(dqui->actDeleteDelivery);
-    dqui->treeView->addAction(dqui->actDeleteDelivery);
+    dqui->treeView->addAction(dqui->actArchiveDelivery);
 
     // connect delivery queue ui buttons and slots
     connect(dqui->actNewDelivery, &QAction::triggered, this, &DeliveryQueue::addDelivery);
@@ -65,6 +66,7 @@ DeliveryQueue::DeliveryQueue(QWidget *parent) :
     connect(dqui->actRefreshQueue, &QAction::triggered, this, &DeliveryQueue::refreshQueue);
     connect(dqui->actEditDelivery, &QAction::triggered, this, &DeliveryQueue::editDelivery);
     connect(dqui->actDeleteDelivery, &QAction::triggered, this, &DeliveryQueue::deleteDelivery);
+    connect(dqui->actArchiveDelivery, &QAction::triggered, this, &DeliveryQueue::archiveDelivery);
 
     // load queue if there are any deliveries
     refreshQueue();
@@ -163,7 +165,72 @@ void DeliveryQueue::deleteDelivery()
 // archive a completed delivery, then delete it from the queue
 void DeliveryQueue::archiveDelivery()
 {
+    QXlsx::Document testArchive ("testArchive.xlsx");
+    QXlsx::Cell *cell;
 
+    //xlsx tests start
+    //xlsx headers are added already
+
+    //testArchive.write(3,1, "this works!");
+    //testArchive.save();
+
+    int currentCol = 1;
+    int currentRow = 1;
+
+    cell = testArchive.cellAt(currentRow,1); //tests to see if the first box on the current row is empty
+
+    while(cell != 0){ //scans through the spreadsheet until it finds an empty line
+        currentRow++;
+        cell = testArchive.cellAt(currentRow,1);
+    }
+
+    qDebug()<<currentRow; //debug return to see if loop is searching properly
+
+    //xlsx tests end
+
+    int col = 0;
+
+    // check if user have selected a delivery
+    if(!dqui->treeView->selectionModel()->currentIndex().isValid())
+        QMessageBox::information(this, "Failure", "You haven't selected the delivery to be archived.");
+    else {
+        if(QMessageBox::question(this, "Archive?", "Are you sure you want to archive this delivery?", QMessageBox::Yes|QMessageBox::No) == QMessageBox::Yes){
+            int row = dqui->treeView->selectionModel()->currentIndex().row();   // selected index number
+            QString selected = deliveryModel->index(row, col).data().toString();  // save the selected ID
+
+            while(selected != 0){
+                testArchive.write(currentRow, currentCol, selected);
+                col++;
+                currentCol++;
+                selected = deliveryModel->index(row, col).data().toString();
+            }
+            testArchive.save();
+
+            /*
+            ifstream fileIn("save.csv");   // open save file
+            ofstream fileOut;
+            fileOut.open("temp.csv"); // writing contents except the deleted line to a temp file
+            string line, id;
+
+            while(getline(fileIn, line)){   // read until reach end of file
+                istringstream stringIn(line); // feed line to stream
+                getline(stringIn, id, ',');   // parse line using comma delimiter
+                if(id != selected.toStdString()){    // if not the delivery being archived,
+                    fileOut << line << endl;         // write line to temp file
+                }
+            }
+
+            // close both files
+            fileOut.close();
+            fileIn.close();
+            // delete original file
+            remove("save.csv");
+            // rename temp.csv to save.csv
+            rename("temp.csv","save.csv");
+            */
+            refreshQueue();
+        }
+    }
 }
 
 // assign an existing delivery to an employee
