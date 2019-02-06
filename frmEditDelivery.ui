@@ -20,7 +20,7 @@
    <property name="geometry">
     <rect>
      <x>140</x>
-     <y>310</y>
+     <y>340</y>
      <width>141</width>
      <height>20</height>
     </rect>
@@ -488,7 +488,7 @@
    <property name="geometry">
     <rect>
      <x>180</x>
-     <y>270</y>
+     <y>310</y>
      <width>181</width>
      <height>22</height>
     </rect>
@@ -498,7 +498,7 @@
    <property name="geometry">
     <rect>
      <x>80</x>
-     <y>270</y>
+     <y>310</y>
      <width>91</width>
      <height>20</height>
     </rect>
@@ -509,7 +509,35 @@
     </font>
    </property>
    <property name="text">
-    <string>ECN/TECN</string>
+    <string>ECN/TECN:</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit_2">
+   <property name="geometry">
+    <rect>
+     <x>180</x>
+     <y>280</y>
+     <width>181</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>280</y>
+     <width>131</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Transmission #:</string>
    </property>
   </widget>
  </widget>

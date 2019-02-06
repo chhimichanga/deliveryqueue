@@ -41,7 +41,7 @@ void frmAddDelivery::submit()
         QMessageBox::information(this, "Error", "Cannot open save file for current deliveries.");
     else{     // add delivery to save file
         if(fileIn.pos() == 0){       // if file is empty, create headers before adding more data
-            QString header = "ID,Required Delivery Date,Location,Shipping Method,Classification,Number of Items,Media Type,Required Ship Date,Required Start Date";
+            QString header = "ID,Required Delivery Date,Location,Shipping Method,Classification,Number of Items,Media Type, Staffing Level,Required Ship Date,Required Start Date";
             fileOut << header << endl;   // send header to save file
         } else {
             fileIn.seek(0);      // move cursor to beginning of file
@@ -72,6 +72,7 @@ void frmAddDelivery::submit()
             strDelivery += addui->cboClassification->currentText() + ',';               // classification
             strDelivery += QString::number(addui->spnNumberObjects->value()) + ',';     // number of items
             strDelivery += addui->cboMediaType->currentText() + ',';                    // media type
+            strDelivery += addui->cboStaffing->currentText() + ',';
             fileOut << strDelivery << endl;  // send delivery to save file
             QMessageBox::information(this, "Success", "Successfully submitted a delivery.");
         }

@@ -14,7 +14,8 @@ class Delivery  // delivery variables
           dateShip,
           dateStart;
    int    id,
-          numItems;
+          numItems,
+          staffinglevel;
 
 public:
    // delivery constructor
@@ -30,7 +31,7 @@ public:
    void   set_DateShip(string dateShipNew);
    void   set_DateStart(string dateStartNew);
    void   set_NumItems(int numItemsNew);
-
+   void   set_StaffingLevel(int staffinglevelNew);
    // Get delivery variables
    int get_ID() {return id;}
    string get_DateDeliver() {return dateDeliver;}
@@ -41,6 +42,7 @@ public:
    string get_DateShip() {return dateShip;}
    string get_DateStart() {return dateStart;}
    int    get_NumItems() {return numItems;}
+   int    get_StaffingLevel() {return staffinglevel;}
    void   print_delivery_info();
 };
 #endif // DELIVERY_H

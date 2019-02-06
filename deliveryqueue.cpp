@@ -27,14 +27,14 @@ DeliveryQueue::DeliveryQueue(QWidget *parent) :
 
     // create new sort filter model. allows user to sort and filter the delivery table
     deliveryModel = new QSortFilterProxyModel;
-    // create an empty delivery table with 0 rows and 9 columns
-    deliveryTable = new QStandardItemModel(0, 9, parent);
+    // create an empty delivery table with 0 rows and 10 columns
+    deliveryTable = new QStandardItemModel(0, 10, parent);
 
     // add table headers
     deliveryTable->setHeaderData(0, Qt::Horizontal, "Transmission #");
     deliveryTable->setHeaderData(1, Qt::Horizontal, "Required Delivery Date");
     deliveryTable->setHeaderData(2, Qt::Horizontal, "Location");
-    deliveryTable->setHeaderData(3, Qt::Horizontal, "Ship/Hull Number");
+    deliveryTable->setHeaderData(3, Qt::Horizontal, "Ship/Hull#");
     deliveryTable->setHeaderData(4, Qt::Horizontal, "ECN/TECN");
     deliveryTable->setHeaderData(5, Qt::Horizontal, "Transit Method");
     deliveryTable->setHeaderData(6, Qt::Horizontal, "Classification");
@@ -116,6 +116,8 @@ void DeliveryQueue::editDelivery()
                         edit->numberOfItems->setValue(stoi(token));
                     else if(count == 5) // media type column
                         edit->mediaType->setCurrentText(QString::fromStdString(token));
+                    else if(count == 6) // media type column
+                        edit->staffing->setCurrentText(QString::fromStdString(token));
 
                     count++;    // move to next column in row
                 }

@@ -20,7 +20,7 @@
    <property name="geometry">
     <rect>
      <x>120</x>
-     <y>320</y>
+     <y>360</y>
      <width>141</width>
      <height>20</height>
     </rect>
@@ -101,7 +101,7 @@
    <property name="geometry">
     <rect>
      <x>60</x>
-     <y>370</y>
+     <y>390</y>
      <width>93</width>
      <height>31</height>
     </rect>
@@ -343,8 +343,8 @@
   <widget class="QPushButton" name="btnCancel">
    <property name="geometry">
     <rect>
-     <x>230</x>
-     <y>370</y>
+     <x>240</x>
+     <y>390</y>
      <width>93</width>
      <height>31</height>
     </rect>
@@ -487,8 +487,8 @@
   <widget class="QLineEdit" name="lineEdit">
    <property name="geometry">
     <rect>
-     <x>200</x>
-     <y>280</y>
+     <x>180</x>
+     <y>320</y>
      <width>113</width>
      <height>22</height>
     </rect>
@@ -497,8 +497,8 @@
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>280</y>
+     <x>60</x>
+     <y>320</y>
      <width>151</width>
      <height>20</height>
     </rect>
@@ -510,6 +510,39 @@
    </property>
    <property name="text">
     <string>ECN/TECN</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit_2">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>270</y>
+     <width>113</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>270</y>
+     <width>131</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Transmission #:</string>
    </property>
   </widget>
  </widget>
