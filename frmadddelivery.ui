@@ -264,6 +264,9 @@
      <pointsize>10</pointsize>
     </font>
    </property>
+   <property name="currentIndex">
+    <number>2</number>
+   </property>
    <item>
     <property name="text">
      <string>1</string>
@@ -432,46 +435,51 @@
    </property>
    <item>
     <property name="text">
-     <string>USS Kamehameha SSN 642</string>
+     <string>N/A</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>USS Omaha SSN 692</string>
+     <string>USS Kamehameha (SSN 642)</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>USS New York City SSN 696</string>
+     <string>USS Omaha (SSN 692)</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>USS Indianapolis SSN 697</string>
+     <string>USS New York City (SSN 696)</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>USS Ohio SSGN 726</string>
+     <string>USS Indianapolis (SSN 697)</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>USS Puffer SSN 652</string>
+     <string>USS Ohio (SSGN 726)</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>USS Alabama SSBN 731</string>
+     <string>USS Puffer (SSN 652)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>USS Alabama (SSBN 731)</string>
     </property>
    </item>
   </widget>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>240</y>
-     <width>161</width>
+     <x>60</x>
+     <y>230</y>
+     <width>141</width>
      <height>20</height>
     </rect>
    </property>
@@ -481,35 +489,17 @@
     </font>
    </property>
    <property name="text">
-    <string>Ship/Hull Number</string>
+    <string>Ship/Hull Number:</string>
    </property>
   </widget>
   <widget class="QLineEdit" name="lineEdit">
    <property name="geometry">
     <rect>
-     <x>180</x>
+     <x>200</x>
      <y>320</y>
      <width>113</width>
      <height>22</height>
     </rect>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_2">
-   <property name="geometry">
-    <rect>
-     <x>60</x>
-     <y>320</y>
-     <width>151</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>10</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>ECN/TECN</string>
    </property>
   </widget>
   <widget class="QLineEdit" name="lineEdit_2">
@@ -530,7 +520,7 @@
   <widget class="QLabel" name="label_3">
    <property name="geometry">
     <rect>
-     <x>20</x>
+     <x>70</x>
      <y>270</y>
      <width>131</width>
      <height>20</height>
@@ -543,6 +533,24 @@
    </property>
    <property name="text">
     <string>Transmission #:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>110</x>
+     <y>320</y>
+     <width>91</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>ECN/TECN:</string>
    </property>
   </widget>
  </widget>
