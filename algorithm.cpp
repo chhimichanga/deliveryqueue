@@ -275,7 +275,7 @@ string Algorithm::CalculateDateShip(string RDD, string Location){
     string str; // return value
 
     // if the location is outside US
-    if(Location == "Holy Loch Scotland" || Location == "Holy Loch Scotland"){
+    if(Location == "Holy Loch Scotland"){
         istringstream rdd(RDD);
         string token;
         int j = 0;
@@ -302,8 +302,8 @@ string Algorithm::CalculateDateShip(string RDD, string Location){
         strftime(buffer,sizeof(buffer),"%d/%m/%Y", &date);
         str = buffer;
     }
-    // if the location is in US
-    else if(Location == "Bremerton Washington" || Location == "Pensacola Florida"|| Location == "San Diego California" || Location == "King's Bay Georgia" || Location == "Pearl Harbor Hawaii"){
+    // if the location is in a faraway location in the US
+    else if(Location == "King's Bay Georgia" || Location == "San Diego California"|| Location == "Pensacola Florida" || Location == "Pearl Harbor Hawaii" || Location == "Bremerton Washington"){
         istringstream rdd(RDD);
         string token;
         int j = 0;
@@ -328,7 +328,7 @@ string Algorithm::CalculateDateShip(string RDD, string Location){
         // convert the date to string
         strftime(buffer,sizeof(buffer),"%d/%m/%Y", &date);
         str = buffer;
-    } else {
+    } else {    // if the location is in a nearby location in the US
         istringstream rdd(RDD);
         string token;
         int j = 0;
