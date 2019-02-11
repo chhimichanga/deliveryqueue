@@ -28,10 +28,6 @@ frmAddDelivery::frmAddDelivery(QWidget *parent) :
 // save delivery, then send to queue
 void frmAddDelivery::submit()
 {
-    QString line, id;       // strings to read lines
-    QStringList columns;    // string list to store tokens from line
-    int intID = 0;
-
     // load save file to write to
     QFile fileIn("save.csv");
     QTextStream fileOut(&fileIn);     // load output stream
@@ -41,38 +37,21 @@ void frmAddDelivery::submit()
         QMessageBox::information(this, "Error", "Cannot open save file for current deliveries.");
     else{     // add delivery to save file
         if(fileIn.pos() == 0){       // if file is empty, create headers before adding more data
-            QString header = "ID,Required Delivery Date,Location,Shipping Method,Classification,Number of Items,Media Type, Staffing Level,Required Ship Date,Required Start Date";
+            QString header = "Transmission #,Ship Name & Hull #,Engineering Change #,Media Type,Location,Transit Method,Number of items,Classification,Staffing Level,Required Delivery Date,Required Ship Date,Required Start Date";
             fileOut << header << endl;   // send header to save file
         } else {
-            fileIn.seek(0);      // move cursor to beginning of file
-            fileIn.readLine();   // skip header line
-
-            /*  find the largest delivery ID in the list of current deliveries
-                this is important because when a delivery is edited, its ID stays the same,
-                but the delivery gets moved to the end of the save file */
-            while(!fileIn.atEnd()){
-                line = fileIn.readLine();   // read line
-                columns = line.split(",");  // split line into a string array
-                id = columns.at(0);         // take first string in string array. this is the ID
-                if(id.toInt() > intID)
-                    intID = id.toInt();
-            }
-
-            // if there are no deliveries and only a header, set the new delivery's ID to 1
-            if(id == nullptr)
-                intID = 1;
-            else    // otherwise, set new delivery's ID to the last added delivery's ID plus 1
-                intID += 1;
-
             QString strDelivery;    // string to add to save file
-            strDelivery += QString::number(intID) + ',';                                // unique ID
-            strDelivery += addui->dteDeliveryDate->date().toString("dd/MM/yyyy") + ','; // delivery date
-            strDelivery += addui->cboLocation->currentText() + ',';                     // location
-            strDelivery += addui->cboShipping->currentText() + ',';                     // shipping method
-            strDelivery += addui->cboClassification->currentText() + ',';               // classification
-            strDelivery += QString::number(addui->spnNumberObjects->value()) + ',';     // number of items
+            strDelivery += addui->ledTransmission->text() + ',';                        // unique Transmission #
+            strDelivery += addui->cboShipHull->currentText() + ',';                     // ship name & hull #
+            strDelivery += addui->ledECN->text() + ',';                                 // ECN
             strDelivery += addui->cboMediaType->currentText() + ',';                    // media type
-            strDelivery += addui->cboStaffing->currentText() + ',';
+            strDelivery += addui->cboLocation->currentText() + ',';                     // location
+            strDelivery += addui->cboShipping->currentText() + ',';                     // transit method
+            strDelivery += QString::number(addui->spnNumberObjects->value()) + ',';     // number of items
+            strDelivery += addui->cboClassification->currentText() + ',';               // classification
+            strDelivery += addui->cboStaffing->currentText() + ',';                     // staffing level
+            strDelivery += addui->dteDeliveryDate->date().toString("dd/MM/yyyy") + ','; // delivery date
+
             fileOut << strDelivery << endl;  // send delivery to save file
             QMessageBox::information(this, "Success", "Successfully submitted a delivery.");
         }

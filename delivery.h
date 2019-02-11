@@ -12,8 +12,11 @@ class Delivery  // delivery variables
           mediaType,
           shippingMethod,
           dateShip,
-          dateStart;
-   int    id,
+          dateStart,
+          transmissionN,
+          shipName,
+          ECN;
+   int
           numItems,
           staffinglevel;
 
@@ -22,7 +25,7 @@ public:
    Delivery();
 
    // Set delivery variables
-   void   set_ID(int idNew);
+
    void   set_DateDeliver(string dateDeliverNew);
    void   set_Location(string locationNew);
    void   set_Classification(string classificationNew);
@@ -30,10 +33,13 @@ public:
    void   set_ShippingMethod(string shippingMethodNew);
    void   set_DateShip(string dateShipNew);
    void   set_DateStart(string dateStartNew);
+   void   set_Transmission(string transmissionNew);
+   void   set_ECN(string ecnNew);
+   void   set_ShipName(string shipnameNew);
    void   set_NumItems(int numItemsNew);
    void   set_StaffingLevel(int staffinglevelNew);
    // Get delivery variables
-   int get_ID() {return id;}
+   string get_Transmission() {return transmissionN;}
    string get_DateDeliver() {return dateDeliver;}
    string get_Location() {return location;}
    string get_Classification() {return classification;}
@@ -41,6 +47,8 @@ public:
    string get_ShippingMethod() {return shippingMethod;}
    string get_DateShip() {return dateShip;}
    string get_DateStart() {return dateStart;}
+   string get_ECN() {return ECN;}
+   string get_ShipName() {return shipName;}
    int    get_NumItems() {return numItems;}
    int    get_StaffingLevel() {return staffinglevel;}
    void   print_delivery_info();

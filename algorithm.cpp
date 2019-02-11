@@ -28,17 +28,22 @@ Algorithm::Algorithm(Delivery *currentDeliveries)
         string token;
         int j = 0;
         while(getline(iss, token, ',')){    // while delimiter is being read
-            if(j==0) currentDeliveries[count].set_ID(stoi(token));                // set Delivery ID
-            else if(j == 1) currentDeliveries[count].set_DateDeliver(token);       // set required delivery date
-            else if(j == 2) currentDeliveries[count].set_Location(token);          // set location
-            else if(j == 3) currentDeliveries[count].set_ShippingMethod(token);
-            else if(j == 4) currentDeliveries[count].set_Classification(token);    // set classification
-            else if(j == 5) currentDeliveries[count].set_NumItems(stoi(token));                       // set number of items
-            else if(j == 6) currentDeliveries[count].set_MediaType(token);        // set media type
-            else if(j == 7) currentDeliveries[count].set_StaffingLevel(stoi(token));
+            if(j==0) currentDeliveries[count].set_Transmission(token);                // set Delivery ID
+            else if(j == 1) currentDeliveries[count].set_ShipName(token);       // set required delivery date
+            else if(j == 2) currentDeliveries[count].set_ECN(token);       // set required delivery date
+            else if(j == 3) currentDeliveries[count].set_MediaType(token);        // set media type
+            else if(j == 4) currentDeliveries[count].set_Location(token);          // set location
+            else if(j == 5) currentDeliveries[count].set_ShippingMethod(token);
+            else if(j == 6) currentDeliveries[count].set_NumItems(stoi(token));                       // set number of items
+            else if(j == 7) currentDeliveries[count].set_Classification(token);    // set classification
+            else if(j == 8) currentDeliveries[count].set_StaffingLevel(stoi(token));
+            else if(j == 9) currentDeliveries[count].set_DateDeliver(token);       // set required delivery date
+//            else if(j == 10) currentDeliveries[count].set_DateShip(token);       // set required delivery date
+//            else if(j == 11) currentDeliveries[count].set_DateStart(token);       // set required delivery date
             j++;    // move on to next field in line
         }
-        currentDeliveries[count].set_DateShip(CalculateDateShip(currentDeliveries[count].get_DateDeliver(), currentDeliveries[count].get_Location()));
+
+                currentDeliveries[count].set_DateShip(CalculateDateShip(currentDeliveries[count].get_DateDeliver(), currentDeliveries[count].get_Location()));
 
         count++;   // move on to next line in file
     }
@@ -119,7 +124,6 @@ Algorithm::Algorithm(Delivery *currentDeliveries)
                 requiredpeople = 2;
             }
             else if(currentDeliveries[k].get_StaffingLevel() == 3){
-
                 requiredminutes = 320; // each person needs 320 minutes for preparing
                 requiredpeople = 3;
             }
@@ -170,9 +174,7 @@ Algorithm::Algorithm(Delivery *currentDeliveries)
                         totalwork = 0;
                         staff[l] = true;
                     }
-
-                }
-                   
+                }   
                 if (requiredpeople == 0 || totalwork == 0){ // the condition that required preparing time can be fitted in the delivery staff working schedule
                     if(sche.at(index).get_approvalhours() >= requiredapproval){// if the mailroom has available time also
 
@@ -209,8 +211,7 @@ Algorithm::Algorithm(Delivery *currentDeliveries)
                     startDate = new_buffer;
                 }    
             }
-            qDebug() << QString::number(requiredpeople) + "--" + QString::number(totalwork);
-            qDebug() << QString::number(currentDeliveries[k].get_ID()) + "--" + QString::fromStdString(startDate);
+
         }
         currentDeliveries[k].set_DateStart(startDate); // once exit the loop, passing calculated start date to delivery object
     }

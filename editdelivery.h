@@ -16,6 +16,9 @@ class frmEditDelivery : public QWidget
 public: // public functions
     explicit frmEditDelivery(QWidget *parent = nullptr);
     ~frmEditDelivery();
+    QLineEdit *transmission;
+    QLineEdit *ECN;
+    QComboBox *shipnumber;
     QComboBox *location;
     QComboBox *classification;
     QComboBox *shipping;
@@ -23,7 +26,7 @@ public: // public functions
     QComboBox *staffing;
     QDateEdit *deliveryDate;
     QSpinBox *numberOfItems;
-    int deliveryID;
+    string transmissionN;
 
 private slots:
     void submit();
