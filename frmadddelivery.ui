@@ -278,6 +278,9 @@
      <pointsize>10</pointsize>
     </font>
    </property>
+   <property name="currentIndex">
+    <number>2</number>
+   </property>
    <item>
     <property name="text">
      <string>1</string>
@@ -451,37 +454,42 @@
    </property>
    <item>
     <property name="text">
-     <string>USS Kamehameha SSN 642</string>
+     <string>N/A</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>USS Omaha SSN 692</string>
+     <string>USS Kamehameha (SSN 642)</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>USS New York City SSN 696</string>
+     <string>USS Omaha (SSN 692)</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>USS Indianapolis SSN 697</string>
+     <string>USS New York City (SSN 696)</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>USS Ohio SSGN 726</string>
+     <string>USS Indianapolis (SSN 697)</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>USS Puffer SSN 652</string>
+     <string>USS Ohio (SSGN 726)</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>USS Alabama SSBN 731</string>
+     <string>USS Puffer (SSN 652)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>USS Alabama (SSBN 731)</string>
     </property>
    </item>
   </widget>
@@ -556,6 +564,9 @@
      <pointsize>10</pointsize>
     </font>
    </property>
+   <property name="text">
+    <string>Transmission #:</string>
+   </property>
   </widget>
   <widget class="QLabel" name="lblTransmission">
    <property name="geometry">
@@ -572,7 +583,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Transmission #:</string>
+    <string>ECN/TECN:</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
