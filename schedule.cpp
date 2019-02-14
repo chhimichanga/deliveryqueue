@@ -15,7 +15,6 @@ Schedule::Schedule(){
         staff_availableminutes[i] = 480;
     }
 
-    mailroom = 8;// assume the person who is in charge of approving delivery has 8 working hours
     date = '\0';
     day = 0;
     month = 0;
@@ -34,7 +33,7 @@ Schedule::Schedule(string d)
         staff_availableminutes[i] = 480;
     }
 
-    mailroom = 8; // assume the person who is in charge of approving delivery has 8 working hours
+
     date = d;
 
     // set day, month, year to a schedule object in case for use
@@ -71,10 +70,7 @@ void Schedule::set_availableminutes(int *available){
         staff_occupiedminutes[i] = staff_totalworkingminutes[i] - staff_availableminutes[i]; // change occpied minutes as well
     }
 }
-void Schedule::set_approvalhours(int hours){
-    mailroom = mailroom - hours;
 
-}
 void Schedule::set_occupiedminutes(int * occupied){
     for(int i = 0; i < 3; i++){
         staff_occupiedminutes[i] = occupied[i];
