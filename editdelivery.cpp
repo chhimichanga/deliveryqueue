@@ -11,16 +11,16 @@ frmEditDelivery::frmEditDelivery(QWidget *parent) :
     editui->setupUi(this);
 
     // store input boxes into public variables for public access
-    shipnumber = editui->cboShipHull;
-    ECN = editui->ledECN;
-    transmission = editui->ledTransmission;
-    location = editui->cboLocation;
-    classification = editui->cboClassification;
-    shipping = editui->cboShipping;
-    mediaType = editui->cboMediaType;
-    staffing = editui->cboStaffing;
-    deliveryDate = editui->dteDeliveryDate;
-    numberOfItems = editui->spnNumberObjects;
+    shipnumber      = editui->cboShipHull;
+    ECN             = editui->ledECN;
+    transmission    = editui->ledTransmission;
+    location        = editui->cboLocation;
+    classification  = editui->cboClassification;
+    shipping        = editui->cboShipping;
+    mediaType       = editui->cboMediaType;
+    staffing        = editui->cboStaffing;
+    deliveryDate    = editui->dteDeliveryDate;
+    numberOfItems   = editui->spnNumberObjects;
 
     // connect edit delivery ui buttons and slots
     connect(editui->btnSubmit, &QPushButton::clicked, this, &frmEditDelivery::submit);

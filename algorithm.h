@@ -16,9 +16,9 @@ public:
     int get_Count();
     int DayOfTheWeek (int day, int week, int year);
     string CalculateDateShip(string RDD, string Location);
+    string CalculateDateStart(string RSD);
     void DatePlusDays( struct tm* date, int days );
     void Sorting(Delivery *data, int count);
-    int StringToValue(string s);
     void CheckSchedule(vector <Schedule>& newSchedule, string d);
 };
 

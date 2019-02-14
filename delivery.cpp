@@ -23,7 +23,6 @@ void Delivery::set_ShipName(string shipnameNew){
 }
 void Delivery::set_Transmission(string transmissionNew){
     transmissionN = transmissionNew;
-
 }
 
 void Delivery::set_ECN(string ecnNew){
