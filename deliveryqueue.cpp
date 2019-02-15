@@ -327,15 +327,15 @@ void DeliveryQueue::colorCodeDeliveries(){
         // if less than 7 days left to ship, color red
         if(currentDate.daysTo(deliveryDate) < 7)
             for(column = 0; column < numberOfColumns; column++)
-                deliveryTable->setData(deliveryTable->index(row, column),  QColor (255,0,0), Qt::BackgroundRole);
+                deliveryTable->setData(deliveryTable->index(row, column),  QColor (255,179,186), Qt::BackgroundRole);
         // if between 7 and 14 days, color yellow
         else if(currentDate.daysTo(deliveryDate) <= 14 && currentDate.daysTo(deliveryDate) >= 7)
             for(column = 0; column < numberOfColumns; column++)
-                deliveryTable->setData(deliveryTable->index(row, column),  QColor (255,255,0), Qt::BackgroundRole);
+                deliveryTable->setData(deliveryTable->index(row, column),  QColor (255,255,186), Qt::BackgroundRole);
         // if more than 14 days, color green
         else if(currentDate.daysTo(deliveryDate) > 14)
             for(column = 0; column < numberOfColumns; column++)
-                deliveryTable->setData(deliveryTable->index(row, column),  QColor (0,255,0), Qt::BackgroundRole);
+                deliveryTable->setData(deliveryTable->index(row, column),  QColor (186,255,201), Qt::BackgroundRole);
     }
 }
 
