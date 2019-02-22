@@ -1,7 +1,9 @@
 #include "delivery.h"
 
 Delivery::Delivery(){   // initialize Delivery variables
-    id = 0;
+    transmissionN = '\0';
+    shipName = '\0';
+    ECN = '\0';
     dateDeliver = '\0';
     location = '\0';
     classification = '\0';
@@ -14,8 +16,17 @@ Delivery::Delivery(){   // initialize Delivery variables
 }
 
 // all setter functions for each Delivery variable
-void Delivery::set_ID(int idNew){
-    id = idNew;
+
+void Delivery::set_ShipName(string shipnameNew){
+    shipName = shipnameNew;
+
+}
+void Delivery::set_Transmission(string transmissionNew){
+    transmissionN = transmissionNew;
+}
+
+void Delivery::set_ECN(string ecnNew){
+    ECN = ecnNew;
 }
 
 void Delivery::set_DateDeliver(string dateDeliverNew){

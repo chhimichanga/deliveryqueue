@@ -49,7 +49,8 @@ HEADERS += \
 FORMS += \
     frmDeliveryQueue.ui \
     frmAddDelivery.ui \
-    frmEditDelivery.ui
+    frmEditDelivery.ui \
+    calendar.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

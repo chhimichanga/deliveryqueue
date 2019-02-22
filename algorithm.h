@@ -9,16 +9,16 @@ using namespace std;
 class Algorithm
 {
     int count;
-    vector <Schedule> sche;
+    vector <Schedule> schedule;
 public:
 
     Algorithm(Delivery *currentDeliveries);
     int get_Count();
     int DayOfTheWeek (int day, int week, int year);
     string CalculateDateShip(string RDD, string Location);
+    string CalculateDateStart(string RSD, int  numOfitems, int staffinglevel);
     void DatePlusDays( struct tm* date, int days );
     void Sorting(Delivery *data, int count);
-    int StringToValue(string s);
     void CheckSchedule(vector <Schedule>& newSchedule, string d);
 };
 

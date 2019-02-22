@@ -11,13 +11,16 @@ frmEditDelivery::frmEditDelivery(QWidget *parent) :
     editui->setupUi(this);
 
     // store input boxes into public variables for public access
-    location = editui->cboLocation;
-    classification = editui->cboClassification;
-    shipping = editui->cboShipping;
-    mediaType = editui->cboMediaType;
-    staffing = editui->cboStaffing;
-    deliveryDate = editui->dteDeliveryDate;
-    numberOfItems = editui->spnNumberObjects;
+    shipnumber      = editui->cboShipHull;
+    ECN             = editui->ledECN;
+    transmission    = editui->ledTransmission;
+    location        = editui->cboLocation;
+    classification  = editui->cboClassification;
+    shipping        = editui->cboShipping;
+    mediaType       = editui->cboMediaType;
+    staffing        = editui->cboStaffing;
+    deliveryDate    = editui->dteDeliveryDate;
+    numberOfItems   = editui->spnNumberObjects;
 
     // connect edit delivery ui buttons and slots
     connect(editui->btnSubmit, &QPushButton::clicked, this, &frmEditDelivery::submit);
@@ -37,7 +40,8 @@ void frmEditDelivery::submit()
     if(!fileOut.is_open())
         QMessageBox::information(this, "Error", "Cannot open temp file for current deliveries.");
     else    // add header to temp file
-        fileOut << "ID,Required Delivery Date,Location,Shipping Method,Classification,Number of Items,Media Type,Required Ship Date,Required Start Date" << endl;
+        fileOut << "Transmission #,Ship Nmae & Hull #,Engineering Change #,Media Type,Location,Transit Method,Number of items,Classification,Staffing Level,Required Delivery Date,"
+                "Required Ship Date,Required Start Date" << endl;
 
     // error message if file cannot open
     if(!fileIn.is_open())
@@ -49,20 +53,23 @@ void frmEditDelivery::submit()
         while(getline(fileIn, line)){       // read until reach end of file
             istringstream stringIn(line);   // feed line to stream
             getline(stringIn, id, ',');     // parse line using comma delimiter, extract ID
-            if(stoi(id) != deliveryID)          // if not the delivery being edited,
+            if(id != transmissionN)          // if not the delivery being edited,
                 fileOut << line << endl;        // write line to temp file
         }
 
         string strDelivery; // string to add to save file
         // append edited delivery information to string
-        strDelivery += to_string(deliveryID) + ',';
-        strDelivery += editui->dteDeliveryDate->date().toString("dd/MM/yyyy").toStdString() + ',';
-        strDelivery += editui->cboLocation->currentText().toStdString() + ',';
-        strDelivery += editui->cboShipping->currentText().toStdString() + ',';
-        strDelivery += editui->cboClassification->currentText().toStdString() + ',';
-        strDelivery += QString::number(editui->spnNumberObjects->value()).toStdString() + ',';
-        strDelivery += editui->cboMediaType->currentText().toStdString() + ",";
-        strDelivery += editui->cboStaffing->currentText().toStdString() + ",";
+
+        strDelivery += editui->ledTransmission->text().toStdString() + ',';                                // unique Transmission #
+        strDelivery += editui->cboShipHull->currentText().toStdString() + ',';                                // ship name & hull #
+        strDelivery += editui->ledECN->text().toStdString() + ',';                                // ECN
+        strDelivery += editui->cboMediaType->currentText().toStdString() + ',';                    // media type
+        strDelivery += editui->cboLocation->currentText().toStdString() + ',';                     // location
+        strDelivery += editui->cboShipping->currentText().toStdString() + ',';                     // shipping method
+        strDelivery += QString::number(editui->spnNumberObjects->value()).toStdString() + ',';     // number of items
+        strDelivery += editui->cboClassification->currentText().toStdString() + ',';               // classification
+        strDelivery += editui->cboStaffing->currentText().toStdString() + ',';               // staffing level
+        strDelivery += editui->dteDeliveryDate->date().toString("dd/MM/yyyy").toStdString() + ','; // delivery date
         fileOut << strDelivery << endl;    // send delivery to save file
 
         // close both files

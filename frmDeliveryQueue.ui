@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>910</width>
-    <height>460</height>
+    <width>1000</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,12 +17,22 @@
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <widget class="QGroupBox" name="groupBox">
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
       <property name="title">
        <string>Queue</string>
       </property>
       <layout class="QGridLayout" name="gridLayout">
        <item row="0" column="0" colspan="2">
         <widget class="QTreeView" name="treeView">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
          <property name="contextMenuPolicy">
           <enum>Qt::ActionsContextMenu</enum>
          </property>
@@ -36,6 +46,11 @@
        </item>
        <item row="1" column="0">
         <widget class="QLabel" name="lblFilterPattern">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>Search:</string>
          </property>
@@ -46,6 +61,11 @@
        </item>
        <item row="1" column="1">
         <widget class="QLineEdit" name="ledFilterPattern">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string/>
          </property>
@@ -53,6 +73,11 @@
        </item>
        <item row="2" column="0">
         <widget class="QLabel" name="lblFilterColumn">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>Search by column:</string>
          </property>
@@ -63,9 +88,14 @@
        </item>
        <item row="2" column="1">
         <widget class="QComboBox" name="cboFilterColumn">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
          <item>
           <property name="text">
-           <string>ID</string>
+           <string>Transmission #</string>
           </property>
          </item>
          <item>
@@ -80,7 +110,17 @@
          </item>
          <item>
           <property name="text">
-           <string>Shipping Method</string>
+           <string>Ship Name/Hull #</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>ECN/TECN</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Transit Method</string>
           </property>
          </item>
          <item>
@@ -90,7 +130,7 @@
          </item>
          <item>
           <property name="text">
-           <string>Number of Items</string>
+           <string># of Items</string>
           </property>
          </item>
          <item>
@@ -100,13 +140,28 @@
          </item>
          <item>
           <property name="text">
+           <string>Staffing Level</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
            <string>Required Ship Date</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Required Start Date</string>
           </property>
          </item>
         </widget>
        </item>
        <item row="3" column="0">
         <widget class="QCheckBox" name="chkFilterCS">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>Case sensitive filtering</string>
          </property>
@@ -125,27 +180,32 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>910</width>
-     <height>26</height>
+     <width>1000</width>
+     <height>29</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menu_Delivery">
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <widget class="QMenu" name="menuDelivery">
     <property name="title">
      <string>&amp;Delivery</string>
     </property>
-    <addaction name="actNewDelivery"/>
+    <widget class="QMenu" name="menuNewDelivery">
+     <property name="title">
+      <string>&amp;New Delivery</string>
+     </property>
+     <addaction name="actAddManually"/>
+     <addaction name="actImport"/>
+    </widget>
+    <addaction name="menuNewDelivery"/>
     <addaction name="actEditDelivery"/>
     <addaction name="actDeleteDelivery"/>
     <addaction name="actArchiveDelivery"/>
    </widget>
-   <widget class="QMenu" name="menu_Help">
-    <property name="title">
-     <string>&amp;Help</string>
-    </property>
-    <addaction name="actAbout"/>
-   </widget>
-   <addaction name="menu_Delivery"/>
-   <addaction name="menu_Help"/>
+   <addaction name="menuDelivery"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -157,14 +217,6 @@
    <addaction name="actRefreshQueue"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <action name="actNewDelivery">
-   <property name="text">
-    <string>&amp;New Delivery</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+N</string>
-   </property>
-  </action>
   <action name="actEditDelivery">
    <property name="text">
     <string>&amp;Edit Delivery</string>
@@ -186,17 +238,27 @@
     <string>&amp;Archive Delivery</string>
    </property>
   </action>
-  <action name="actAbout">
-   <property name="text">
-    <string>&amp;About</string>
-   </property>
-  </action>
   <action name="actRefreshQueue">
    <property name="text">
     <string>&amp;Refresh Queue</string>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
    <property name="shortcut">
     <string>F5</string>
+   </property>
+  </action>
+  <action name="actAddManually">
+   <property name="text">
+    <string>Add &amp;Manually</string>
+   </property>
+  </action>
+  <action name="actImport">
+   <property name="text">
+    <string>&amp;Import from Excel</string>
    </property>
   </action>
  </widget>
