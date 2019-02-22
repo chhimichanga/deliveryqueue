@@ -389,37 +389,37 @@
    </property>
    <item>
     <property name="text">
-     <string>USS Kamehameha SSN 642</string>
+     <string>USS Kamehameha (SSN 642)</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>USS Omaha SSN 692</string>
+     <string>USS Omaha (SSN 692)</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>USS New York City SSN 696</string>
+     <string>USS New York City (SSN 696)</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>USS Indianapolis SSN 697</string>
+     <string>USS Indianapolis (SSN 697)</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>USS Ohio SSGN 726</string>
+     <string>USS Ohio (SSGN 726)</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>USS Puffer SSN 652</string>
+     <string>USS Puffer (SSN 652)</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>USS Alabama SSBN 731</string>
+     <string>USS Alabama (SSBN 731)</string>
     </property>
    </item>
   </widget>

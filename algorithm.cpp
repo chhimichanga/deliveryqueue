@@ -21,7 +21,7 @@ Algorithm::Algorithm(Delivery *currentDeliveries)
     ifstream file("save.csv");
     getline(file, str); // skip the first line of headers
 
-    vector<Schedule> sche;  // vector of schedules
+    vector<Schedule> schedule;  // vector of schedules
 
     while(getline(file, str)){ // read until reach end of file
         istringstream iss(str);
@@ -135,7 +135,7 @@ string Algorithm::CalculateDateShip(string RDD, string Location){
     return str;
 }
 
-string Algorithm::CalculateDateStart(string RSD, int  numOfitems, int staffinglevel){
+string Algorithm::CalculateDateStart(string RSD, int numOfitems, int staffinglevel){
     string shipDate = RSD;  // store the calculated shipping date in a variable
     string startDate;                                       // calculate the start date
     struct tm date = { 0, 0, 0, 0, 0, 0, 0, 0, -1 };
@@ -150,28 +150,32 @@ string Algorithm::CalculateDateStart(string RSD, int  numOfitems, int staffingle
         stringstream geek(token);
         int x = 0;
         geek >> x;
-        if(j==0) date.tm_mday = x;      //
+        if(j==0) date.tm_mday = x;
         if(j==1) date.tm_mon = x - 1;
         if(j==2) date.tm_year = x - 1900;
         j++;
     }
 
-    DatePlusDays(&date, -3);   // every delivery has to wait 3 days for approval after submitting
-    // if the date is saturday or sunday, move the schedule forward
-    if(DayOfTheWeek(date.tm_mday, date.tm_mon, date.tm_year) == 3)
+    // every delivery must be approved by the mail room, which takes about 3 days on average. move date back 3 days from ship date
+    DatePlusDays(&date, -3);
+
+    // if the date is saturday or sunday, move the date back to friday
+    if(DayOfTheWeek(date.tm_mday, date.tm_mon, date.tm_year) == 3)  // saturday, move back 1 day to friday
         DatePlusDays(&date, -1);
-    else if(DayOfTheWeek(date.tm_mday, date.tm_mon, date.tm_year) == 4)
+    else if(DayOfTheWeek(date.tm_mday, date.tm_mon, date.tm_year) == 4) // sunday, move back 2 days to friday
         DatePlusDays(&date, -2);
 
     // convert the date to string
     strftime(buffer,sizeof(buffer),"%d/%m/%Y", &date);
-    startDate = buffer;// now start date is set 3 days prior to ship date
+    startDate = buffer; // now start date is set 3 days prior to ship date
 
-    // for later calculation
+    //
     int requiredminutes = 0;
     int requiredpeople = 0;
     int requiredapproval = 0;
+
     // calculate the amount of hours needed for preparing delivery
+    // deliveries with 10 or less items need 4 hours (240 minutes) to pack
     if(numOfitems <= 10){
         if(staffinglevel == 1){
             requiredminutes = 240;  // one person needs 240 minutes for preparing
@@ -187,7 +191,7 @@ string Algorithm::CalculateDateStart(string RSD, int  numOfitems, int staffingle
         }
 
     }
-
+    // deliveries with more than 10 and up to 50 items take 8 hours (480 minutes) to pack
     else if(numOfitems > 10 && numOfitems <= 50){
         if(staffinglevel == 1){
             requiredminutes = 480;  // one person needs 480 minutes for preparing
@@ -204,6 +208,7 @@ string Algorithm::CalculateDateStart(string RSD, int  numOfitems, int staffingle
         }
 
     }
+    // deliveries with more than 50 items take 16 hours (960 minutes) to pack
     else if(numOfitems > 50){
         if(staffinglevel == 1){
             requiredminutes = 960;  // one person needs 960 minutes for preparing
@@ -220,17 +225,17 @@ string Algorithm::CalculateDateStart(string RSD, int  numOfitems, int staffingle
 
     }
 
-
     int found = 0;  // find the perfect day to start preparing
     int totalwork = requiredminutes * requiredpeople;
 
     while(found == 0){
-        auto it = find_if(sche.begin(), sche.end(), [&startDate](Schedule& obj) {return obj.get_date() == startDate;});// check if the schedule object that hold existed in the vector
-        auto index = std::distance(sche.begin(), it); // the index where schedule locate at vector
+        auto it = find_if(schedule.begin(), schedule.end(), [&startDate](Schedule& obj) {return obj.get_date() == startDate;}); // check if the schedule object that hold existed in the vector
+        auto index = std::distance(schedule.begin(), it); // the index where schedule locate at vector
 
-        if (it == sche.end()){  // if the shcedule on a specifc date is not initialized yet
-            Schedule newSchedule(startDate); // create a new instance of shcedule and push it to the vector
-            sche.push_back(newSchedule);
+        // if the schedule on a specifc date is not initialized yet
+        if (it == schedule.end()){
+            Schedule newSchedule(startDate); // create a new instance of schedule and push it to the vector
+            schedule.push_back(newSchedule);
             char new_buffer[80]; // buffer to store the required start date
 
             // check if it is on stuarday or sunday
@@ -241,11 +246,10 @@ string Algorithm::CalculateDateStart(string RSD, int  numOfitems, int staffingle
 
             strftime(new_buffer,sizeof(new_buffer),"%d/%m/%Y", &date);
             startDate = new_buffer;
-
         }
-
-        else if (it != sche.end()){// if the schedule object is already created, check if this delivery fits in the schedule
-            int *available = sche.at(index).get_availableminutes();
+        // if the schedule object is already created, check if this delivery fits in the schedule
+        else if (it != schedule.end()){
+            int *available = schedule.at(index).get_availableminutes();
 
             bool staff[3] = {false, false, false};
             for(int l = 0; l < 3; l++){
@@ -257,12 +261,12 @@ string Algorithm::CalculateDateStart(string RSD, int  numOfitems, int staffingle
                     totalwork = totalwork - requiredminutes; // update the total amount of working hours for all staffs
                     --requiredpeople; // done assigning the job to one of the staffs
                     available[l] = available[l] - requiredminutes; // update the staff schedule
-                    sche.at(index).set_availableminutes(available); // passing to schedule object
+                    schedule.at(index).set_availableminutes(available); // passing to schedule object
                     staff[l] = true; // staff number l can work on that delivery on that date
                 }
                 else if (available[l] >= totalwork && totalwork <= requiredminutes){ // the condition that worker has already done most of it on another day
                     available[l] = available[l] - totalwork;
-                    sche.at(index).set_availableminutes(available); // passing to schedule object
+                    schedule.at(index).set_availableminutes(available); // passing to schedule object
                     --requiredpeople;
                     totalwork = 0;
                     staff[l] = true;
@@ -278,7 +282,7 @@ string Algorithm::CalculateDateStart(string RSD, int  numOfitems, int staffingle
                     if(staff[m] == false && available[m] != 0){
                         totalwork -= available[m];
                         available[m] = 0;
-                        sche.at(index).set_availableminutes(available);
+                        schedule.at(index).set_availableminutes(available);
                         staff[m] = true;
                         --requiredpeople;
                      }
@@ -295,6 +299,6 @@ string Algorithm::CalculateDateStart(string RSD, int  numOfitems, int staffingle
         }
 
     }
-    return startDate;
 
+    return startDate;
 }

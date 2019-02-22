@@ -3,12 +3,14 @@
 #include <string>
 #include <fstream>
 #include <iostream>
-Schedule::Schedule(){
 
+Schedule::Schedule(){
     // initializing variables
     staff_totalworkingminutes = new int[3];
     staff_occupiedminutes = new int[3];
     staff_availableminutes = new int[3];
+
+    // the 480 minutes here represent 8 hours in a work day
     for(int i = 0; i < 3; i++){
         staff_totalworkingminutes[i] = 480;
         staff_occupiedminutes[i] = 0;
@@ -20,10 +22,9 @@ Schedule::Schedule(){
     month = 0;
     year = 0;
 }
-Schedule::Schedule(string d)
-{
 
-     //initializing variables
+Schedule::Schedule(string d){
+    //initializing variables
     staff_totalworkingminutes = new int[3];
     staff_occupiedminutes= new int[3];
     staff_availableminutes = new int[3];
@@ -32,7 +33,6 @@ Schedule::Schedule(string d)
         staff_occupiedminutes[i] = 0;
         staff_availableminutes[i] = 480;
     }
-
 
     date = d;
 
@@ -51,15 +51,17 @@ Schedule::Schedule(string d)
     }
 
 }
+
 Schedule::~Schedule(){
 
 }
- //function for later use to change the number of available staffs
+
+//function for later use to change the number of available staffs
 void Schedule::set_numOfStaffs(int n){
     for (int i =  (3-n); i < 3; i++){
         staff_totalworkingminutes[i] = 0;
         staff_availableminutes[i] = 0;
-   // so if the parameter passed in (number of available staffs) is 2, the third value in array is going to be set 0
+        // so if the parameter passed in (number of available staffs) is 2, the third value in array is going to be set 0
         //meaning there are only going to be 2 staffs having working hours
     }
 }

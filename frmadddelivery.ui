@@ -565,7 +565,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Transmission #:</string>
+    <string/>
    </property>
   </widget>
   <widget class="QLabel" name="lblTransmission">
@@ -583,7 +583,7 @@
     </font>
    </property>
    <property name="text">
-    <string>ECN/TECN:</string>
+    <string>Transmission #:</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

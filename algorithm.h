@@ -9,7 +9,7 @@ using namespace std;
 class Algorithm
 {
     int count;
-    vector <Schedule> sche;
+    vector <Schedule> schedule;
 public:
 
     Algorithm(Delivery *currentDeliveries);

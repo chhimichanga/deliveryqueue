@@ -65,7 +65,7 @@ DeliveryQueue::DeliveryQueue(QWidget *parent) :
         dqui->treeView->resizeColumnToContents(count);
 
     // connect delivery queue ui buttons and slots
-    connect(dqui->actNewDelivery, &QAction::triggered, this, &DeliveryQueue::addDelivery);
+    connect(dqui->actAddManually, &QAction::triggered, this, &DeliveryQueue::addDelivery);
     connect(dqui->ledFilterPattern, &QLineEdit::textChanged, this, &DeliveryQueue::filterSyntaxChanged);
     connect(dqui->cboFilterColumn, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &DeliveryQueue::filterColumnChanged);
     connect(dqui->chkFilterCS, &QAbstractButton::toggled, this, &DeliveryQueue::filterSyntaxChanged);
@@ -195,7 +195,7 @@ void DeliveryQueue::archiveDelivery()
 
     cell = testArchive.cellAt(currentRow,1); //tests to see if the first box on the current row is empty
 
-    while(cell != 0){ //scans through the spreadsheet until it finds an empty line
+    while(cell != nullptr){ //scans through the spreadsheet until it finds an empty line
         currentRow++;
         cell = testArchive.cellAt(currentRow,1);
     }
@@ -214,7 +214,7 @@ void DeliveryQueue::archiveDelivery()
             int row = dqui->treeView->selectionModel()->currentIndex().row();   // selected index number
             QString selected = deliveryModel->index(row, col).data().toString();  // save the selected ID
 
-            while(selected != 0){
+            while(selected != nullptr){
                 testArchive.write(currentRow, currentCol, selected);
                 col++;
                 currentCol++;
@@ -348,15 +348,15 @@ void DeliveryQueue::colorCodeDeliveries(){
         // if less than 7 days left to ship, color red
         if(currentDate.daysTo(deliveryDate) < 7)
             for(column = 0; column < numberOfColumns; column++)
-                deliveryTable->setData(deliveryTable->index(row, column),  QColor (255,0,0), Qt::BackgroundRole);
+                deliveryTable->setData(deliveryTable->index(row, column),  QColor (255,179,186), Qt::BackgroundRole);
         // if between 7 and 14 days, color yellow
         else if(currentDate.daysTo(deliveryDate) <= 14 && currentDate.daysTo(deliveryDate) >= 7)
             for(column = 0; column < numberOfColumns; column++)
-                deliveryTable->setData(deliveryTable->index(row, column),  QColor (255,255,0), Qt::BackgroundRole);
+                deliveryTable->setData(deliveryTable->index(row, column),  QColor (255,255,186), Qt::BackgroundRole);
         // if more than 14 days, color green
         else if(currentDate.daysTo(deliveryDate) > 14)
             for(column = 0; column < numberOfColumns; column++)
-                deliveryTable->setData(deliveryTable->index(row, column),  QColor (0,255,0), Qt::BackgroundRole);
+                deliveryTable->setData(deliveryTable->index(row, column),  QColor (186,255,201), Qt::BackgroundRole);
     }
 }
 

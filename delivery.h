@@ -6,26 +6,24 @@ using namespace std;
 
 class Delivery  // delivery variables
 {
-   string dateDeliver,
-          location,
-          classification,
-          mediaType,
-          shippingMethod,
-          dateShip,
-          dateStart,
-          transmissionN,
-          shipName,
-          ECN;
-   int
-          numItems,
-          staffinglevel;
+   string   dateDeliver,
+            location,
+            classification,
+            mediaType,
+            shippingMethod,
+            dateShip,
+            dateStart,
+            transmissionN,
+            shipName,
+            ECN;
+   int      numItems,
+            staffinglevel;
 
 public:
    // delivery constructor
    Delivery();
 
    // Set delivery variables
-
    void   set_DateDeliver(string dateDeliverNew);
    void   set_Location(string locationNew);
    void   set_Classification(string classificationNew);
@@ -38,6 +36,7 @@ public:
    void   set_ShipName(string shipnameNew);
    void   set_NumItems(int numItemsNew);
    void   set_StaffingLevel(int staffinglevelNew);
+
    // Get delivery variables
    string get_Transmission() {return transmissionN;}
    string get_DateDeliver() {return dateDeliver;}
