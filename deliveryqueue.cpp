@@ -89,46 +89,50 @@ void DeliveryQueue::editDelivery(){
     if(!dqui->treeView->selectionModel()->currentIndex().isValid())
         QMessageBox::information(this, "Failure", "You haven't selected the delivery to be edited.");
     else {
-        int selectedRow = dqui->treeView->selectionModel()->currentIndex().row();       // selected index number
-        QString selected = deliveryModel->index(selectedRow, 0).data().toString();    // save the selected ID
+        // selected index number
+        int selectedRow = dqui->treeView->selectionModel()->currentIndex().row();
+        // save the selected delivery's Transmission #
+        QString selected = deliveryModel->index(selectedRow, 0).data().toString();
         // start a new instance of the edit form
         frmEditDelivery *edit = new frmEditDelivery();
-        // store delivery ID in a variable to use in frmEditDelivery
-        edit->transmissionN = selected.toStdString();
 
+        // store delivery ID in a variable to use in frmEditDelivery
+        edit->transmissionNumber = selected.toStdString();
 
         // open save file
         ifstream fileIn("save.csv");
-        string line, transmission, token; // strings for reading each line, id, and the rest of the line after id
+        // strings for reading each line, id, and the rest of the line after id
+        string line, transmission, token;
         int count;
-        qDebug() << selected;
-        while(getline(fileIn, line)){       // read whole line
+
+        // read whole line
+        while(getline(fileIn, line)){
             istringstream stringIn(line);   // feed line into string stream
             count = 0;
             getline(stringIn, transmission, ',');     // read line until first comma
-            if(transmission == selected.toStdString()){         // if selected delivery's ID and the ID being read from the file match, edit that delivery
-                edit->transmission->setText(QString::fromStdString(transmission));
+
+            // if selected delivery's ID and the ID being read from the file match, edit that delivery
+            if(transmission == selected.toStdString()){
+                edit->ledTransmission->setText(QString::fromStdString(transmission));
                 while(getline(stringIn, token, ',')){   // read the rest of the line
-
-                    if(count == 0) // location column
-                        edit->shipnumber->setCurrentText(QString::fromStdString(token));
-                    else if(count == 1) // location column
-                        edit->ECN->setText(QString::fromStdString(token));
-                    else if(count == 2) // location column
-                        edit->mediaType->setCurrentText(QString::fromStdString(token));
-                    else if(count == 3) // ship/hull #
-                        edit->location->setCurrentText(QString::fromStdString(token));
-                    else if(count == 4) //ECN/TECN
-                        edit->shipping->setCurrentText(QString::fromStdString(token));
-                    else if(count == 5) // Transit Method
-                        edit->numberOfItems->setValue(stoi(token));
+                    if(count == 0)      // lcoation
+                        edit->cboLocation->setCurrentText(QString::fromStdString(token));
+                    else if(count == 1) // transit method
+                        edit->cboTransitMethod->setCurrentText(QString::fromStdString(token));
+                    else if(count == 2) // ship name / hull#
+                        edit->cboShipHull->setCurrentText(QString::fromStdString(token));
+                    else if(count == 3) // ecn/tecn
+                        edit->ledECN->setText(QString::fromStdString(token));
+                    else if(count == 4) // media type
+                        edit->cboMediaType->setCurrentText(QString::fromStdString(token));
+                    else if(count == 5) // # of items
+                        edit->spnNumberOfItems->setValue(stoi(token));
                     else if(count == 6) // Classification
-                        edit->classification->setCurrentText(QString::fromStdString(token));
-                    else if(count == 7) // Required Ship Date
-                        edit->staffing->setCurrentText(QString::fromStdString(token));
-
+                        edit->cboClassification->setCurrentText(QString::fromStdString(token));
+                    else if(count == 7) // staffing level
+                        edit->cboStaffing->setCurrentText(QString::fromStdString(token));
                     else if(count == 8)      // delivery date column
-                        edit->deliveryDate->setDate(QDate::fromString(QString::fromStdString(token), "dd/MM/yyyy"));
+                        edit->dteDeliveryDate->setDate(QDate::fromString(QString::fromStdString(token), "dd/MM/yyyy"));
 
                     count++;    // move to next column in row
                 }
@@ -194,9 +198,6 @@ void DeliveryQueue::archiveDelivery(){
         currentRow++;
         cell = testArchive.cellAt(currentRow,1);
     }
-
-    qDebug()<<currentRow; //debug return to see if loop is searching properly
-
     //xlsx tests end
 
     int col = 0;
@@ -217,16 +218,18 @@ void DeliveryQueue::archiveDelivery(){
             }
             testArchive.save();
 
-
             ifstream fileIn("save.csv");   // open save file
             ofstream fileOut;
             fileOut.open("temp.csv"); // writing contents except the deleted line to a temp file
-            string line, id;
+            string line, transmission;
 
             while(getline(fileIn, line)){   // read until reach end of file
                 istringstream stringIn(line); // feed line to stream
-                getline(stringIn, id, ',');   // parse line using comma delimiter
-                if(id != selected.toStdString()){    // if not the delivery being archived,
+                getline(stringIn, transmission, ',');   // parse line using comma delimiter
+                qDebug() << QString().fromStdString(transmission);
+                qDebug() << selected;
+
+                if(transmission != selected.toStdString()){    // if not the delivery being deleted,
                     fileOut << line << endl;         // write line to temp file
                 }
             }
@@ -239,7 +242,6 @@ void DeliveryQueue::archiveDelivery(){
             // rename temp.csv to save.csv
             rename("temp.csv","save.csv");
 
-            deleteDelivery();
             refreshQueue();
         }
     }

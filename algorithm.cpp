@@ -131,7 +131,7 @@ string Algorithm::calculateDateShip(string dateDeliver, string Location){
         datePlusDays(&dateShipTemp, -7);    // 1 week to arrive at location once shipped
     // if the location is in a nearby location in the US
     else if(Location == "New London Connecticut")
-        datePlusDays(&dateShipTemp, -3);
+        datePlusDays(&dateShipTemp, -3);    // 3 days to arrive at location once shipped
 
     // if the ship date is not Monday, Tuesday, nor Wednesday, move the ship date back
     if(weekDay(dateShipTemp.tm_mday, dateShipTemp.tm_mon, dateShipTemp.tm_year) != 0)
@@ -147,7 +147,7 @@ string Algorithm::calculateDateShip(string dateDeliver, string Location){
 
 string Algorithm::calculateDateStart(string dateShip, int itemCount, int staffingLevel){
     string dateShipTemp = dateShip;  // store the calculated shipping date in a variable
-    string dateStart;                                       // calculate the start date
+    string dateStart;                // calculate the start date
     struct tm dateStartTemp = { 0, 0, 0, 0, 0, 0, 0, 0, -1 };
 
     // set up input stream to parse ship date
