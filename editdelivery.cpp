@@ -60,12 +60,12 @@ void frmEditDelivery::submit()
         string strDelivery; // string to add to save file
         // append edited delivery information to string
 
-        strDelivery += editui->ledTransmission->text().toStdString() + ',';                                // unique Transmission #
-        strDelivery += editui->cboShipHull->currentText().toStdString() + ',';                                // ship name & hull #
-        strDelivery += editui->ledECN->text().toStdString() + ',';                                // ECN
-        strDelivery += editui->cboMediaType->currentText().toStdString() + ',';                    // media type
+        strDelivery += editui->ledTransmission->text().toStdString() + ',';                         // unique Transmission #
         strDelivery += editui->cboLocation->currentText().toStdString() + ',';                     // location
         strDelivery += editui->cboShipping->currentText().toStdString() + ',';                     // shipping method
+        strDelivery += editui->cboShipHull->currentText().toStdString() + ',';                      // ship name & hull #
+        strDelivery += editui->ledECN->text().toStdString() + ',';                                  // ECN
+        strDelivery += editui->cboMediaType->currentText().toStdString() + ',';                    // media type
         strDelivery += QString::number(editui->spnNumberObjects->value()).toStdString() + ',';     // number of items
         strDelivery += editui->cboClassification->currentText().toStdString() + ',';               // classification
         strDelivery += editui->cboStaffing->currentText().toStdString() + ',';               // staffing level
@@ -75,8 +75,10 @@ void frmEditDelivery::submit()
         // close both files
         fileOut.close();
         fileIn.close();
+
         // delete original file
         remove("save.csv");
+
         // rename temp.csv to save.csv
         rename("temp.csv","save.csv");
 

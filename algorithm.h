@@ -13,11 +13,11 @@ class Algorithm
 public:
 
     Algorithm(Delivery *currentDeliveries);
-    int get_Count();
-    int DayOfTheWeek (int day, int week, int year);
-    string CalculateDateShip(string RDD, string Location);
-    string CalculateDateStart(string RSD, int  numOfitems, int staffinglevel);
-    void DatePlusDays( struct tm* date, int days );
+    int getCount();
+    int weekDay (int day, int week, int year);
+    string calculateDateShip(string RDD, string Location);
+    string calculateDateStart(string RSD, int  numOfitems, int staffinglevel);
+    void datePlusDays( struct tm* date, int days );
     void Sorting(Delivery *data, int count);
     void CheckSchedule(vector <Schedule>& newSchedule, string d);
 };
