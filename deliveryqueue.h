@@ -28,6 +28,7 @@ private slots:
     void filterSyntaxChanged();
     void filterColumnChanged();
     void refreshQueue();
+    void changeSchedule();
     //void contextMenu(const QPoint &);
 
 private:

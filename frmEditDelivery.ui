@@ -34,96 +34,6 @@
     <string>Media Received</string>
    </property>
   </widget>
-  <widget class="QLabel" name="lblTransmission">
-   <property name="geometry">
-    <rect>
-     <x>70</x>
-     <y>10</y>
-     <width>131</width>
-     <height>30</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>10</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>Transmission #:</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-   </property>
-  </widget>
-  <widget class="QComboBox" name="cboMediaType">
-   <property name="geometry">
-    <rect>
-     <x>210</x>
-     <y>90</y>
-     <width>231</width>
-     <height>30</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>10</pointsize>
-    </font>
-   </property>
-   <item>
-    <property name="text">
-     <string>Documentation</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>Software</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>Hardware</string>
-    </property>
-   </item>
-  </widget>
-  <widget class="QSpinBox" name="spnNumberObjects">
-   <property name="geometry">
-    <rect>
-     <x>210</x>
-     <y>170</y>
-     <width>121</width>
-     <height>30</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>10</pointsize>
-    </font>
-   </property>
-   <property name="maximum">
-    <number>2147483647</number>
-   </property>
-  </widget>
-  <widget class="QLabel" name="lblMediaType">
-   <property name="geometry">
-    <rect>
-     <x>90</x>
-     <y>90</y>
-     <width>111</width>
-     <height>30</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>10</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>Media type:</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-   </property>
-  </widget>
   <widget class="QPushButton" name="btnSubmit">
    <property name="geometry">
     <rect>
@@ -142,38 +52,13 @@
     <string>&amp;Submit</string>
    </property>
   </widget>
-  <widget class="QComboBox" name="cboShipping">
+  <widget class="QPushButton" name="btnCancel">
    <property name="geometry">
     <rect>
-     <x>210</x>
-     <y>130</y>
-     <width>231</width>
-     <height>30</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>10</pointsize>
-    </font>
-   </property>
-   <item>
-    <property name="text">
-     <string>Carrier</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>Hand-carried</string>
-    </property>
-   </item>
-  </widget>
-  <widget class="QLabel" name="lblLocation">
-   <property name="geometry">
-    <rect>
-     <x>80</x>
-     <y>330</y>
-     <width>121</width>
-     <height>30</height>
+     <x>260</x>
+     <y>470</y>
+     <width>93</width>
+     <height>31</height>
     </rect>
    </property>
    <property name="font">
@@ -182,142 +67,14 @@
     </font>
    </property>
    <property name="text">
-    <string>Location:</string>
+    <string>&amp;Cancel</string>
    </property>
-   <property name="alignment">
-    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-   </property>
-  </widget>
-  <widget class="QLabel" name="lblShipHull">
-   <property name="geometry">
-    <rect>
-     <x>40</x>
-     <y>290</y>
-     <width>161</width>
-     <height>30</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>10</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>Ship/Hull Number:</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-   </property>
-  </widget>
-  <widget class="QDateEdit" name="dteDeliveryDate">
-   <property name="geometry">
-    <rect>
-     <x>210</x>
-     <y>250</y>
-     <width>121</width>
-     <height>30</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>10</pointsize>
-    </font>
-   </property>
-   <property name="maximumDate">
-    <date>
-     <year>2038</year>
-     <month>1</month>
-     <day>14</day>
-    </date>
-   </property>
-   <property name="minimumDate">
-    <date>
-     <year>1970</year>
-     <month>2</month>
-     <day>1</day>
-    </date>
-   </property>
-   <property name="displayFormat">
-    <string>dd MMM yyyy</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="lblStaffing">
-   <property name="geometry">
-    <rect>
-     <x>80</x>
-     <y>210</y>
-     <width>121</width>
-     <height>30</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>10</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>Staffing Level:</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-   </property>
-  </widget>
-  <widget class="QLabel" name="lblNumberItems">
-   <property name="geometry">
-    <rect>
-     <x>60</x>
-     <y>168</y>
-     <width>141</width>
-     <height>30</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>10</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>Number of Items:</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-   </property>
-  </widget>
-  <widget class="QComboBox" name="cboStaffing">
-   <property name="geometry">
-    <rect>
-     <x>210</x>
-     <y>210</y>
-     <width>41</width>
-     <height>30</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>10</pointsize>
-    </font>
-   </property>
-   <item>
-    <property name="text">
-     <string>1</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>2</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>3</string>
-    </property>
-   </item>
   </widget>
   <widget class="QLabel" name="lblClassification">
    <property name="geometry">
     <rect>
-     <x>80</x>
-     <y>50</y>
+     <x>70</x>
+     <y>290</y>
      <width>121</width>
      <height>30</height>
     </rect>
@@ -337,47 +94,11 @@
     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
    </property>
   </widget>
-  <widget class="QLineEdit" name="ledECN">
-   <property name="geometry">
-    <rect>
-     <x>210</x>
-     <y>370</y>
-     <width>231</width>
-     <height>30</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>10</pointsize>
-    </font>
-   </property>
-  </widget>
-  <widget class="QLabel" name="lblShipping">
-   <property name="geometry">
-    <rect>
-     <x>70</x>
-     <y>130</y>
-     <width>131</width>
-     <height>30</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>10</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>Transit Method:</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-   </property>
-  </widget>
   <widget class="QComboBox" name="cboShipHull">
    <property name="geometry">
     <rect>
-     <x>210</x>
-     <y>290</y>
+     <x>200</x>
+     <y>130</y>
      <width>231</width>
      <height>30</height>
     </rect>
@@ -387,6 +108,11 @@
      <pointsize>10</pointsize>
     </font>
    </property>
+   <item>
+    <property name="text">
+     <string>N/A</string>
+    </property>
+   </item>
    <item>
     <property name="text">
      <string>USS Kamehameha (SSN 642)</string>
@@ -423,12 +149,12 @@
     </property>
    </item>
   </widget>
-  <widget class="QComboBox" name="cboClassification">
+  <widget class="QLabel" name="lblTransmission">
    <property name="geometry">
     <rect>
-     <x>210</x>
-     <y>50</y>
-     <width>231</width>
+     <x>60</x>
+     <y>10</y>
+     <width>131</width>
      <height>30</height>
     </rect>
    </property>
@@ -437,29 +163,20 @@
      <pointsize>10</pointsize>
     </font>
    </property>
-   <item>
-    <property name="text">
-     <string>Unclassified</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>Confidential</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>Secret</string>
-    </property>
-   </item>
+   <property name="text">
+    <string>Transmission #:</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
   </widget>
-  <widget class="QPushButton" name="btnCancel">
+  <widget class="QLabel" name="lblDeliveryDate">
    <property name="geometry">
     <rect>
-     <x>260</x>
-     <y>470</y>
-     <width>93</width>
-     <height>31</height>
+     <x>10</x>
+     <y>370</y>
+     <width>181</width>
+     <height>30</height>
     </rect>
    </property>
    <property name="font">
@@ -468,14 +185,17 @@
     </font>
    </property>
    <property name="text">
-    <string>&amp;Cancel</string>
+    <string>Required Delivery Date:</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
    </property>
   </widget>
   <widget class="QComboBox" name="cboLocation">
    <property name="geometry">
     <rect>
-     <x>210</x>
-     <y>330</y>
+     <x>200</x>
+     <y>50</y>
      <width>231</width>
      <height>30</height>
     </rect>
@@ -524,7 +244,7 @@
   <widget class="QLineEdit" name="ledTransmission">
    <property name="geometry">
     <rect>
-     <x>210</x>
+     <x>200</x>
      <y>10</y>
      <width>231</width>
      <height>30</height>
@@ -535,12 +255,324 @@
      <pointsize>10</pointsize>
     </font>
    </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lblNumberItems">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>250</y>
+     <width>141</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Number of Items:</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lblShipHull">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>130</y>
+     <width>161</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Ship/Hull Number:</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="ledECN">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>170</y>
+     <width>231</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+  </widget>
+  <widget class="QSpinBox" name="spnNumberObjects">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>250</y>
+     <width>121</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="maximum">
+    <number>2147483647</number>
+   </property>
+  </widget>
+  <widget class="QDateEdit" name="dteDeliveryDate">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>370</y>
+     <width>121</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="maximumDate">
+    <date>
+     <year>2038</year>
+     <month>1</month>
+     <day>14</day>
+    </date>
+   </property>
+   <property name="minimumDate">
+    <date>
+     <year>1970</year>
+     <month>2</month>
+     <day>1</day>
+    </date>
+   </property>
+   <property name="displayFormat">
+    <string>dd MMM yyyy</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="cboShipping">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>90</y>
+     <width>231</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <item>
+    <property name="text">
+     <string>Carrier</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Hand-carried</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QLabel" name="lblMediaType">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>210</y>
+     <width>111</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Media type:</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lblLocation">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>50</y>
+     <width>121</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Location:</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lblStaffing">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>330</y>
+     <width>121</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Staffing Level:</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="cboStaffing">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>330</y>
+     <width>41</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="currentIndex">
+    <number>2</number>
+   </property>
+   <item>
+    <property name="text">
+     <string>1</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>2</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>3</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QLabel" name="lblShipping">
+   <property name="geometry">
+    <rect>
+     <x>60</x>
+     <y>90</y>
+     <width>131</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Transit Method:</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="cboClassification">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>290</y>
+     <width>231</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <item>
+    <property name="text">
+     <string>Unclassified</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Confidential</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Secret</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QComboBox" name="cboMediaType">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>210</y>
+     <width>231</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <item>
+    <property name="text">
+     <string>Documentation</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Software</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Hardware</string>
+    </property>
+   </item>
   </widget>
   <widget class="QLabel" name="lblECN">
    <property name="geometry">
     <rect>
-     <x>90</x>
-     <y>370</y>
+     <x>80</x>
+     <y>170</y>
      <width>111</width>
      <height>30</height>
     </rect>
@@ -552,27 +584,6 @@
    </property>
    <property name="text">
     <string>ECN/TECN:</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-   </property>
-  </widget>
-  <widget class="QLabel" name="lblDeliveryDate">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>250</y>
-     <width>181</width>
-     <height>30</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>10</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>Required Delivery Date:</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

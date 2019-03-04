@@ -42,11 +42,11 @@ void frmAddDelivery::submit()
         } else {
             QString strDelivery;    // string to add to save file
             strDelivery += addui->ledTransmission->text() + ',';                        // unique Transmission #
+            strDelivery += addui->cboLocation->currentText() + ',';                     // location
+            strDelivery += addui->cboTransitMethod->currentText() + ',';                     // transit method
             strDelivery += addui->cboShipHull->currentText() + ',';                     // ship name & hull #
             strDelivery += addui->ledECN->text() + ',';                                 // ECN
             strDelivery += addui->cboMediaType->currentText() + ',';                    // media type
-            strDelivery += addui->cboLocation->currentText() + ',';                     // location
-            strDelivery += addui->cboShipping->currentText() + ',';                     // transit method
             strDelivery += QString::number(addui->spnNumberObjects->value()) + ',';     // number of items
             strDelivery += addui->cboClassification->currentText() + ',';               // classification
             strDelivery += addui->cboStaffing->currentText() + ',';                     // staffing level
