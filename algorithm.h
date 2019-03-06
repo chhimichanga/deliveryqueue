@@ -4,6 +4,7 @@
 #include "delivery.h"
 #include "schedule.h"
 #include <vector>
+#include <QDate>
 using namespace std;
 
 class Algorithm
@@ -11,7 +12,7 @@ class Algorithm
     int count;
     vector <Schedule> schedule;
 public:
-
+    void loadSchedule();
     Algorithm(Delivery *currentDeliveries);
     int getCount();
     int weekDay (int day, int week, int year);

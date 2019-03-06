@@ -9,6 +9,9 @@
 #include <QDir>
 #include "schedule.h"
 #include <vector>
+#include "QString"
+
+#include <windows.h>
 
 using namespace std;
 
@@ -22,6 +25,7 @@ Algorithm::Algorithm(Delivery *currentDeliveries)
     getline(file, temp); // skip the first line of headers
 
     vector<Schedule> schedule;  // vector of schedules
+    loadSchedule();
 
     while(getline(file, temp)){ // read file until reach the end
         istringstream iss(temp);
@@ -55,10 +59,115 @@ Algorithm::Algorithm(Delivery *currentDeliveries)
         currentDeliveries[count].set_DateStart(calculateDateStart(currentDeliveries[count].get_DateShip(), currentDeliveries[count].get_NumItems(), currentDeliveries[count].get_StaffingLevel()));
         count++;   // move on to next line in file
     }
+    ofstream fileOut;
+    fileOut.open("temp.csv"); // load output stream
+    fileOut << "Transmission #,Ship Nmae & Hull #,Engineering Change #,Media Type,Location,Transit Method,Number of items,Classification,Staffing Level,Required Delivery Date,"
+            "Required Ship Date,Required Start Date" << endl;
+    for(int i = 0; i < count; i++){
+        string strDelivery; // string to add to save file
+        // append edited delivery information to string
+
+        strDelivery += currentDeliveries[i].get_TransmissionNumber() + ',';                         // unique Transmission #
+        strDelivery += currentDeliveries[i].get_Location() + ',';                     // location
+        strDelivery += currentDeliveries[i].get_TransitMethod() + ',';                     // shipping method
+        strDelivery += currentDeliveries[i].get_ShipNameHullNumber() + ',';                      // ship name & hull #
+        strDelivery += currentDeliveries[i].get_ECN() + ',';                                  // ECN
+        strDelivery += currentDeliveries[i].get_MediaType() + ',';                    // media type
+        strDelivery += to_string(currentDeliveries[i].get_NumItems()) + ',';     // number of items
+        strDelivery += currentDeliveries[i].get_Classification() + ',';               // classification
+        strDelivery += to_string(currentDeliveries[i].get_StaffingLevel()) + ',';               // staffing level
+        strDelivery += currentDeliveries[i].get_DateDeliver() + ','; // delivery date
+        strDelivery += currentDeliveries[i].get_DateShip() + ",";
+        strDelivery += currentDeliveries[i].get_DateStart() + ",";
+        fileOut << strDelivery << endl;    // send delivery to save file
+
+    }
+    fileOut.close();
+    file.close();
+
+    // delete original file
+    remove("save.csv");
+
+    // rename temp.csv to save.csv
+    rename("temp.csv","save.csv");
+
 }
 
 int Algorithm::getCount(){
     return count;
+}
+void Algorithm::loadSchedule(){
+    QString currentDate = QDate::currentDate().toString("dd/MM/yyyy");
+
+    if(QFileInfo("shcedule.txt").exists() && !QDir("shcedule.txt").exists()){
+        //The file exists and is not a folder
+        ifstream fileIn("schedule.txt");
+        if(!fileIn.is_open())
+            MessageBoxA(NULL, "Cannot open schedule file.", "error", MB_OK);
+        else { // add delivery to save file
+            fileIn.seekg(0);        // move cursor to beginning of save.csv
+            string line, token, date;
+
+            getline(fileIn, line);
+            istringstream iss(line);
+            getline(iss, token, ',');//read the date
+            date = token;
+            if(date == currentDate.toStdString()){
+                int i = 0;
+                while(getline(iss, token, ',')){
+                    QDate issueDate = QDate::currentDate().addDays(i);
+                    Schedule newSchedule(issueDate.toString("dd/MM/yyyy").toStdString());
+                    newSchedule.setStaffingLevel(stoi(token));
+                    schedule.push_back(newSchedule);
+                    i++;
+                }
+            }
+            else{
+                string write;
+                ofstream fileOut;
+                fileOut.open("tempSchedule.txt"); // load output stream
+                getline(iss, token, ',');//skip the first number
+                write = currentDate.toStdString() + iss.str() + "3,";
+                int i = 0;
+                while(getline(iss, token, ',')){
+                    QDate issueDate = QDate::currentDate().addDays(i);
+                    Schedule newSchedule(issueDate.toString("dd/MM/yyyy").toStdString());
+                    newSchedule.setStaffingLevel(stoi(token));
+                    schedule.push_back(newSchedule);
+                    i++;
+                }
+                Schedule newSchedule(QDate::currentDate().addDays(179).toString("dd/mm/yyyy").toStdString());
+                newSchedule.setStaffingLevel(stoi(token));
+                schedule.push_back(newSchedule);
+                i++;
+                fileOut << write << endl;
+                fileOut.close();
+
+            }
+
+        }
+
+        fileIn.close();
+    }
+    else{
+        //The file doesn't exist, either the path doesn't exist or is the path of a folder
+        //create a new file that contains a date and 180 "3," string
+
+        string write;
+        ofstream fileOut("schedule.txt");
+        write += currentDate.toStdString() + ",";
+        for(int i = 0; i < 180; i++){
+            write += "3,";
+            QDate issueDate = QDate::currentDate().addDays(i);
+            Schedule newSchedule(issueDate.toString("dd/MM/yyyy").toStdString());
+            schedule.push_back(newSchedule);
+        }
+        fileOut << write << endl;
+        fileOut.close();
+    }
+
+
+
 }
 
 // verify that the ship date falls on a Monday, Tuesday, or Wednesday. if not, move the ship date back to a Wednesday

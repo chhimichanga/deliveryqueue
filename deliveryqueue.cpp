@@ -3,6 +3,7 @@
 #include "deliveryqueue.h"
 #include "ui_frmDeliveryQueue.h"
 #include "adddelivery.h"
+#include "change.h"
 #include "schedule.h"
 #include "editdelivery.h"
 #include <string>
@@ -59,6 +60,7 @@ DeliveryQueue::DeliveryQueue(QWidget *parent) :
     dqui->treeView->addAction(dqui->actDeleteDelivery);
     dqui->treeView->addAction(dqui->actArchiveDelivery);
 
+
     // resize columns to fit
     for(int count = 0; count < 11; count++)
         dqui->treeView->resizeColumnToContents(count);
@@ -72,6 +74,8 @@ DeliveryQueue::DeliveryQueue(QWidget *parent) :
     connect(dqui->actEditDelivery, &QAction::triggered, this, &DeliveryQueue::editDelivery);
     connect(dqui->actDeleteDelivery, &QAction::triggered, this, &DeliveryQueue::deleteDelivery);
     connect(dqui->actArchiveDelivery, &QAction::triggered, this, &DeliveryQueue::archiveDelivery);
+    connect(dqui->actChangeSchedule, &QAction::triggered, this, &DeliveryQueue::changeSchedule);
+
 
     // load queue if there are any deliveries
     refreshQueue();
@@ -82,7 +86,11 @@ void DeliveryQueue::addDelivery(){
     frmAddDelivery *add = new frmAddDelivery();
     add->show();
 }
+void DeliveryQueue::changeSchedule(){
+    ChangeSchedule *change = new ChangeSchedule();
+    change->show();
 
+}
 // edit an existing delivery
 void DeliveryQueue::editDelivery(){
     // check if user selected a delivery
@@ -277,6 +285,7 @@ void DeliveryQueue::filterColumnChanged(){
 
 // refresh queue
 void DeliveryQueue::refreshQueue(){
+
     Delivery currentDeliveries[MAX_DELIVERIES]; // array of current deliveries
     Algorithm algorithm(currentDeliveries); // declare new instance of Algorithm, pass in current deliveries
 

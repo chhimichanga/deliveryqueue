@@ -36,7 +36,8 @@ SOURCES += \
     delivery.cpp \
     algorithm.cpp \
     editdelivery.cpp \
-    schedule.cpp
+    schedule.cpp \
+    change.cpp
 
 HEADERS += \
         deliveryqueue.h \
@@ -44,13 +45,14 @@ HEADERS += \
     delivery.h \
     algorithm.h \
     editdelivery.h \
-    schedule.h
+    schedule.h \
+    change.h
 
 FORMS += \
     frmDeliveryQueue.ui \
     frmAddDelivery.ui \
     frmEditDelivery.ui \
-    calendar.ui
+    ChangeSchedule.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

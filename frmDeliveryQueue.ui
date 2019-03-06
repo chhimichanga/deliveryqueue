@@ -181,7 +181,7 @@
      <x>0</x>
      <y>0</y>
      <width>1000</width>
-     <height>29</height>
+     <height>23</height>
     </rect>
    </property>
    <property name="font">
@@ -204,6 +204,7 @@
     <addaction name="actEditDelivery"/>
     <addaction name="actDeleteDelivery"/>
     <addaction name="actArchiveDelivery"/>
+    <addaction name="actChangeSchedule"/>
    </widget>
    <addaction name="menuDelivery"/>
   </widget>
@@ -268,6 +269,16 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+I</string>
+   </property>
+  </action>
+  <action name="actionweq">
+   <property name="text">
+    <string>weq</string>
+   </property>
+  </action>
+  <action name="actChangeSchedule">
+   <property name="text">
+    <string>Change Schedule</string>
    </property>
   </action>
  </widget>

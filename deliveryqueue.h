@@ -30,6 +30,7 @@ private slots:
 
 public slots:
     void refreshQueue();
+    void changeSchedule();
 
 private:
     Ui::DeliveryQueue *dqui;
