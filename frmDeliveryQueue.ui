@@ -237,6 +237,9 @@
    <property name="text">
     <string>&amp;Archive Delivery</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+A</string>
+   </property>
   </action>
   <action name="actRefreshQueue">
    <property name="text">
@@ -255,10 +258,16 @@
    <property name="text">
     <string>Add &amp;Manually</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
   </action>
   <action name="actImport">
    <property name="text">
     <string>&amp;Import from Excel</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+I</string>
    </property>
   </action>
  </widget>
