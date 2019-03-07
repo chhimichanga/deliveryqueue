@@ -362,13 +362,13 @@ string Algorithm::calculateDateStart(string dateShip, int itemCount, int staffin
                     schedule.at(index).setMinutesAvailable(minutesAvailable);   // update minutes available for staff n
                 }
                 // worker can finish the rest of the work
-                /*else if (minutesAvailable[n] >= totalWork && totalWork <= requiredMinutes){
+                else if (minutesAvailable[n] >= totalWork && totalWork <= requiredMinutes){
                     staffAvailable[n] = true;
                     minutesAvailable[n] = minutesAvailable[n] - totalWork;
                     totalWork = 0;                                              // set total work to 0
                     --requiredPeople;
                     schedule.at(index).setMinutesAvailable(minutesAvailable);
-                }*/
+                }
             }
 
             // the required preparing time can be fit into the delivery staff's working schedule
@@ -376,7 +376,7 @@ string Algorithm::calculateDateStart(string dateShip, int itemCount, int staffin
                 dateStartFound = 1; // the delivery has been fit into the schedule. exit the while loop
             // the assigned staff do not have enough time on that day to finish the delivery. move the start date back one day
             else{
-                /*int requiredPeopleTemp = requiredPeople;
+                int requiredPeopleTemp = requiredPeople;
 
                 // find a delivery staff who still has some available time left.
                 for(int m = 0; m < 3; m ++){
@@ -391,7 +391,7 @@ string Algorithm::calculateDateStart(string dateShip, int itemCount, int staffin
                     if(requiredPeople == 0)
                         break;
                 }
-                requiredPeople = requiredPeopleTemp;*/
+                requiredPeople = requiredPeopleTemp;
                 datePlusDays(&dateStartTemp, -1);
                 strftime(bufferDateStart, sizeof(bufferDateStart), "%d/%m/%Y", &dateStartTemp);
                 dateStart = bufferDateStart;
