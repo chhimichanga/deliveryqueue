@@ -99,7 +99,7 @@ int Algorithm::getCount(){
 void Algorithm::loadSchedule(){
     QString currentDate = QDate::currentDate().toString("dd/MM/yyyy");
 
-    if(QFileInfo("shcedule.txt").exists() && !QDir("shcedule.txt").exists()){
+    if(QFileInfo("schedule.txt").exists() && !QDir("schedule.txt").exists()){
         //The file exists and is not a folder
         ifstream fileIn("schedule.txt");
         if(!fileIn.is_open())
@@ -142,6 +142,10 @@ void Algorithm::loadSchedule(){
                 i++;
                 fileOut << write << endl;
                 fileOut.close();
+                remove("schedule.txt");
+
+                // rename temp.csv to save.csv
+                rename("tempSchedule.txt","schedule.txt");
 
             }
 
@@ -150,6 +154,7 @@ void Algorithm::loadSchedule(){
         fileIn.close();
     }
     else{
+        qDebug() << "found you";
         //The file doesn't exist, either the path doesn't exist or is the path of a folder
         //create a new file that contains a date and 180 "3," string
 
