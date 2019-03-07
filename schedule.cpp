@@ -63,7 +63,7 @@ Schedule::~Schedule(){
 
 // update staffing level for a delivery
 void Schedule::setStaffingLevel(int n){
-    for (int i = (3-n); i < 3; i++){
+    for (int i = n; i < 3; i++){
         staffMinutesTotal[i] = 0;
         staffMinutesAvailable[i] = 0;
         // so if the parameter passed in (number of available staffs) is 2, the third value in array is going to be set 0
