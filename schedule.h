@@ -7,9 +7,9 @@ using namespace std;
 class Schedule
 {
     string  date;
-    int     *staff_totalworkingminutes,
-            *staff_occupiedminutes,
-            *staff_availableminutes,
+    int     *staffMinutesTotal,
+            *staffMinutesOccupied,
+            *staffMinutesAvailable,
             day,
             month,
             year;
@@ -19,18 +19,18 @@ public:
     Schedule(string d);
     ~Schedule();
 
-    void    set_numOfStaffs(int num);
-    void    set_availableminutes(int *available);
-    void    set_occupiedminutes(int *occupied);
+    void    setStaffingLevel(int num);
+    void    setMinutesAvailable(int *available);
+    void    setMinutesOccupied(int *occupied);
 
-    string  get_date() {return date;}
-    int*    get_workingminutes() {return staff_totalworkingminutes;}
-    int*    get_occupiedminutes() {return staff_occupiedminutes;}
-    int*    get_availableminutes() {return staff_availableminutes;}
+    string  getDate() {return date;}
+    int*    getMinutesTotal() {return staffMinutesTotal;}
+    int*    getMinutesOccupied() {return staffMinutesOccupied;}
+    int*    getMinutesAvailable() {return staffMinutesAvailable;}
 
-    int     get_day() {return day;}
-    int     get_month() {return month;}
-    int     get_year() {return year;}
+    int     getDay() {return day;}
+    int     getMonth() {return month;}
+    int     getYear() {return year;}
 
 };
 

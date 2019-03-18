@@ -28,8 +28,10 @@ private slots:
     void importFile();
     void filterSyntaxChanged();
     void filterColumnChanged();
+
+public slots:
     void refreshQueue();
-    //void contextMenu(const QPoint &);
+    void changeSchedule();
 
 private:
     Ui::DeliveryQueue *dqui;

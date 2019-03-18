@@ -181,7 +181,7 @@
      <x>0</x>
      <y>0</y>
      <width>1000</width>
-     <height>29</height>
+     <height>23</height>
     </rect>
    </property>
    <property name="font">
@@ -204,6 +204,7 @@
     <addaction name="actEditDelivery"/>
     <addaction name="actDeleteDelivery"/>
     <addaction name="actArchiveDelivery"/>
+    <addaction name="actChangeSchedule"/>
    </widget>
    <addaction name="menuDelivery"/>
   </widget>
@@ -237,6 +238,9 @@
    <property name="text">
     <string>&amp;Archive Delivery</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+A</string>
+   </property>
   </action>
   <action name="actRefreshQueue">
    <property name="text">
@@ -255,10 +259,26 @@
    <property name="text">
     <string>Add &amp;Manually</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
   </action>
   <action name="actImport">
    <property name="text">
     <string>&amp;Import from Excel</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+I</string>
+   </property>
+  </action>
+  <action name="actionweq">
+   <property name="text">
+    <string>weq</string>
+   </property>
+  </action>
+  <action name="actChangeSchedule">
+   <property name="text">
+    <string>Change Schedule</string>
    </property>
   </action>
  </widget>

@@ -1,4 +1,5 @@
 #include "adddelivery.h"
+#include "deliveryqueue.h"
 #include "ui_frmAddDelivery.h"
 #include "algorithm.h"
 #include "delivery.h"
@@ -25,7 +26,7 @@ frmAddDelivery::frmAddDelivery(QWidget *parent) :
     ECN             = addui->ledECN;
     location        = addui->cboLocation;
     classification  = addui->cboClassification;
-    shipping        = addui->cboShipping;
+    shipping        = addui->cboTransitMethod;
     mediaType       = addui->cboMediaType;
     shipnumber      = addui->cboShipHull;
     deliveryDate    = addui->dteDeliveryDate;
@@ -47,23 +48,25 @@ void frmAddDelivery::submit()
     if(!fileIn.open(QIODevice::ReadWrite |  QIODevice::Append | QIODevice::Text))
         QMessageBox::information(this, "Error", "Cannot open save file for current deliveries.");
     else{     // add delivery to save file
-        if(fileIn.pos() == 0){       // if file is empty, create headers before adding more data
+        // if file is empty, create headers before adding more data
+        if(fileIn.pos() == 0){
             QString header = "Transmission #,Ship Name & Hull #,Engineering Change #,Media Type,Location,Transit Method,Number of items,Classification,Staffing Level,Required Delivery Date,Required Ship Date,Required Start Date";
             fileOut << header << endl;   // send header to save file
         } else {
             QString strDelivery;    // string to add to save file
             strDelivery += addui->ledTransmission->text() + ',';                        // unique Transmission #
+            strDelivery += addui->cboLocation->currentText() + ',';                     // location
+            strDelivery += addui->cboTransitMethod->currentText() + ',';                // transit method
             strDelivery += addui->cboShipHull->currentText() + ',';                     // ship name & hull #
             strDelivery += addui->ledECN->text() + ',';                                 // ECN
             strDelivery += addui->cboMediaType->currentText() + ',';                    // media type
-            strDelivery += addui->cboLocation->currentText() + ',';                     // location
-            strDelivery += addui->cboShipping->currentText() + ',';                     // transit method
             strDelivery += QString::number(addui->spnNumberObjects->value()) + ',';     // number of items
             strDelivery += addui->cboClassification->currentText() + ',';               // classification
             strDelivery += addui->cboStaffing->currentText() + ',';                     // staffing level
             strDelivery += addui->dteDeliveryDate->date().toString("dd/MM/yyyy") + ','; // delivery date
 
             fileOut << strDelivery << endl;  // send delivery to save file
+
             QMessageBox::information(this, "Success", "Successfully submitted a delivery.");
 
 
