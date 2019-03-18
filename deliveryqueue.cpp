@@ -66,6 +66,7 @@ DeliveryQueue::DeliveryQueue(QWidget *parent) :
 
     // connect delivery queue ui buttons and slots
     connect(dqui->actAddManually, &QAction::triggered, this, &DeliveryQueue::addDelivery);
+    connect(dqui->actImport, &QAction::triggered, this, &DeliveryQueue::importDelivery);
     connect(dqui->ledFilterPattern, &QLineEdit::textChanged, this, &DeliveryQueue::filterSyntaxChanged);
     connect(dqui->cboFilterColumn, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &DeliveryQueue::filterColumnChanged);
     connect(dqui->chkFilterCS, &QAbstractButton::toggled, this, &DeliveryQueue::filterSyntaxChanged);
@@ -83,6 +84,61 @@ void DeliveryQueue::addDelivery()
 {
     frmAddDelivery *add = new frmAddDelivery();
     add->show();
+}
+
+void DeliveryQueue::importDelivery()
+{
+    QString fileName = QFileDialog::getOpenFileName(this,
+            tr("Open File"), "",
+            tr("Excel Spreadsheet (*.xlsx);;All Files (*)"));
+
+    if (fileName.isEmpty())
+            return;
+        else {
+
+        QFile file(fileName);
+
+        if (!file.open(QIODevice::ReadOnly)) {
+            QMessageBox::information(this, tr("Unable to open file"),
+                file.errorString());
+            return;
+        }
+
+        frmAddDelivery *add = new frmAddDelivery();
+
+        QDataStream in(&file);
+        in.setVersion(QDataStream::Qt_4_5);
+
+        QXlsx::Document xlsx(fileName);
+
+        //assumption that order of information is: transmission number, classification,
+        //Media Type, Transit Method, (staffing level not on form), # of items, Required Delivery Date, ship/hull #
+        //Location, ECN/TECN
+
+
+        //transmission number
+        add->transmission->setText(xlsx.read("B1").toString());
+        //classification
+        add->classification->setCurrentText(xlsx.read("B2").toString());
+        //Media Type
+        add->mediaType->setCurrentText(xlsx.read("B3").toString());
+        //Transit Method
+        add->shipping->setCurrentText(xlsx.read("B4").toString());
+        //# of Items
+        add->numberOfItems->setValue(xlsx.read("B5").toInt());
+        //Required Delivery Date
+        add->deliveryDate->setDate(QVariant(xlsx.read("B6")).toDate());
+        //ship/hull #
+        add->shipnumber->setCurrentText(xlsx.read("B7").toString());
+        //Location
+        add->location->setCurrentText(xlsx.read("B8").toString());
+        //ECN/TECN
+        add->ECN->setText(xlsx.read("B9").toString());
+
+        add->show();
+
+        qDebug() <<(xlsx.read("B6"));
+    }
 }
 
 // edit an existing delivery
@@ -187,9 +243,6 @@ void DeliveryQueue::archiveDelivery()
     //xlsx tests start
     //xlsx headers are added already
 
-    //testArchive.write(3,1, "this works!");
-    //testArchive.save();
-
     int currentCol = 1;
     int currentRow = 1;
 
@@ -201,8 +254,6 @@ void DeliveryQueue::archiveDelivery()
     }
 
     qDebug()<<currentRow; //debug return to see if loop is searching properly
-
-    //xlsx tests end
 
     int col = 0;
 
