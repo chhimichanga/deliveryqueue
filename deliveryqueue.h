@@ -20,6 +20,7 @@ public:
 
 private slots:
     void addDelivery();
+    void importDelivery();
     void editDelivery();
     void deleteDelivery();
     void archiveDelivery();

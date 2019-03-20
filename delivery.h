@@ -15,7 +15,10 @@ class Delivery  // delivery variables
             classification,
             dateDeliver,
             dateShip,
-            dateStart;
+            dateStart,
+            staff;
+   string   *staff_name;
+
    int      numItems,
             staffinglevel;
 
@@ -36,6 +39,7 @@ public:
    void   set_DateDeliver(string dateDeliverNew);
    void   set_DateShip(string dateShipNew);
    void   set_DateStart(string dateStartNew);
+   void   set_Staff(bool *staff);
 
    // Get delivery variables
    string get_TransmissionNumber() {return transmissionNumber;}
@@ -50,6 +54,7 @@ public:
    string get_DateDeliver() {return dateDeliver;}
    string get_DateShip() {return dateShip;}
    string get_DateStart() {return dateStart;}
+   string  get_Staff(){return staff;}
    void   print_delivery_info();
 };
 #endif // DELIVERY_H

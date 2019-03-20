@@ -11,13 +11,14 @@ class Algorithm
 {
     int count;
     vector <Schedule> schedule;
+    Delivery *currentDeliveries;
 public:
     void loadSchedule();
     Algorithm(Delivery *currentDeliveries);
     int getCount();
     int weekDay (int day, int week, int year);
-    string calculateDateShip(string RDD, string Location);
-    string calculateDateStart(string RSD, int  numOfitems, int staffinglevel);
+    void calculateDateShip(int count);
+    void calculateDateStart(int count);
     void datePlusDays( struct tm* date, int days );
     void Sorting(Delivery *data, int count);
     void CheckSchedule(vector <Schedule>& newSchedule, string d);

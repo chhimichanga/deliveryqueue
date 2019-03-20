@@ -13,6 +13,10 @@ Delivery::Delivery(){   // initialize Delivery variables
     dateDeliver = '\0';
     dateShip = '\0';
     dateStart = '\0';
+    staff = '\0';
+    staff_name = new string[3]{"mike", "michael", "bruce"};
+
+
 }
 
 // all setter functions for each Delivery variable
@@ -64,4 +68,13 @@ void Delivery::set_NumItems(int numItemsNew){
 
 void Delivery::set_StaffingLevel(int staffinglevelNew){
     staffinglevel = staffinglevelNew;
+}
+void Delivery::set_Staff(bool *bool_staff){
+    int first = 0;
+    for(int i = 0; i < 3; i++){
+        if(bool_staff[i] == true)
+            if(first == 0) staff += staff_name[i];
+            else staff = staff + ", " + staff_name[i];
+            first+=1;
+    }
 }

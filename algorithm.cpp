@@ -15,8 +15,9 @@
 
 using namespace std;
 
-Algorithm::Algorithm(Delivery *currentDeliveries)
+Algorithm::Algorithm(Delivery *incomingDeliveries)
 {
+    currentDeliveries = incomingDeliveries;
     count = 0;
     string temp;         // temorary storage for reading
 
@@ -55,8 +56,8 @@ Algorithm::Algorithm(Delivery *currentDeliveries)
             }
             fieldNumber++;    // move on to next field in line
         }
-        currentDeliveries[count].set_DateShip(calculateDateShip(currentDeliveries[count].get_DateDeliver(), currentDeliveries[count].get_Location()));
-        currentDeliveries[count].set_DateStart(calculateDateStart(currentDeliveries[count].get_DateShip(), currentDeliveries[count].get_NumItems(), currentDeliveries[count].get_StaffingLevel()));
+        calculateDateShip(count);
+        calculateDateStart(count);
         count++;   // move on to next line in file
     }
     ofstream fileOut;
@@ -105,43 +106,49 @@ void Algorithm::loadSchedule(){
         if(!fileIn.is_open())
             MessageBoxA(NULL, "Cannot open schedule file.", "error", MB_OK);
         else { // add delivery to save file
-            fileIn.seekg(0);        // move cursor to beginning of save.csv
+            fileIn.seekg(0);        // move cursor to beginning of schedule.txt
             string line, token, date;
 
             getline(fileIn, line);
             istringstream iss(line);
             getline(iss, token, ',');//read the date
             date = token;
+
             if(date == currentDate.toStdString()){
                 int i = 0;
                 while(getline(iss, token, ',')){
                     QDate issueDate = QDate::currentDate().addDays(i);
                     Schedule newSchedule(issueDate.toString("dd/MM/yyyy").toStdString());
                     newSchedule.setStaffingLevel(stoi(token));
+
                     schedule.push_back(newSchedule);
                     i++;
                 }
+                fileIn.close();
             }
             else{
                 string write;
                 ofstream fileOut;
                 fileOut.open("tempSchedule.txt"); // load output stream
-                getline(iss, token, ',');//skip the first number
-                write = currentDate.toStdString() + iss.str() + "3,";
+                getline(iss, token, ',');// the first number
+                write = currentDate.toStdString() + ",";
                 int i = 0;
                 while(getline(iss, token, ',')){
+                    write += token + ",";
                     QDate issueDate = QDate::currentDate().addDays(i);
                     Schedule newSchedule(issueDate.toString("dd/MM/yyyy").toStdString());
                     newSchedule.setStaffingLevel(stoi(token));
                     schedule.push_back(newSchedule);
                     i++;
                 }
-                Schedule newSchedule(QDate::currentDate().addDays(179).toString("dd/mm/yyyy").toStdString());
-                newSchedule.setStaffingLevel(stoi(token));
+                Schedule newSchedule(QDate::currentDate().addDays(179).toString("dd/yyyy").toStdString());
+                newSchedule.setStaffingLevel(3);
                 schedule.push_back(newSchedule);
+                write += "3,";
                 i++;
                 fileOut << write << endl;
                 fileOut.close();
+                fileIn.close();
                 remove("schedule.txt");
 
                 // rename temp.csv to save.csv
@@ -151,10 +158,10 @@ void Algorithm::loadSchedule(){
 
         }
 
-        fileIn.close();
+
     }
     else{
-        qDebug() << "found you";
+
         //The file doesn't exist, either the path doesn't exist or is the path of a folder
         //create a new file that contains a date and 180 "3," string
 
@@ -168,6 +175,7 @@ void Algorithm::loadSchedule(){
             schedule.push_back(newSchedule);
         }
         fileOut << write << endl;
+
         fileOut.close();
     }
 
@@ -215,7 +223,9 @@ void Algorithm::datePlusDays( struct tm* date, int days )
 }
 
 // use the required delivery date to calculate the required ship date based on the delivery's location
-string Algorithm::calculateDateShip(string dateDeliver, string Location){
+void Algorithm::calculateDateShip(int count){
+    string dateDeliver = currentDeliveries[count].get_DateDeliver();
+    string Location = currentDeliveries[count].get_Location();
     struct tm dateShipTemp = { 0, 0, 0, 0, 0, 0, 0, 0, -1 };    // store delivery date here, then subtract as many days as needed to get ship date
     string dateShip;         // return value
 
@@ -256,11 +266,14 @@ string Algorithm::calculateDateShip(string dateDeliver, string Location){
     strftime(buffer, sizeof(buffer), "%d/%m/%Y", &dateShipTemp);
     dateShip = buffer;
 
-    return dateShip;
+    currentDeliveries[count].set_DateShip(dateShip);
+    return;
 }
 
-string Algorithm::calculateDateStart(string dateShip, int itemCount, int staffingLevel){
-    string dateShipTemp = dateShip;  // store the calculated shipping date in a variable
+void Algorithm::calculateDateStart(int count){
+    int itemCount = currentDeliveries[count].get_NumItems();
+    int staffingLevel = currentDeliveries[count].get_StaffingLevel();
+    string dateShipTemp = currentDeliveries[count].get_DateShip();  // store the calculated shipping date in a variable
     string dateStart;                // calculate the start date
     struct tm dateStartTemp = { 0, 0, 0, 0, 0, 0, 0, 0, -1 };
 
@@ -323,6 +336,7 @@ string Algorithm::calculateDateStart(string dateShip, int itemCount, int staffin
     // now that the time needed to pack the delivery is determined, find a good day to start packing.
     int dateStartFound = 0;     // find the perfect day to start preparing delivery
     char bufferDateStart[80];   // buffer to store the required start date
+    bool staff[3] = {false, false, false}; // chosen staffs for a delivery
 
     while(dateStartFound == 0){
         // check if the schedule object on a specific date exists
@@ -350,59 +364,68 @@ string Algorithm::calculateDateStart(string dateShip, int itemCount, int staffin
         else if (it != schedule.end()){
             // get minutes available for that day
             int *minutesAvailable = schedule.at(index).getMinutesAvailable();
-
+            bool staff_oneday[3] = {false, false, false};
             // go through each staff's working schedule for the day being checked
-            bool staffAvailable[3] = {false, false, false};
+
             for(int n = 0; n < 3; n++){
                 // the required preparing time can be fit into the delivery staff's working schedule
-                if (requiredPeople == 0 || totalWork == 0)
+                if (totalWork == 0)
                     break;
-
+                if (requiredPeople == 0 && staff[n] == false) // if staffs are already chosen for a delivery, and this staff is not the chosen one, jump to next loop
+                    continue;
                 // worker has enough time to work on the delivery
-                if (minutesAvailable[n] >= requiredMinutes /*&& totalWork >= requiredMinutes*/){
-                    staffAvailable[n] = true;                                   // staff n can work on that delivery on that date
+                if (minutesAvailable[n] >= requiredMinutes && totalWork >= requiredMinutes){
+                    staff[n] = true;                                   // staff n can work on that delivery on that date
+                    staff_oneday[n] = true;
                     minutesAvailable[n] -= requiredMinutes;                     // update staff n's schedule
                     totalWork -= requiredMinutes;                               // update the total working time for all staff
-                    --requiredPeople;                                           // done assigning job to one staff
+                    if(requiredPeople != 0)
+                        --requiredPeople;                                           // done assigning job to one staff
                     schedule.at(index).setMinutesAvailable(minutesAvailable);   // update minutes available for staff n
                 }
                 // worker can finish the rest of the work
-                /*else if (minutesAvailable[n] >= totalWork && totalWork <= requiredMinutes){
-                    staffAvailable[n] = true;
+                else if (minutesAvailable[n] >= totalWork && totalWork <= requiredMinutes){
+                    staff[n] = true;
+                    staff_oneday[n] = true;
                     minutesAvailable[n] = minutesAvailable[n] - totalWork;
                     totalWork = 0;                                              // set total work to 0
-                    --requiredPeople;
+                    if(requiredPeople != 0)
+                        --requiredPeople;
                     schedule.at(index).setMinutesAvailable(minutesAvailable);
-                }*/
+                }
             }
 
             // the required preparing time can be fit into the delivery staff's working schedule
-            if (requiredPeople == 0 || totalWork == 0)
+            if (totalWork == 0)
                 dateStartFound = 1; // the delivery has been fit into the schedule. exit the while loop
             // the assigned staff do not have enough time on that day to finish the delivery. move the start date back one day
             else{
-                /*int requiredPeopleTemp = requiredPeople;
 
                 // find a delivery staff who still has some available time left.
                 for(int m = 0; m < 3; m ++){
-                    if(staffAvailable[m] == false && minutesAvailable[m] != 0){
+                    if(requiredPeople == 0 && staff[m] == true && staff_oneday[m] == false && minutesAvailable[m] != 0){
                         totalWork -= minutesAvailable[m];
                         minutesAvailable[m] = 0;
                         schedule.at(index).setMinutesAvailable(minutesAvailable);
-                        staffAvailable[m] = true;
+
+                    }
+                    if(requiredPeople != 0 && staff[m] == false && staff_oneday[m] == false && minutesAvailable[m] != 0){
+                        totalWork -= minutesAvailable[m];
+                        minutesAvailable[m] = 0;
+                        schedule.at(index).setMinutesAvailable(minutesAvailable);
+                        staff[m] = true;
                         --requiredPeople;
                     }
-                    // the delivery can be fit into the schedule
-                    if(requiredPeople == 0)
-                        break;
+
                 }
-                requiredPeople = requiredPeopleTemp;*/
+
                 datePlusDays(&dateStartTemp, -1);
                 strftime(bufferDateStart, sizeof(bufferDateStart), "%d/%m/%Y", &dateStartTemp);
                 dateStart = bufferDateStart;
             }
         }
     }
-
-    return dateStart;
+    currentDeliveries[count].set_Staff(staff);
+    currentDeliveries[count].set_DateStart(dateStart);
+    return;
 }

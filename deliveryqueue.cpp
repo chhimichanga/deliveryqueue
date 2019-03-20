@@ -29,7 +29,7 @@ DeliveryQueue::DeliveryQueue(QWidget *parent) :
     // create new sort filter model. allows user to sort and filter the delivery table
     deliveryModel = new QSortFilterProxyModel;
     // create an empty delivery table with 0 rows and 10 columns
-    deliveryTable = new QStandardItemModel(0, 12, parent);
+    deliveryTable = new QStandardItemModel(0, 13, parent);
 
     // add table headers
     deliveryTable->setHeaderData(0, Qt::Horizontal, "Transmission #");
@@ -41,9 +41,11 @@ DeliveryQueue::DeliveryQueue(QWidget *parent) :
     deliveryTable->setHeaderData(6, Qt::Horizontal, "# of Items");
     deliveryTable->setHeaderData(7, Qt::Horizontal, "Classification");
     deliveryTable->setHeaderData(8, Qt::Horizontal, "Staffing Level");
+
     deliveryTable->setHeaderData(9, Qt::Horizontal, "Required Delivery Date");
     deliveryTable->setHeaderData(10, Qt::Horizontal, "Required Ship Date");
     deliveryTable->setHeaderData(11, Qt::Horizontal, "Required Start Date");
+    deliveryTable->setHeaderData(12, Qt::Horizontal, "Staffs");
 
     // set source model for deliveryModel
     deliveryModel->setSourceModel(deliveryTable);
@@ -67,6 +69,7 @@ DeliveryQueue::DeliveryQueue(QWidget *parent) :
 
     // connect delivery queue ui buttons and slots
     connect(dqui->actAddManually, &QAction::triggered, this, &DeliveryQueue::addDelivery);
+    connect(dqui->actImport, &QAction::triggered, this, &DeliveryQueue::importDelivery);
     connect(dqui->ledFilterPattern, &QLineEdit::textChanged, this, &DeliveryQueue::filterSyntaxChanged);
     connect(dqui->cboFilterColumn, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &DeliveryQueue::filterColumnChanged);
     connect(dqui->chkFilterCS, &QAbstractButton::toggled, this, &DeliveryQueue::filterSyntaxChanged);
@@ -89,8 +92,63 @@ void DeliveryQueue::addDelivery(){
 void DeliveryQueue::changeSchedule(){
     ChangeSchedule *change = new ChangeSchedule();
     change->show();
-
 }
+
+void DeliveryQueue::importDelivery(){
+    QString fileName = QFileDialog::getOpenFileName(this,
+            tr("Open File"), "",
+            tr("Excel Spreadsheet (*.xlsx);;All Files (*)"));
+
+    if (fileName.isEmpty())
+            return;
+        else {
+
+        QFile file(fileName);
+
+        if (!file.open(QIODevice::ReadOnly)) {
+            QMessageBox::information(this, tr("Unable to open file"),
+                file.errorString());
+            return;
+        }
+
+        frmAddDelivery *add = new frmAddDelivery();
+
+        QDataStream in(&file);
+        in.setVersion(QDataStream::Qt_4_5);
+
+        QXlsx::Document xlsx(fileName);
+
+        //assumption that order of information is: transmission number, classification,
+        //Media Type, Transit Method, (staffing level not on form), # of items, Required Delivery Date, ship/hull #
+        //Location, ECN/TECN
+
+
+        //transmission number
+        add->transmission->setText(xlsx.read("B1").toString());
+        //classification
+        add->classification->setCurrentText(xlsx.read("B2").toString());
+        //Media Type
+        add->mediaType->setCurrentText(xlsx.read("B3").toString());
+        //Transit Method
+        add->shipping->setCurrentText(xlsx.read("B4").toString());
+        //# of Items
+        add->numberOfItems->setValue(xlsx.read("B5").toInt());
+        //Required Delivery Date
+        add->deliveryDate->setDate(QVariant(xlsx.read("B6")).toDate());
+        //ship/hull #
+        add->shipnumber->setCurrentText(xlsx.read("B7").toString());
+        //Location
+        add->location->setCurrentText(xlsx.read("B8").toString());
+        //ECN/TECN
+        add->ECN->setText(xlsx.read("B9").toString());
+
+        add->show();
+
+        qDebug() <<(xlsx.read("B6"));
+    }
+}
+
+
 // edit an existing delivery
 void DeliveryQueue::editDelivery(){
     // check if user selected a delivery
@@ -194,9 +252,6 @@ void DeliveryQueue::archiveDelivery(){
     //xlsx tests start
     //xlsx headers are added already
 
-    //testArchive.write(3,1, "this works!");
-    //testArchive.save();
-
     int currentCol = 1;
     int currentRow = 1;
 
@@ -206,6 +261,7 @@ void DeliveryQueue::archiveDelivery(){
         currentRow++;
         cell = testArchive.cellAt(currentRow,1);
     }
+
     //xlsx tests end
 
     int col = 0;
@@ -293,7 +349,7 @@ void DeliveryQueue::refreshQueue(){
 
     // delivery details
     int numberOfItems, staffingLevel, numberOfDeliveries;
-    QString location, transitMethod, classification, mediaType, transmissionNumber, shipNameHullNumber, ECN;
+    QString location, transitMethod, classification, mediaType, transmissionNumber, shipNameHullNumber, ECN, staff;
     QDate dateDeliver, dateShip, dateStart;
 
     // set number of deliveries
@@ -313,7 +369,7 @@ void DeliveryQueue::refreshQueue(){
         mediaType = QString::fromStdString(currentDeliveries[row].get_MediaType());
         dateShip = QDate::fromString(QString::fromStdString(currentDeliveries[row].get_DateShip()), "dd/MM/yyyy");
         dateStart = QDate::fromString(QString::fromStdString(currentDeliveries[row].get_DateStart()), "dd/MM/yyyy");
-
+        staff = QString::fromStdString(currentDeliveries[row].get_Staff());
         // insert a row below the last current row in the list
         deliveryTable->insertRow(row);
         // set each field's value for the new row
@@ -329,6 +385,9 @@ void DeliveryQueue::refreshQueue(){
         deliveryTable->setData(deliveryTable->index(row, 9), dateDeliver);
         deliveryTable->setData(deliveryTable->index(row, 10), dateShip);
         deliveryTable->setData(deliveryTable->index(row, 11), dateStart);
+        deliveryTable->setData(deliveryTable->index(row, 11), dateStart);
+        deliveryTable->setData(deliveryTable->index(row, 12), staff);
+
 
     }
     colorCodeDeliveries();

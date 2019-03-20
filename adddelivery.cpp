@@ -21,6 +21,17 @@ frmAddDelivery::frmAddDelivery(QWidget *parent) :
 {
     addui->setupUi(this);
 
+    // store input boxes into public variables for public access
+    transmission    = addui->ledTransmission;
+    ECN             = addui->ledECN;
+    location        = addui->cboLocation;
+    classification  = addui->cboClassification;
+    shipping        = addui->cboTransitMethod;
+    mediaType       = addui->cboMediaType;
+    shipnumber      = addui->cboShipHull;
+    deliveryDate    = addui->dteDeliveryDate;
+    numberOfItems   = addui->spnNumberObjects;
+
     // connect add delivery ui buttons and slots
     connect(addui->btnSubmit, &QPushButton::clicked, this, &frmAddDelivery::submit);
     connect(addui->btnCancel, &QPushButton::clicked, this, &frmAddDelivery::cancel);
@@ -57,6 +68,8 @@ void frmAddDelivery::submit()
             fileOut << strDelivery << endl;  // send delivery to save file
 
             QMessageBox::information(this, "Success", "Successfully submitted a delivery.");
+
+
         }
     }
 }
