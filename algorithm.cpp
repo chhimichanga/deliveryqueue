@@ -19,6 +19,7 @@ Algorithm::Algorithm(Delivery *incomingDeliveries)
 {
     currentDeliveries = incomingDeliveries;
     count = 0;
+    srand ( time(NULL) );
     string temp;         // temorary storage for reading
 
     // load save file
@@ -114,38 +115,50 @@ void Algorithm::loadSchedule(){
             getline(iss, token, ',');//read the date
             date = token;
 
-            if(date == currentDate.toStdString()){
-                int i = 0;
+            if(date == currentDate.toStdString()){ // if user opens the program at the same date
+                int i = 0;    
                 while(getline(iss, token, ',')){
                     QDate issueDate = QDate::currentDate().addDays(i);
                     Schedule newSchedule(issueDate.toString("dd/MM/yyyy").toStdString());
-                    newSchedule.setStaffingLevel(stoi(token));
-
+                    int availability[3];
+                    for(int p = 0; p < 3; p++){
+                        if(p!=0) getline(iss, token, ','); // read a value
+                        availability[p] = stoi(token);
+                    }
+                    newSchedule.setStaffingLevel(availability);
                     schedule.push_back(newSchedule);
                     i++;
                 }
                 fileIn.close();
             }
-            else{
+            else{   // if the user opens the program on a different day
                 string write;
                 ofstream fileOut;
                 fileOut.open("tempSchedule.txt"); // load output stream
-                getline(iss, token, ',');// the first number
+                for(int temp = 0; temp < 3; temp++){
+                    getline(iss, token, ',');// get rid of first three numbers
+                }
                 write = currentDate.toStdString() + ",";
                 int i = 0;
                 while(getline(iss, token, ',')){
                     write += token + ",";
+                    int availability[3];
                     QDate issueDate = QDate::currentDate().addDays(i);
                     Schedule newSchedule(issueDate.toString("dd/MM/yyyy").toStdString());
-                    newSchedule.setStaffingLevel(stoi(token));
+                    for(int p = 0; p < 3; p++){
+                        if(p!=0) getline(iss, token, ','); // read a value
+                        availability[p] = stoi(token);
+                    }
+                    newSchedule.setStaffingLevel(availability);
                     schedule.push_back(newSchedule);
                     i++;
                 }
+                int avail[3] = {1,1,1};
                 Schedule newSchedule(QDate::currentDate().addDays(179).toString("dd/yyyy").toStdString());
-                newSchedule.setStaffingLevel(3);
+                newSchedule.setStaffingLevel(avail);
                 schedule.push_back(newSchedule);
-                write += "3,";
-                i++;
+                write += "1,1,1,";
+
                 fileOut << write << endl;
                 fileOut.close();
                 fileIn.close();
@@ -168,8 +181,10 @@ void Algorithm::loadSchedule(){
         string write;
         ofstream fileOut("schedule.txt");
         write += currentDate.toStdString() + ",";
-        for(int i = 0; i < 180; i++){
-            write += "3,";
+        for(int i = 0; i < 180; i++){ // 180 days
+            for(int j = 0; j < 3; j++){ // 3 staffs
+                write += "1,";
+            }
             QDate issueDate = QDate::currentDate().addDays(i);
             Schedule newSchedule(issueDate.toString("dd/MM/yyyy").toStdString());
             schedule.push_back(newSchedule);
@@ -360,6 +375,7 @@ void Algorithm::calculateDateStart(int count){
             Schedule newSchedule(dateStart);
             schedule.push_back(newSchedule);
         }
+
         // if the schedule object is already created, check if this delivery fits in the schedule
         else if (it != schedule.end()){
             // get minutes available for that day
@@ -367,7 +383,25 @@ void Algorithm::calculateDateStart(int count){
             bool staff_oneday[3] = {false, false, false};
             // go through each staff's working schedule for the day being checked
 
-            for(int n = 0; n < 3; n++){
+            int first, second;
+            for(int p = 0; p < 3; p++){
+
+                int n = rand() % 3;
+                if(p == 0){
+                    first = n;
+                }
+                else if(p == 1){
+                    while(n == first){
+                        n = rand() % 3;
+                    }
+                    second = n;
+                }
+                else if(p == 2){
+                    while(n == second || n == first){
+                        n = rand() % 3;
+                    }
+                }
+                qDebug() << n;
                 // the required preparing time can be fit into the delivery staff's working schedule
                 if (totalWork == 0)
                     break;
