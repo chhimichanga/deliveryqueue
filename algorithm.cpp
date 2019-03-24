@@ -65,6 +65,9 @@ Algorithm::Algorithm(Delivery *incomingDeliveries)
             calculateDateShip(count);
             calculateDateStart(count, 0);
         }
+        else{
+            calculateDateStart(count, 1);
+        }
 
         count++;   // move on to next line in file
     }
@@ -88,6 +91,7 @@ Algorithm::Algorithm(Delivery *incomingDeliveries)
         strDelivery += currentDeliveries[i].get_DateDeliver() + ','; // delivery date
         strDelivery += currentDeliveries[i].get_DateShip() + ",";
         strDelivery += currentDeliveries[i].get_DateStart() + ",";
+        strDelivery += currentDeliveries[i].get_Staff() + ",";
         fileOut << strDelivery << endl;    // send delivery to save file
 
     }
@@ -503,7 +507,7 @@ void Algorithm::calculateDateStart(int count, bool set){
             }
         }
     }
-    currentDeliveries[count].set_Staff(staff);
+    if(set == 0) currentDeliveries[count].set_Staff(staff);
     currentDeliveries[count].set_DateStart(dateStart);
     return;
 }
