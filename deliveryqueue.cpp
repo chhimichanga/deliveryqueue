@@ -152,7 +152,7 @@ void DeliveryQueue::importDelivery(){
 // edit an existing delivery
 void DeliveryQueue::editDelivery(){
     // check if user selected a delivery
-    if(!dqui->treeView->selectionModel()->currentIndex().isValid())
+    if(!dqui->treeView->selectionModel()->hasSelection())
         QMessageBox::information(this, "Failure", "You haven't selected the delivery to be edited.");
     else {
         // selected index number
@@ -212,7 +212,7 @@ void DeliveryQueue::editDelivery(){
 // delete an existing delivery from the queue
 void DeliveryQueue::deleteDelivery(){
     // check if user have selected a delivery
-    if(!dqui->treeView->selectionModel()->currentIndex().isValid())
+    if(!dqui->treeView->selectionModel()->hasSelection())
         QMessageBox::information(this, "Failure", "You haven't selected the delivery to be deleted.");
     else {
         if(QMessageBox::question(this, "Delete?", "Are you sure you want to delete this delivery?", QMessageBox::Yes|QMessageBox::No) == QMessageBox::Yes){
