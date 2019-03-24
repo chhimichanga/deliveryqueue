@@ -40,7 +40,7 @@ public:
    void   set_DateShip(string dateShipNew);
    void   set_DateStart(string dateStartNew);
    void   set_Staff(bool *staff);
-
+   void   set_Staff(string staFF);
    // Get delivery variables
    string get_TransmissionNumber() {return transmissionNumber;}
    string get_Location() {return location;}
@@ -55,6 +55,7 @@ public:
    string get_DateShip() {return dateShip;}
    string get_DateStart() {return dateStart;}
    string  get_Staff(){return staff;}
+   string*  get_StaffName(){return staff_name;}
    void   print_delivery_info();
 };
 #endif // DELIVERY_H

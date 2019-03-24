@@ -50,13 +50,6 @@ void frmEditDelivery::submit()
         fileIn.seekg(0);        // move cursor to beginning of save.csv
         getline(fileIn, line);  // skip header line
 
-        while(getline(fileIn, line)){       // read until reach end of file
-            istringstream stringIn(line);   // feed line to stream
-            getline(stringIn, id, ',');     // parse line using comma delimiter, extract ID
-            if(id != transmissionNumber)          // if not the delivery being edited,
-                fileOut << line << endl;        // write line to temp file
-        }
-
         string strDelivery; // string to add to save file
         // append edited delivery information to string
 
@@ -70,7 +63,20 @@ void frmEditDelivery::submit()
         strDelivery += editui->cboClassification->currentText().toStdString() + ',';               // classification
         strDelivery += editui->cboStaffing->currentText().toStdString() + ',';               // staffing level
         strDelivery += editui->dteDeliveryDate->date().toString("dd/MM/yyyy").toStdString() + ','; // delivery date
-        fileOut << strDelivery << endl;    // send delivery to save file
+
+
+        while(getline(fileIn, line)){       // read until reach end of file
+            istringstream stringIn(line);   // feed line to stream
+            getline(stringIn, id, ',');     // parse line using comma delimiter, extract ID
+            if(id != transmissionNumber){          // if not the delivery being edited,
+                fileOut << line << endl;// write line to temp file
+            }
+            else{
+                fileOut << strDelivery << endl;    // send delivery to save file
+            }
+        }
+
+
 
         // close both files
         fileOut.close();
