@@ -25,7 +25,6 @@ private slots:
     void deleteDelivery();
     void archiveDelivery();
     void assignDelivery();
-    void importFile();
     void filterSyntaxChanged();
     void filterColumnChanged();
 

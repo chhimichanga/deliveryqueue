@@ -41,11 +41,10 @@ DeliveryQueue::DeliveryQueue(QWidget *parent) :
     deliveryTable->setHeaderData(6, Qt::Horizontal, "# of Items");
     deliveryTable->setHeaderData(7, Qt::Horizontal, "Classification");
     deliveryTable->setHeaderData(8, Qt::Horizontal, "Staffing Level");
-
     deliveryTable->setHeaderData(9, Qt::Horizontal, "Required Delivery Date");
     deliveryTable->setHeaderData(10, Qt::Horizontal, "Required Ship Date");
     deliveryTable->setHeaderData(11, Qt::Horizontal, "Required Start Date");
-    deliveryTable->setHeaderData(12, Qt::Horizontal, "Staffs");
+    deliveryTable->setHeaderData(12, Qt::Horizontal, "Assigned Staff");
 
     // set source model for deliveryModel
     deliveryModel->setSourceModel(deliveryTable);
@@ -61,7 +60,6 @@ DeliveryQueue::DeliveryQueue(QWidget *parent) :
     dqui->treeView->addAction(dqui->actEditDelivery);
     dqui->treeView->addAction(dqui->actDeleteDelivery);
     dqui->treeView->addAction(dqui->actArchiveDelivery);
-
 
     // resize columns to fit
     for(int count = 0; count < 11; count++)
@@ -79,7 +77,6 @@ DeliveryQueue::DeliveryQueue(QWidget *parent) :
     connect(dqui->actArchiveDelivery, &QAction::triggered, this, &DeliveryQueue::archiveDelivery);
     connect(dqui->actChangeSchedule, &QAction::triggered, this, &DeliveryQueue::changeSchedule);
 
-
     // load queue if there are any deliveries
     refreshQueue();
 }
@@ -89,19 +86,22 @@ void DeliveryQueue::addDelivery(){
     frmAddDelivery *add = new frmAddDelivery();
     add->show();
 }
+
+// edit the staff schedule
 void DeliveryQueue::changeSchedule(){
-    ChangeSchedule *change = new ChangeSchedule();
+    frmChangeSchedule *change = new frmChangeSchedule();
     change->show();
 }
 
+// import a delivery from a file
 void DeliveryQueue::importDelivery(){
     QString fileName = QFileDialog::getOpenFileName(this,
             tr("Open File"), "",
             tr("Excel Spreadsheet (*.xlsx);;All Files (*)"));
 
     if (fileName.isEmpty())
-            return;
-        else {
+        return;
+    else {
 
         QFile file(fileName);
 
@@ -143,8 +143,6 @@ void DeliveryQueue::importDelivery(){
         add->ECN->setText(xlsx.read("B9").toString());
 
         add->show();
-
-        qDebug() <<(xlsx.read("B6"));
     }
 }
 
@@ -313,11 +311,6 @@ void DeliveryQueue::archiveDelivery(){
 
 // assign an existing delivery to an employee
 void DeliveryQueue::assignDelivery(){
-
-}
-
-// import a delivery from a file
-void DeliveryQueue::importFile(){
 
 }
 

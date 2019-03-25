@@ -181,7 +181,7 @@
      <x>0</x>
      <y>0</y>
      <width>1000</width>
-     <height>23</height>
+     <height>29</height>
     </rect>
    </property>
    <property name="font">
@@ -278,7 +278,7 @@
   </action>
   <action name="actChangeSchedule">
    <property name="text">
-    <string>Change Schedule</string>
+    <string>Edit Schedule</string>
    </property>
   </action>
  </widget>

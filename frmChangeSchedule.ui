@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ChangeSchedule</class>
- <widget class="QWidget" name="ChangeSchedule">
+ <class>frmChangeSchedule</class>
+ <widget class="QWidget" name="frmChangeSchedule">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Edit Staff Schedule</string>
   </property>
   <widget class="QCalendarWidget" name="calendarWidget">
    <property name="geometry">
@@ -26,10 +26,10 @@
     <bool>false</bool>
    </property>
   </widget>
-  <widget class="QComboBox" name="comboBox">
+  <widget class="QComboBox" name="cboStaffAvailability">
    <property name="geometry">
     <rect>
-     <x>380</x>
+     <x>370</x>
      <y>350</y>
      <width>41</width>
      <height>31</height>
@@ -56,34 +56,7 @@
     </property>
    </item>
   </widget>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>220</x>
-     <y>340</y>
-     <width>111</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Times New Roman</family>
-     <pointsize>12</pointsize>
-     <weight>50</weight>
-     <italic>false</italic>
-     <bold>false</bold>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color: rgb(7, 7, 7);
-font: 12pt &quot;Times New Roman&quot;;
-</string>
-   </property>
-   <property name="text">
-    <string>Staff Availability</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="btnsubmit">
+  <widget class="QPushButton" name="btnSubmit">
    <property name="geometry">
     <rect>
      <x>114</x>
@@ -96,7 +69,7 @@ font: 12pt &quot;Times New Roman&quot;;
     <string>Update</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="btncancel">
+  <widget class="QPushButton" name="btnCancel">
    <property name="geometry">
     <rect>
      <x>410</x>
@@ -107,6 +80,24 @@ font: 12pt &quot;Times New Roman&quot;;
    </property>
    <property name="text">
     <string>Cancel</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lblStaffAvailability">
+   <property name="geometry">
+    <rect>
+     <x>230</x>
+     <y>350</y>
+     <width>131</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Staff Availability:</string>
    </property>
   </widget>
  </widget>

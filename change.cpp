@@ -1,5 +1,5 @@
 #include "change.h"
-#include "ui_ChangeSchedule.h"
+#include "ui_frmChangeSchedule.h"
 #include <QFile>
 #include <QDir>
 #include <QMessageBox>
@@ -12,8 +12,8 @@
 #include <vector>
 #include <QDebug>
 using namespace std;
-ChangeSchedule::ChangeSchedule(QWidget *parent) :
-    QWidget(parent), csui(new Ui::ChangeSchedule)
+frmChangeSchedule::frmChangeSchedule(QWidget *parent) :
+    QWidget(parent), csui(new Ui::frmChangeSchedule)
 {
     csui->setupUi(this);
 
@@ -36,16 +36,16 @@ ChangeSchedule::ChangeSchedule(QWidget *parent) :
     fileIn.close();
 
     // connect add delivery ui buttons and slots
-    connect(csui->btnsubmit, &QPushButton::clicked, this, &ChangeSchedule::submit);
-    connect(csui->btncancel, &QPushButton::clicked, this, &ChangeSchedule::cancel);
+    connect(csui->btnSubmit, &QPushButton::clicked, this, &frmChangeSchedule::submit);
+    connect(csui->btnCancel, &QPushButton::clicked, this, &frmChangeSchedule::cancel);
 
 }
-void ChangeSchedule::submit()
+void frmChangeSchedule::submit()
 {
     QDate selectedDate= csui->calendarWidget->selectedDate();
     QDate currentDate = QDate::currentDate();
     int diff = currentDate.daysTo(selectedDate);
-    schedule[diff] = csui->comboBox->currentText().toInt();
+    schedule[diff] = csui->cboStaffAvailability->currentText().toInt();
 
 
     string write;
@@ -64,20 +64,20 @@ void ChangeSchedule::submit()
 
 
 }
-void ChangeSchedule::cancel()
+void frmChangeSchedule::cancel()
 {
     close();
 }
 
-ChangeSchedule::~ChangeSchedule()
+frmChangeSchedule::~frmChangeSchedule()
 {
     delete csui;
 }
 
-void ChangeSchedule::on_calendarWidget_clicked(const QDate &date)
+void frmChangeSchedule::on_calendarWidget_clicked(const QDate &date)
 {
     QDate currentDate = QDate::currentDate();
     int diff = currentDate.daysTo(date);
-    csui->comboBox->setCurrentText(QString::number(schedule[diff]));
+    csui->cboStaffAvailability->setCurrentText(QString::number(schedule[diff]));
 
 }
