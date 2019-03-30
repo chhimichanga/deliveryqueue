@@ -26,36 +26,6 @@
     <bool>false</bool>
    </property>
   </widget>
-  <widget class="QComboBox" name="cboStaffAvailability">
-   <property name="geometry">
-    <rect>
-     <x>370</x>
-     <y>350</y>
-     <width>41</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <item>
-    <property name="text">
-     <string>3</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>2</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>1</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>0</string>
-    </property>
-   </item>
-  </widget>
   <widget class="QPushButton" name="btnSubmit">
    <property name="geometry">
     <rect>
@@ -82,13 +52,13 @@
     <string>Cancel</string>
    </property>
   </widget>
-  <widget class="QLabel" name="lblStaffAvailability">
+  <widget class="QCheckBox" name="chkEmployee1">
    <property name="geometry">
     <rect>
-     <x>230</x>
-     <y>350</y>
-     <width>131</width>
-     <height>31</height>
+     <x>160</x>
+     <y>360</y>
+     <width>81</width>
+     <height>21</height>
     </rect>
    </property>
    <property name="font">
@@ -97,7 +67,43 @@
     </font>
    </property>
    <property name="text">
-    <string>Staff Availability:</string>
+    <string>Mike</string>
+   </property>
+  </widget>
+  <widget class="QCheckBox" name="chkEmployee2">
+   <property name="geometry">
+    <rect>
+     <x>300</x>
+     <y>360</y>
+     <width>81</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Michael</string>
+   </property>
+  </widget>
+  <widget class="QCheckBox" name="chkEmployee3">
+   <property name="geometry">
+    <rect>
+     <x>440</x>
+     <y>360</y>
+     <width>71</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Bruce</string>
    </property>
   </widget>
  </widget>

@@ -19,7 +19,7 @@ public:
     Schedule(string d);
     ~Schedule();
 
-    void    setStaffingLevel(int num);
+    void    setStaffingLevel(int* staffinglevel);
     void    setMinutesAvailable(int *available);
     void    setMinutesOccupied(int *occupied);
 

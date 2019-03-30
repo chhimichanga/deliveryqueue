@@ -15,8 +15,9 @@ class DeliveryQueue : public QMainWindow
     Q_OBJECT
 
 public:
+    Ui::DeliveryQueue *dqui;
     explicit DeliveryQueue(QWidget *parent = nullptr);
-    ~DeliveryQueue();
+    ~DeliveryQueue() override;
 
 private slots:
     void addDelivery();
@@ -24,16 +25,15 @@ private slots:
     void editDelivery();
     void deleteDelivery();
     void archiveDelivery();
-    void assignDelivery();
     void filterSyntaxChanged();
     void filterColumnChanged();
 
 public slots:
     void refreshQueue();
     void changeSchedule();
+    bool event(QEvent *event) override;
 
 private:
-    Ui::DeliveryQueue *dqui;
     QSortFilterProxyModel *deliveryModel;
     QStandardItemModel *deliveryTable;
     QAbstractItemModel *createDeliveryModel(QObject *parent);

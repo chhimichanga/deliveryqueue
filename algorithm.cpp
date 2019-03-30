@@ -19,6 +19,7 @@ Algorithm::Algorithm(Delivery *incomingDeliveries)
 {
     currentDeliveries = incomingDeliveries;
     count = 0;
+    srand ( time(NULL) );
     string temp;         // temorary storage for reading
 
     // load save file
@@ -53,16 +54,26 @@ Algorithm::Algorithm(Delivery *incomingDeliveries)
                 currentDeliveries[count].set_StaffingLevel(stoi(token));    // set staffing level
             }else if(fieldNumber == 9){
                 currentDeliveries[count].set_DateDeliver(token);            // set required delivery date
-            }
+            }else if(fieldNumber == 10){
+                currentDeliveries[count].set_DateShip(token);
+            }//else if(fieldNumber == 12){
+             //   currentDeliveries[count].set_Staff(token);
+           // }
             fieldNumber++;    // move on to next field in line
         }
-        calculateDateShip(count);
-        calculateDateStart(count);
+        if(fieldNumber == 10){
+            calculateDateShip(count);
+            calculateDateStart(count, 0);
+        }
+        else{
+            calculateDateStart(count, 0);
+        }
+
         count++;   // move on to next line in file
     }
     ofstream fileOut;
     fileOut.open("temp.csv"); // load output stream
-    fileOut << "Transmission #,Ship Nmae & Hull #,Engineering Change #,Media Type,Location,Transit Method,Number of items,Classification,Staffing Level,Required Delivery Date,"
+    fileOut << "Transmission #,Ship Name & Hull #,Engineering Change #,Media Type,Location,Transit Method,Number of items,Classification,Staffing Level,Required Delivery Date,"
             "Required Ship Date,Required Start Date" << endl;
     for(int i = 0; i < count; i++){
         string strDelivery; // string to add to save file
@@ -80,6 +91,7 @@ Algorithm::Algorithm(Delivery *incomingDeliveries)
         strDelivery += currentDeliveries[i].get_DateDeliver() + ','; // delivery date
         strDelivery += currentDeliveries[i].get_DateShip() + ",";
         strDelivery += currentDeliveries[i].get_DateStart() + ",";
+        strDelivery += currentDeliveries[i].get_Staff() + ",";
         fileOut << strDelivery << endl;    // send delivery to save file
 
     }
@@ -114,38 +126,51 @@ void Algorithm::loadSchedule(){
             getline(iss, token, ',');//read the date
             date = token;
 
-            if(date == currentDate.toStdString()){
-                int i = 0;
+            if(date == currentDate.toStdString()){ // if user opens the program at the same date
+                int i = 0;    
                 while(getline(iss, token, ',')){
                     QDate issueDate = QDate::currentDate().addDays(i);
                     Schedule newSchedule(issueDate.toString("dd/MM/yyyy").toStdString());
-                    newSchedule.setStaffingLevel(stoi(token));
-
+                    int availability[3];
+                    for(int p = 0; p < 3; p++){
+                        if(p!=0) getline(iss, token, ','); // read a value
+                        availability[p] = stoi(token);
+                    }
+                    newSchedule.setStaffingLevel(availability);
                     schedule.push_back(newSchedule);
                     i++;
                 }
                 fileIn.close();
             }
-            else{
+            else{   // if the user opens the program on a different day
                 string write;
                 ofstream fileOut;
                 fileOut.open("tempSchedule.txt"); // load output stream
-                getline(iss, token, ',');// the first number
+                for(int temp = 0; temp < 3; temp++){
+                    getline(iss, token, ',');// get rid of first three numbers
+                }
                 write = currentDate.toStdString() + ",";
                 int i = 0;
                 while(getline(iss, token, ',')){
-                    write += token + ",";
+
+                    int availability[3];
                     QDate issueDate = QDate::currentDate().addDays(i);
                     Schedule newSchedule(issueDate.toString("dd/MM/yyyy").toStdString());
-                    newSchedule.setStaffingLevel(stoi(token));
+                    for(int p = 0; p < 3; p++){
+                        if(p!=0) getline(iss, token, ','); // read a value
+                        write += token + ",";
+                        availability[p] = stoi(token);
+                    }
+                    newSchedule.setStaffingLevel(availability);
                     schedule.push_back(newSchedule);
                     i++;
                 }
+                int avail[3] = {1,1,1};
                 Schedule newSchedule(QDate::currentDate().addDays(179).toString("dd/yyyy").toStdString());
-                newSchedule.setStaffingLevel(3);
+                newSchedule.setStaffingLevel(avail);
                 schedule.push_back(newSchedule);
-                write += "3,";
-                i++;
+                write += "1,1,1,";
+
                 fileOut << write << endl;
                 fileOut.close();
                 fileIn.close();
@@ -168,8 +193,10 @@ void Algorithm::loadSchedule(){
         string write;
         ofstream fileOut("schedule.txt");
         write += currentDate.toStdString() + ",";
-        for(int i = 0; i < 180; i++){
-            write += "3,";
+        for(int i = 0; i < 180; i++){ // 180 days
+            for(int j = 0; j < 3; j++){ // 3 staffs
+                write += "1,";
+            }
             QDate issueDate = QDate::currentDate().addDays(i);
             Schedule newSchedule(issueDate.toString("dd/MM/yyyy").toStdString());
             schedule.push_back(newSchedule);
@@ -270,7 +297,7 @@ void Algorithm::calculateDateShip(int count){
     return;
 }
 
-void Algorithm::calculateDateStart(int count){
+void Algorithm::calculateDateStart(int count, bool set){
     int itemCount = currentDeliveries[count].get_NumItems();
     int staffingLevel = currentDeliveries[count].get_StaffingLevel();
     string dateShipTemp = currentDeliveries[count].get_DateShip();  // store the calculated shipping date in a variable
@@ -337,7 +364,18 @@ void Algorithm::calculateDateStart(int count){
     int dateStartFound = 0;     // find the perfect day to start preparing delivery
     char bufferDateStart[80];   // buffer to store the required start date
     bool staff[3] = {false, false, false}; // chosen staffs for a delivery
-
+    if(set == 1){
+        string assignedStaffs = currentDeliveries[count].get_Staff();
+        istringstream iss(assignedStaffs);
+        while(getline(iss, token, ';')){
+            for(int three = 0; three < 3; three++){
+                if(token == currentDeliveries[count].get_StaffName()[three]){
+                    staff[three] = true;
+                    requiredPeople--;
+                }
+            }
+        }
+    }
     while(dateStartFound == 0){
         // check if the schedule object on a specific date exists
         auto it = find_if(schedule.begin(), schedule.end(), [&dateStart](Schedule& obj){return obj.getDate() == dateStart;});
@@ -360,18 +398,64 @@ void Algorithm::calculateDateStart(int count){
             Schedule newSchedule(dateStart);
             schedule.push_back(newSchedule);
         }
+
         // if the schedule object is already created, check if this delivery fits in the schedule
         else if (it != schedule.end()){
             // get minutes available for that day
             int *minutesAvailable = schedule.at(index).getMinutesAvailable();
             bool staff_oneday[3] = {false, false, false};
+            int order[3]; // order[0] stores the number of staff who has the most time left, order[2] stores the number of staff who has the least time left
             // go through each staff's working schedule for the day being checked
+            if(minutesAvailable[0] > minutesAvailable[1]){
+                if(minutesAvailable[1] > minutesAvailable[2]){
+                    order[0] = 0;
+                    order[1] = 1;
+                    order[2] = 2;
+                }
+                else{
+                    if(minutesAvailable[2] > minutesAvailable[0]){
+                        order[0] = 2;
+                        order[1] = 0;
+                        order[2] = 1;
+                    }
+                    else{
+                        order[0] = 0;
+                        order[1] = 2;
+                        order[2] = 1;
+                    }
+                }
+            }
+            else{
+                if(minutesAvailable[0] > minutesAvailable[2]){
+                    order[0] = 1;
+                    order[1] = 0;
+                    order[2] = 2;
+                }
+                else{
+                    if(minutesAvailable[2] > minutesAvailable[1]){
+                        order[0] = 2;
+                        order[1] = 1;
+                        order[2] = 0;
+                    }
+                    else{
+                        order[0] = 1;
+                        order[1] = 2;
+                        order[2] = 0;
+                    }
+                }
+            }
 
-            for(int n = 0; n < 3; n++){
+            for(int p = 0; p < 3; p++){
+
+                int n = order[p];
+
+                //qDebug() << n;
                 // the required preparing time can be fit into the delivery staff's working schedule
                 if (totalWork == 0)
                     break;
                 if (requiredPeople == 0 && staff[n] == false) // if staffs are already chosen for a delivery, and this staff is not the chosen one, jump to next loop
+                    continue;
+                if (requiredPeople != 0 && staff[n] == true)
                     continue;
                 // worker has enough time to work on the delivery
                 if (minutesAvailable[n] >= requiredMinutes && totalWork >= requiredMinutes){
@@ -425,7 +509,7 @@ void Algorithm::calculateDateStart(int count){
             }
         }
     }
-    currentDeliveries[count].set_Staff(staff);
+    if(set == 0) currentDeliveries[count].set_Staff(staff);
     currentDeliveries[count].set_DateStart(dateStart);
     return;
 }

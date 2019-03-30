@@ -32,6 +32,7 @@ public: // public functions
 private slots:
     void submit();
     void cancel();
+    bool duplicateFound(QFile &fileIn);
 
 private:
     Ui::frmAddDelivery *addui;

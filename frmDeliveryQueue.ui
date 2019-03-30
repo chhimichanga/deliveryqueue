@@ -100,12 +100,12 @@
          </item>
          <item>
           <property name="text">
-           <string>Required Delivery Date</string>
+           <string>Location</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>Location</string>
+           <string>Transit Method</string>
           </property>
          </item>
          <item>
@@ -120,12 +120,7 @@
          </item>
          <item>
           <property name="text">
-           <string>Transit Method</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Classification</string>
+           <string>Media Type</string>
           </property>
          </item>
          <item>
@@ -135,12 +130,17 @@
          </item>
          <item>
           <property name="text">
-           <string>Media Type</string>
+           <string>Classification</string>
           </property>
          </item>
          <item>
           <property name="text">
            <string>Staffing Level</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Required Delivery Date</string>
           </property>
          </item>
          <item>
@@ -151,6 +151,11 @@
          <item>
           <property name="text">
            <string>Required Start Date</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Assigned Staff</string>
           </property>
          </item>
         </widget>

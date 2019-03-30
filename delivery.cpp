@@ -70,11 +70,13 @@ void Delivery::set_StaffingLevel(int staffinglevelNew){
     staffinglevel = staffinglevelNew;
 }
 void Delivery::set_Staff(bool *bool_staff){
-    int first = 0;
+
     for(int i = 0; i < 3; i++){
-        if(bool_staff[i] == true)
-            if(first == 0) staff += staff_name[i];
-            else staff = staff + ", " + staff_name[i];
-            first+=1;
+        if(bool_staff[i] == true){
+            staff += staff_name[i] + ";";
+        }
     }
+}
+void   Delivery::set_Staff(string staFF){
+    staff = staFF;
 }
