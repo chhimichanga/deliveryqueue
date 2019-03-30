@@ -57,8 +57,8 @@ Algorithm::Algorithm(Delivery *incomingDeliveries)
             }else if(fieldNumber == 10){
                 currentDeliveries[count].set_DateShip(token);
             }//else if(fieldNumber == 12){
-             //   currentDeliveries[count].set_Staff(token);
-           // }
+               //currentDeliveries[count].set_Staff(token);
+            //}
             fieldNumber++;    // move on to next field in line
         }
         if(fieldNumber == 10){
@@ -401,19 +401,20 @@ void Algorithm::calculateDateStart(int count, bool set){
 
         // if the schedule object is already created, check if this delivery fits in the schedule
         else if (it != schedule.end()){
+
             // get minutes available for that day
             int *minutesAvailable = schedule.at(index).getMinutesAvailable();
             bool staff_oneday[3] = {false, false, false};
             int order[3]; // order[0] stores the number of staff who has the most time left, order[2] stores the number of staff who has the least time left
             // go through each staff's working schedule for the day being checked
-            if(minutesAvailable[0] > minutesAvailable[1]){
-                if(minutesAvailable[1] > minutesAvailable[2]){
+            if(minutesAvailable[0] >= minutesAvailable[1]){
+                if(minutesAvailable[1] >= minutesAvailable[2]){
                     order[0] = 0;
                     order[1] = 1;
                     order[2] = 2;
                 }
                 else{
-                    if(minutesAvailable[2] > minutesAvailable[0]){
+                    if(minutesAvailable[2] >= minutesAvailable[0]){
                         order[0] = 2;
                         order[1] = 0;
                         order[2] = 1;
@@ -426,13 +427,13 @@ void Algorithm::calculateDateStart(int count, bool set){
                 }
             }
             else{
-                if(minutesAvailable[0] > minutesAvailable[2]){
+                if(minutesAvailable[0] >= minutesAvailable[2]){
                     order[0] = 1;
                     order[1] = 0;
                     order[2] = 2;
                 }
                 else{
-                    if(minutesAvailable[2] > minutesAvailable[1]){
+                    if(minutesAvailable[2] >= minutesAvailable[1]){
                         order[0] = 2;
                         order[1] = 1;
                         order[2] = 0;
@@ -465,6 +466,9 @@ void Algorithm::calculateDateStart(int count, bool set){
                     totalWork -= requiredMinutes;                               // update the total working time for all staff
                     if(requiredPeople != 0)
                         --requiredPeople;                                           // done assigning job to one staff
+                    if(currentDeliveries[count].get_TransmissionNumber() == "77766622277342"){
+                        qDebug() << n;
+                    }
                     schedule.at(index).setMinutesAvailable(minutesAvailable);   // update minutes available for staff n
                 }
                 // worker can finish the rest of the work
