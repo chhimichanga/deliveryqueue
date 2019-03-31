@@ -30,6 +30,7 @@ Algorithm::Algorithm(Delivery *incomingDeliveries)
     loadSchedule();
 
     while(getline(file, temp)){ // read file until reach the end
+        bool edit = false; // check if a delivery has been edited
         istringstream iss(temp);
         string token;
         int fieldNumber = 0;
@@ -56,24 +57,39 @@ Algorithm::Algorithm(Delivery *incomingDeliveries)
                 currentDeliveries[count].set_DateDeliver(token);            // set required delivery date
             }else if(fieldNumber == 10){
                 currentDeliveries[count].set_DateShip(token);
-            }//else if(fieldNumber == 12){
-               //currentDeliveries[count].set_Staff(token);
-            //}
+            }else if(fieldNumber == 11){
+                if(token == "") {
+                    edit = true;
+                }
+                else{
+                    edit = false;
+                }
+            }
+            else if(fieldNumber == 12){
+                 currentDeliveries[count].set_Staff(token);
+            }
             fieldNumber++;    // move on to next field in line
         }
-        if(fieldNumber == 10){
+
+        if(fieldNumber == 10){// use for the deliveries that just have been added
             calculateDateShip(count);
             calculateDateStart(count, 0);
         }
         else{
-            calculateDateStart(count, 0);
+            if(edit == true){
+                calculateDateShip(count);
+                calculateDateStart(count, 1);
+            }
+            else{
+                calculateDateStart(count, 1);
+            }
         }
 
         count++;   // move on to next line in file
     }
     ofstream fileOut;
     fileOut.open("temp.csv"); // load output stream
-    fileOut << "Transmission #,Ship Nmae & Hull #,Engineering Change #,Media Type,Location,Transit Method,Number of items,Classification,Staffing Level,Required Delivery Date,"
+    fileOut << "Transmission #,Ship Name & Hull #,Engineering Change #,Media Type,Location,Transit Method,Number of items,Classification,Staffing Level,Required Delivery Date,"
             "Required Ship Date,Required Start Date" << endl;
     for(int i = 0; i < count; i++){
         string strDelivery; // string to add to save file
@@ -466,9 +482,7 @@ void Algorithm::calculateDateStart(int count, bool set){
                     totalWork -= requiredMinutes;                               // update the total working time for all staff
                     if(requiredPeople != 0)
                         --requiredPeople;                                           // done assigning job to one staff
-                    if(currentDeliveries[count].get_TransmissionNumber() == "77766622277342"){
-                        qDebug() << n;
-                    }
+
                     schedule.at(index).setMinutesAvailable(minutesAvailable);   // update minutes available for staff n
                 }
                 // worker can finish the rest of the work

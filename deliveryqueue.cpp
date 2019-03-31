@@ -41,11 +41,10 @@ DeliveryQueue::DeliveryQueue(QWidget *parent) :
     deliveryTable->setHeaderData(6, Qt::Horizontal, "# of Items");
     deliveryTable->setHeaderData(7, Qt::Horizontal, "Classification");
     deliveryTable->setHeaderData(8, Qt::Horizontal, "Staffing Level");
-
     deliveryTable->setHeaderData(9, Qt::Horizontal, "Required Delivery Date");
     deliveryTable->setHeaderData(10, Qt::Horizontal, "Required Ship Date");
     deliveryTable->setHeaderData(11, Qt::Horizontal, "Required Start Date");
-    deliveryTable->setHeaderData(12, Qt::Horizontal, "Staffs");
+    deliveryTable->setHeaderData(12, Qt::Horizontal, "Assigned Staff");
 
     // set source model for deliveryModel
     deliveryModel->setSourceModel(deliveryTable);
@@ -62,7 +61,6 @@ DeliveryQueue::DeliveryQueue(QWidget *parent) :
     dqui->treeView->addAction(dqui->actDeleteDelivery);
     dqui->treeView->addAction(dqui->actArchiveDelivery);
 
-
     // resize columns to fit
     for(int count = 0; count < 11; count++)
         dqui->treeView->resizeColumnToContents(count);
@@ -78,10 +76,6 @@ DeliveryQueue::DeliveryQueue(QWidget *parent) :
     connect(dqui->actDeleteDelivery, &QAction::triggered, this, &DeliveryQueue::deleteDelivery);
     connect(dqui->actArchiveDelivery, &QAction::triggered, this, &DeliveryQueue::archiveDelivery);
     connect(dqui->actChangeSchedule, &QAction::triggered, this, &DeliveryQueue::changeSchedule);
-
-
-    // load queue if there are any deliveries
-    refreshQueue();
 }
 
 // add a new delivery to the queue
@@ -89,19 +83,22 @@ void DeliveryQueue::addDelivery(){
     frmAddDelivery *add = new frmAddDelivery();
     add->show();
 }
+
+// edit the staff schedule
 void DeliveryQueue::changeSchedule(){
-    ChangeSchedule *change = new ChangeSchedule();
+    frmChangeSchedule *change = new frmChangeSchedule();
     change->show();
 }
 
+// import a delivery from a file
 void DeliveryQueue::importDelivery(){
     QString fileName = QFileDialog::getOpenFileName(this,
             tr("Open File"), "",
             tr("Excel Spreadsheet (*.xlsx);;All Files (*)"));
 
     if (fileName.isEmpty())
-            return;
-        else {
+        return;
+    else {
 
         QFile file(fileName);
 
@@ -125,26 +122,24 @@ void DeliveryQueue::importDelivery(){
 
         //transmission number
         add->transmission->setText(xlsx.read("B1").toString());
-        //classification
-        add->classification->setCurrentText(xlsx.read("B2").toString());
-        //Media Type
-        add->mediaType->setCurrentText(xlsx.read("B3").toString());
-        //Transit Method
-        add->shipping->setCurrentText(xlsx.read("B4").toString());
-        //# of Items
-        add->numberOfItems->setValue(xlsx.read("B5").toInt());
-        //Required Delivery Date
-        add->deliveryDate->setDate(QVariant(xlsx.read("B6")).toDate());
-        //ship/hull #
-        add->shipnumber->setCurrentText(xlsx.read("B7").toString());
         //Location
-        add->location->setCurrentText(xlsx.read("B8").toString());
+        add->location->setCurrentText(xlsx.read("B2").toString());
+        //Transit Method
+        add->shipping->setCurrentText(xlsx.read("B3").toString());
+        //ship/hull #
+        add->shipnumber->setCurrentText(xlsx.read("B4").toString());
         //ECN/TECN
-        add->ECN->setText(xlsx.read("B9").toString());
+        add->ECN->setText(xlsx.read("B5").toString());
+        //Media Type
+        add->mediaType->setCurrentText(xlsx.read("B6").toString());
+        //# of Items
+        add->numberOfItems->setValue(xlsx.read("B7").toInt());
+        //classification
+        add->classification->setCurrentText(xlsx.read("B8").toString());
+        //Required Delivery Date
+        add->deliveryDate->setDate(QVariant(xlsx.read("B9")).toDate());
 
         add->show();
-
-        qDebug() <<(xlsx.read("B6"));
     }
 }
 
@@ -181,7 +176,7 @@ void DeliveryQueue::editDelivery(){
             if(transmission == selected.toStdString()){
                 edit->ledTransmission->setText(QString::fromStdString(transmission));
                 while(getline(stringIn, token, ',')){   // read the rest of the line
-                    if(count == 0)      // lcoation
+                    if(count == 0)      // location
                         edit->cboLocation->setCurrentText(QString::fromStdString(token));
                     else if(count == 1) // transit method
                         edit->cboTransitMethod->setCurrentText(QString::fromStdString(token));
@@ -199,10 +194,18 @@ void DeliveryQueue::editDelivery(){
                         edit->cboStaffing->setCurrentText(QString::fromStdString(token));
                     else if(count == 8)      // delivery date column
                         edit->dteDeliveryDate->setDate(QDate::fromString(QString::fromStdString(token), "dd/MM/yyyy"));
-                    else if(count == 8)      // delivery date column
-                        edit->dteDeliveryDate->setDate(QDate::fromString(QString::fromStdString(token), "dd/MM/yyyy"));
                     else if(count == 11)      // delivery date column
-                        edit->dteDeliveryDate->setDate(QDate::fromString(QString::fromStdString(token), "dd/MM/yyyy"));
+                    {
+                        istringstream iss(token);
+                        string* staff_name = new string[3]{"mike", "michael", "bruce"};
+                        string name;
+                        while(getline(iss, name, ';')){
+                            if(name == staff_name[0]) edit->staff1->setChecked(true);
+                            else if(name == staff_name[1]) edit->staff2->setChecked(true);
+                            else if(name == staff_name[2]) edit->staff3->setChecked(true);
+                        }
+
+                    }
                     count++;    // move to next column in row
                 }
             }
@@ -218,8 +221,8 @@ void DeliveryQueue::deleteDelivery(){
     if(!dqui->treeView->selectionModel()->hasSelection())
         QMessageBox::information(this, "Failure", "You haven't selected the delivery to be deleted.");
     else {
+        int row = dqui->treeView->selectionModel()->currentIndex().row();   // selected index number
         if(QMessageBox::question(this, "Delete?", "Are you sure you want to delete this delivery?", QMessageBox::Yes|QMessageBox::No) == QMessageBox::Yes){
-            int row = dqui->treeView->selectionModel()->currentIndex().row();   // selected index number
             QString selected = deliveryModel->index(row, 0).data().toString();  // save the selected ID
 
             ifstream fileIn("save.csv");   // open save file
@@ -270,20 +273,12 @@ void DeliveryQueue::archiveDelivery(){
     int col = 0;
 
     // check if user have selected a delivery
-    if(!dqui->treeView->selectionModel()->currentIndex().isValid())
+    if(!dqui->treeView->selectionModel()->hasSelection())
         QMessageBox::information(this, "Failure", "You haven't selected the delivery to be archived.");
     else {
+        int row = dqui->treeView->selectionModel()->currentIndex().row();   // selected index number
         if(QMessageBox::question(this, "Archive?", "Are you sure you want to archive this delivery? This will delete it from the queue.", QMessageBox::Yes|QMessageBox::No) == QMessageBox::Yes){
-            int row = dqui->treeView->selectionModel()->currentIndex().row();   // selected index number
             QString selected = deliveryModel->index(row, col).data().toString();  // save the selected ID
-
-            while(selected != nullptr){
-                testArchive.write(currentRow, currentCol, selected);
-                col++;
-                currentCol++;
-                selected = deliveryModel->index(row, col).data().toString();
-            }
-            testArchive.save();
 
             ifstream fileIn("save.csv");   // open save file
             ofstream fileOut;
@@ -293,8 +288,6 @@ void DeliveryQueue::archiveDelivery(){
             while(getline(fileIn, line)){   // read until reach end of file
                 istringstream stringIn(line); // feed line to stream
                 getline(stringIn, transmission, ',');   // parse line using comma delimiter
-                qDebug() << QString().fromStdString(transmission);
-                qDebug() << selected;
 
                 if(transmission != selected.toStdString()){    // if not the delivery being deleted,
                     fileOut << line << endl;         // write line to temp file
@@ -310,18 +303,16 @@ void DeliveryQueue::archiveDelivery(){
             rename("temp.csv","save.csv");
 
             refreshQueue();
+
+            while(selected != nullptr){
+                testArchive.write(currentRow, currentCol, selected);
+                col++;
+                currentCol++;
+                selected = deliveryModel->index(row, col).data().toString();
+            }
+            testArchive.save();
         }
     }
-}
-
-// assign an existing delivery to an employee
-void DeliveryQueue::assignDelivery(){
-
-}
-
-// import a delivery from a file
-void DeliveryQueue::importFile(){
-
 }
 
 // filter queue when user checks case sensitive filtering or enters a search expression
@@ -361,15 +352,15 @@ void DeliveryQueue::refreshQueue(){
     for(int row = 0; row < numberOfDeliveries; row++){
         // grab delivery information, cast as compatible Qt data types
         transmissionNumber =  QString::fromStdString(currentDeliveries[row].get_TransmissionNumber());
-        shipNameHullNumber =  QString::fromStdString(currentDeliveries[row].get_ShipNameHullNumber());
-        ECN =  QString::fromStdString(currentDeliveries[row].get_ECN());
-        dateDeliver = QDate::fromString(QString::fromStdString(currentDeliveries[row].get_DateDeliver()), "dd/MM/yyyy");
         location = QString::fromStdString(currentDeliveries[row].get_Location());
         transitMethod = QString::fromStdString(currentDeliveries[row].get_TransitMethod());
-        classification = QString::fromStdString(currentDeliveries[row].get_Classification());
-        numberOfItems = currentDeliveries[row].get_NumItems();
-        staffingLevel = currentDeliveries[row].get_StaffingLevel();
+        shipNameHullNumber =  QString::fromStdString(currentDeliveries[row].get_ShipNameHullNumber());
+        ECN =  QString::fromStdString(currentDeliveries[row].get_ECN());
         mediaType = QString::fromStdString(currentDeliveries[row].get_MediaType());
+        numberOfItems = currentDeliveries[row].get_NumItems();
+        classification = QString::fromStdString(currentDeliveries[row].get_Classification());
+        staffingLevel = currentDeliveries[row].get_StaffingLevel();
+        dateDeliver = QDate::fromString(QString::fromStdString(currentDeliveries[row].get_DateDeliver()), "dd/MM/yyyy");
         dateShip = QDate::fromString(QString::fromStdString(currentDeliveries[row].get_DateShip()), "dd/MM/yyyy");
         dateStart = QDate::fromString(QString::fromStdString(currentDeliveries[row].get_DateStart()), "dd/MM/yyyy");
         staff = QString::fromStdString(currentDeliveries[row].get_Staff());
@@ -387,7 +378,6 @@ void DeliveryQueue::refreshQueue(){
         deliveryTable->setData(deliveryTable->index(row, 8), staffingLevel);
         deliveryTable->setData(deliveryTable->index(row, 9), dateDeliver);
         deliveryTable->setData(deliveryTable->index(row, 10), dateShip);
-        deliveryTable->setData(deliveryTable->index(row, 11), dateStart);
         deliveryTable->setData(deliveryTable->index(row, 11), dateStart);
         deliveryTable->setData(deliveryTable->index(row, 12), staff);
 
@@ -409,15 +399,15 @@ void DeliveryQueue::colorCodeDeliveries(){
     //process for coloring an deliveyr row based on the days left until ship date
     for(row = 0; row < numberOfRows; row++) {
         //acquires ship date of the nth delivery based on rowCount and converts it to a comparable QDate
-        QString strDeliveryDate = deliveryTable->data(deliveryTable->index(row, 11)).toString();
-        QDate deliveryDate = QDate::fromString(strDeliveryDate,"yyyy-MM-dd");
+        QString strDeliveryDate = deliveryTable->data(deliveryTable->index(row, 10)).toString();
+        QDate deliveryDate = QDate::fromString(strDeliveryDate, "yyyy-MM-dd");
 
         // if less than 7 days left to ship, color red
-        if(currentDate.daysTo(deliveryDate) < 7)
+        if(currentDate.daysTo(deliveryDate) <= 7)
             for(column = 0; column < numberOfColumns; column++)
                 deliveryTable->setData(deliveryTable->index(row, column),  QColor (255,179,186), Qt::BackgroundRole);
         // if between 7 and 14 days, color yellow
-        else if(currentDate.daysTo(deliveryDate) <= 14 && currentDate.daysTo(deliveryDate) >= 7)
+        else if(currentDate.daysTo(deliveryDate) <= 14 && currentDate.daysTo(deliveryDate) > 7)
             for(column = 0; column < numberOfColumns; column++)
                 deliveryTable->setData(deliveryTable->index(row, column),  QColor (255,255,186), Qt::BackgroundRole);
         // if more than 14 days, color green
@@ -425,6 +415,13 @@ void DeliveryQueue::colorCodeDeliveries(){
             for(column = 0; column < numberOfColumns; column++)
                 deliveryTable->setData(deliveryTable->index(row, column),  QColor (186,255,201), Qt::BackgroundRole);
     }
+}
+
+// refresh the queue every time the delivery queue window becomes active
+bool DeliveryQueue::event(QEvent *event){
+    if(event->type() == QEvent::WindowActivate)
+        refreshQueue();
+    return QWidget::event(event);
 }
 
 DeliveryQueue::~DeliveryQueue(){

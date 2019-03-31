@@ -3,16 +3,16 @@
 #include <QWidget>
 #include "schedule.h"
 namespace Ui{
-    class ChangeSchedule;
+    class frmChangeSchedule;
 }
 
-class ChangeSchedule : public QWidget
+class frmChangeSchedule : public QWidget
 {
     int *schedule;
     Q_OBJECT
 public: // public functions
-    explicit ChangeSchedule(QWidget *parent = nullptr);
-    ~ChangeSchedule();
+    explicit frmChangeSchedule(QWidget *parent = nullptr);
+    ~frmChangeSchedule();
 
 
 private slots:
@@ -21,13 +21,13 @@ private slots:
 
     void on_calendarWidget_clicked(const QDate &date);
 
-    void on_checkBox_clicked(bool checked);
+    void on_chkEmployee1_clicked(bool checked);
 
-    void on_checkBox_2_clicked(bool checked);
+    void on_chkEmployee2_clicked(bool checked);
 
-    void on_checkBox_3_clicked(bool checked);
+    void on_chkEmployee3_clicked(bool checked);
 
 private:
-    Ui::ChangeSchedule *csui;
+    Ui::frmChangeSchedule *csui;
 };
 #endif // CHANGE_H

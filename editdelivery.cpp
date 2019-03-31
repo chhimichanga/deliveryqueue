@@ -21,75 +21,99 @@ frmEditDelivery::frmEditDelivery(QWidget *parent) :
     cboStaffing        = editui->cboStaffing;
     dteDeliveryDate    = editui->dteDeliveryDate;
     spnNumberOfItems   = editui->spnNumberObjects;
+    staff1   = editui->checkBox;
+    staff2   = editui->checkBox_2;
+    staff3   = editui->checkBox_3;
 
     // connect edit delivery ui buttons and slots
     connect(editui->btnSubmit, &QPushButton::clicked, this, &frmEditDelivery::submit);
     connect(editui->btnCancel, &QPushButton::clicked, this, &frmEditDelivery::cancel);
-    //connect(addui->cboStaffing, SIGNAL(currentTextChanged(QString)), this, SLOT(comboboxItemChanged(QString)));
 }
 
 void frmEditDelivery::submit()
 {
-    string line, id;   // strings to read lines
+    int staff = 0;
+    if(editui->checkBox->isChecked() == true)
+        staff++;
+    if(editui->checkBox_2->isChecked() == true)
+        staff++;
+    if(editui->checkBox_3->isChecked() == true)
+        staff++;
+    if(staff != editui->cboStaffing->currentText().toInt()){
+        QMessageBox::information(this, "Error", "Staffing level does not match the number of chosed staffs.");
+    }
+    else{
+        string line, id;   // strings to read lines
 
-    // load save file to write to
-    ifstream fileIn("save.csv");
-    ofstream fileOut;
-    fileOut.open("temp.csv"); // load output stream
+        // load save file to write to
+        ifstream fileIn("save.csv");
+        ofstream fileOut;
+        fileOut.open("temp.csv"); // load output stream
 
-    // error message if file cannot open
-    if(!fileOut.is_open())
-        QMessageBox::information(this, "Error", "Cannot open temp file for current deliveries.");
-    else    // add header to temp file
-        fileOut << "Transmission #,Ship Nmae & Hull #,Engineering Change #,Media Type,Location,Transit Method,Number of items,Classification,Staffing Level,Required Delivery Date,"
-                "Required Ship Date,Required Start Date" << endl;
+        // error message if file cannot open
+        if(!fileOut.is_open())
+            QMessageBox::information(this, "Error", "Cannot open temp file for current deliveries.");
+        else    // add header to temp file
+            fileOut << "Transmission #,Ship Nmae & Hull #,Engineering Change #,Media Type,Location,Transit Method,Number of items,Classification,Staffing Level,Required Delivery Date,"
+                    "Required Ship Date,Required Start Date" << endl;
 
-    // error message if file cannot open
-    if(!fileIn.is_open())
-        QMessageBox::information(this, "Error", "Cannot open save file for current deliveries.");
-    else { // add delivery to save file
-        fileIn.seekg(0);        // move cursor to beginning of save.csv
-        getline(fileIn, line);  // skip header line
+        // error message if file cannot open
+        if(!fileIn.is_open())
+            QMessageBox::information(this, "Error", "Cannot open save file for current deliveries.");
+        else { // add delivery to save file
+            fileIn.seekg(0);        // move cursor to beginning of save.csv
+            getline(fileIn, line);  // skip header line
 
-        string strDelivery; // string to add to save file
-        // append edited delivery information to string
+            string strDelivery; // string to add to save file
+            // append edited delivery information to string
 
-        strDelivery += editui->ledTransmission->text().toStdString() + ',';                         // unique Transmission #
-        strDelivery += editui->cboLocation->currentText().toStdString() + ',';                     // location
-        strDelivery += editui->cboShipping->currentText().toStdString() + ',';                     // shipping method
-        strDelivery += editui->cboShipHull->currentText().toStdString() + ',';                      // ship name & hull #
-        strDelivery += editui->ledECN->text().toStdString() + ',';                                  // ECN
-        strDelivery += editui->cboMediaType->currentText().toStdString() + ',';                    // media type
-        strDelivery += QString::number(editui->spnNumberObjects->value()).toStdString() + ',';     // number of items
-        strDelivery += editui->cboClassification->currentText().toStdString() + ',';               // classification
-        strDelivery += editui->cboStaffing->currentText().toStdString() + ',';               // staffing level
-        strDelivery += editui->dteDeliveryDate->date().toString("dd/MM/yyyy").toStdString() + ','; // delivery date
+            strDelivery += editui->ledTransmission->text().toStdString() + ',';                         // unique Transmission #
+            strDelivery += editui->cboLocation->currentText().toStdString() + ',';                     // location
+            strDelivery += editui->cboShipping->currentText().toStdString() + ',';                     // shipping method
+            strDelivery += editui->cboShipHull->currentText().toStdString() + ',';                      // ship name & hull #
+            strDelivery += editui->ledECN->text().toStdString() + ',';                                  // ECN
+            strDelivery += editui->cboMediaType->currentText().toStdString() + ',';                    // media type
+            strDelivery += QString::number(editui->spnNumberObjects->value()).toStdString() + ',';     // number of items
+            strDelivery += editui->cboClassification->currentText().toStdString() + ',';               // classification
+            strDelivery += editui->cboStaffing->currentText().toStdString() + ',';               // staffing level
+            strDelivery += editui->dteDeliveryDate->date().toString("dd/MM/yyyy").toStdString() + ",,,"; // delivery date
 
-
-        while(getline(fileIn, line)){       // read until reach end of file
-            istringstream stringIn(line);   // feed line to stream
-            getline(stringIn, id, ',');     // parse line using comma delimiter, extract ID
-            if(id != transmissionNumber){          // if not the delivery being edited,
-                fileOut << line << endl;// write line to temp file
+            if(editui->checkBox->isChecked() == true){
+                strDelivery += "mike;";
             }
-            else{
-                fileOut << strDelivery << endl;    // send delivery to save file
+            if(editui->checkBox_2->isChecked() == true){
+                strDelivery += "michael;";
             }
+            if(editui->checkBox_3->isChecked() == true){
+                strDelivery += "bruce;";
+            }
+            strDelivery += ',';
+
+            while(getline(fileIn, line)){       // read until reach end of file
+                istringstream stringIn(line);   // feed line to stream
+                getline(stringIn, id, ',');     // parse line using comma delimiter, extract ID
+                if(id != transmissionNumber){          // if not the delivery being edited,
+                    fileOut << line << endl;// write line to temp file
+                }
+                else{
+                    fileOut << strDelivery << endl;    // send delivery to save file
+                }
+            }
+
+
+
+            // close both files
+            fileOut.close();
+            fileIn.close();
+
+            // delete original file
+            remove("save.csv");
+
+            // rename temp.csv to save.csv
+            rename("temp.csv","save.csv");
+
+            QMessageBox::information(this, "Success", "Successfully edited a delivery.");
         }
-
-
-
-        // close both files
-        fileOut.close();
-        fileIn.close();
-
-        // delete original file
-        remove("save.csv");
-
-        // rename temp.csv to save.csv
-        rename("temp.csv","save.csv");
-
-        QMessageBox::information(this, "Success", "Successfully edited a delivery.");
     }
 }
 

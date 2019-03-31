@@ -27,6 +27,9 @@ public: // public functions
     QDateEdit *dteDeliveryDate;
     QSpinBox *spnNumberOfItems;
     string transmissionNumber;
+    QCheckBox *staff1;
+    QCheckBox *staff2;
+    QCheckBox *staff3;
 
 private slots:
     void submit();

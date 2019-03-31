@@ -1,5 +1,5 @@
 #include "change.h"
-#include "ui_ChangeSchedule.h"
+#include "ui_frmChangeSchedule.h"
 #include <QFile>
 #include <QDir>
 #include <QMessageBox>
@@ -12,8 +12,9 @@
 #include <vector>
 #include <QDebug>
 using namespace std;
-ChangeSchedule::ChangeSchedule(QWidget *parent) :
-    QWidget(parent), csui(new Ui::ChangeSchedule)
+
+frmChangeSchedule::frmChangeSchedule(QWidget *parent) :
+    QWidget(parent), csui(new Ui::frmChangeSchedule)
 {
     csui->setupUi(this);
 
@@ -33,21 +34,24 @@ ChangeSchedule::ChangeSchedule(QWidget *parent) :
     fileIn.close();
 
     // connect add delivery ui buttons and slots
-    connect(csui->btnsubmit, &QPushButton::clicked, this, &ChangeSchedule::submit);
-    connect(csui->btncancel, &QPushButton::clicked, this, &ChangeSchedule::cancel);
+    connect(csui->btnSubmit, &QPushButton::clicked, this, &frmChangeSchedule::submit);
+    connect(csui->btnCancel, &QPushButton::clicked, this, &frmChangeSchedule::cancel);
 
+    // get availability for current date
+    on_calendarWidget_clicked(QDate::currentDate());
 }
-void ChangeSchedule::submit()
+
+void frmChangeSchedule::submit()
 {
     QDate selectedDate= csui->calendarWidget->selectedDate();
     QDate currentDate = QDate::currentDate();
     int diff = currentDate.daysTo(selectedDate);
 
-    if(csui->checkBox->isChecked() == true) schedule[diff * 3] = 1;
+    if(csui->chkEmployee1->isChecked() == true) schedule[diff * 3] = 1;
     else  schedule[diff * 3] = 0;
-    if(csui->checkBox_2->isChecked() == true) schedule[diff * 3 + 1] = 1;
+    if(csui->chkEmployee2->isChecked() == true) schedule[diff * 3 + 1] = 1;
     else  schedule[diff * 3 + 1] = 0;
-    if(csui->checkBox_3->isChecked() == true) schedule[diff * 3 + 2] = 1;
+    if(csui->chkEmployee3->isChecked() == true) schedule[diff * 3 + 2] = 1;
     else  schedule[diff * 3 + 2] = 0;
     string write;
     ofstream fileOut;
@@ -61,52 +65,56 @@ void ChangeSchedule::submit()
     fileOut.close();
     remove("schedule.txt");
     rename("tempSchedule.txt","schedule.txt");
-     QMessageBox::information(this, "Success", "Your change has been updated.");
+    QMessageBox::information(this, "Success", "Your change has been updated.");
 
 
 }
-void ChangeSchedule::cancel()
+void frmChangeSchedule::cancel()
 {
     close();
 }
 
-ChangeSchedule::~ChangeSchedule()
+frmChangeSchedule::~frmChangeSchedule()
 {
     delete csui;
 }
 
-void ChangeSchedule::on_calendarWidget_clicked(const QDate &date)
+void frmChangeSchedule::on_calendarWidget_clicked(const QDate &date)
 {
     QDate currentDate = QDate::currentDate();
     int diff = currentDate.daysTo(date);
-    if(schedule[diff * 3] == 1) csui->checkBox->setChecked(true);
+
+    if(schedule[diff * 3] == 1)
+        csui->chkEmployee1->setChecked(true);
     else {
-        csui->checkBox->setChecked(false);
-    }
-    if(schedule[diff * 3 + 1] == 1) csui->checkBox_2->setChecked(true);
-    else {
-        csui->checkBox_2->setChecked(false);
-    }
-    if(schedule[diff * 3 + 2] == 1) csui->checkBox_3->setChecked(true);
-    else {
-        csui->checkBox_3->setChecked(false);
+        csui->chkEmployee1->setChecked(false);
     }
 
+    if(schedule[diff * 3 + 1] == 1)
+        csui->chkEmployee2->setChecked(true);
+    else {
+        csui->chkEmployee2->setChecked(false);
+    }
 
+    if(schedule[diff * 3 + 2] == 1)
+        csui->chkEmployee3->setChecked(true);
+    else {
+        csui->chkEmployee3->setChecked(false);
+    }
 }
 
 
-void ChangeSchedule::on_checkBox_clicked(bool checked)
+void frmChangeSchedule::on_chkEmployee1_clicked(bool checked)
 {
-    csui->checkBox->setChecked(checked);
+    csui->chkEmployee1->setChecked(checked);
 }
 
-void ChangeSchedule::on_checkBox_2_clicked(bool checked)
+void frmChangeSchedule::on_chkEmployee2_clicked(bool checked)
 {
-    csui->checkBox_2->setChecked(checked);
+    csui->chkEmployee2->setChecked(checked);
 }
 
-void ChangeSchedule::on_checkBox_3_clicked(bool checked)
+void frmChangeSchedule::on_chkEmployee3_clicked(bool checked)
 {
-    csui->checkBox_3->setChecked(checked);
+    csui->chkEmployee3->setChecked(checked);
 }

@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ChangeSchedule</class>
- <widget class="QWidget" name="ChangeSchedule">
+ <class>frmChangeSchedule</class>
+ <widget class="QWidget" name="frmChangeSchedule">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>667</width>
+    <width>666</width>
     <height>483</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Edit Staff Schedule</string>
   </property>
   <widget class="QCalendarWidget" name="calendarWidget">
    <property name="geometry">
@@ -26,7 +26,7 @@
     <bool>false</bool>
    </property>
   </widget>
-  <widget class="QPushButton" name="btnsubmit">
+  <widget class="QPushButton" name="btnSubmit">
    <property name="geometry">
     <rect>
      <x>114</x>
@@ -39,7 +39,7 @@
     <string>Update</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="btncancel">
+  <widget class="QPushButton" name="btnCancel">
    <property name="geometry">
     <rect>
      <x>410</x>
@@ -52,7 +52,7 @@
     <string>Cancel</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="checkBox">
+  <widget class="QCheckBox" name="chkEmployee1">
    <property name="geometry">
     <rect>
      <x>160</x>
@@ -61,11 +61,16 @@
      <height>21</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
    <property name="text">
     <string>Mike</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="checkBox_2">
+  <widget class="QCheckBox" name="chkEmployee2">
    <property name="geometry">
     <rect>
      <x>300</x>
@@ -74,11 +79,16 @@
      <height>21</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
    <property name="text">
     <string>Michael</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="checkBox_3">
+  <widget class="QCheckBox" name="chkEmployee3">
    <property name="geometry">
     <rect>
      <x>440</x>
@@ -86,6 +96,11 @@
      <width>71</width>
      <height>21</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
    </property>
    <property name="text">
     <string>Bruce</string>

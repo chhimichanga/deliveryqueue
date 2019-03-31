@@ -13,7 +13,7 @@ Delivery::Delivery(){   // initialize Delivery variables
     dateDeliver = '\0';
     dateShip = '\0';
     dateStart = '\0';
-    staff = '\0';
+
     staff_name = new string[3]{"mike", "michael", "bruce"};
 
 
@@ -73,7 +73,9 @@ void Delivery::set_Staff(bool *bool_staff){
 
     for(int i = 0; i < 3; i++){
         if(bool_staff[i] == true){
-            staff += staff_name[i] + ";";
+            if(i == 0) staff = "mike;";
+            else staff += staff_name[i] + ";";
+
         }
     }
 }

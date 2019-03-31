@@ -52,7 +52,7 @@ FORMS += \
     frmDeliveryQueue.ui \
     frmAddDelivery.ui \
     frmEditDelivery.ui \
-    ChangeSchedule.ui
+    frmChangeSchedule.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
