@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>460</width>
-    <height>520</height>
+    <width>476</width>
+    <height>586</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,7 +20,7 @@
    <property name="geometry">
     <rect>
      <x>170</x>
-     <y>420</y>
+     <y>480</y>
      <width>141</width>
      <height>30</height>
     </rect>
@@ -37,8 +37,8 @@
   <widget class="QPushButton" name="btnSubmit">
    <property name="geometry">
     <rect>
-     <x>130</x>
-     <y>470</y>
+     <x>110</x>
+     <y>530</y>
      <width>93</width>
      <height>31</height>
     </rect>
@@ -55,8 +55,8 @@
   <widget class="QPushButton" name="btnCancel">
    <property name="geometry">
     <rect>
-     <x>260</x>
-     <y>470</y>
+     <x>270</x>
+     <y>530</y>
      <width>93</width>
      <height>31</height>
     </rect>
@@ -173,8 +173,8 @@
   <widget class="QLabel" name="lblDeliveryDate">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>370</y>
+     <x>0</x>
+     <y>440</y>
      <width>181</width>
      <height>30</height>
     </rect>
@@ -338,7 +338,7 @@
    <property name="geometry">
     <rect>
      <x>200</x>
-     <y>370</y>
+     <y>440</y>
      <width>121</width>
      <height>30</height>
     </rect>
@@ -587,6 +587,45 @@
    </property>
    <property name="alignment">
     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QCheckBox" name="checkBox">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>390</y>
+     <width>71</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Mike</string>
+   </property>
+  </widget>
+  <widget class="QCheckBox" name="checkBox_2">
+   <property name="geometry">
+    <rect>
+     <x>210</x>
+     <y>390</y>
+     <width>71</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Michael</string>
+   </property>
+  </widget>
+  <widget class="QCheckBox" name="checkBox_3">
+   <property name="geometry">
+    <rect>
+     <x>340</x>
+     <y>390</y>
+     <width>71</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Bruce</string>
    </property>
   </widget>
  </widget>

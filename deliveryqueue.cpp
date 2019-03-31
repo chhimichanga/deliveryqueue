@@ -199,7 +199,10 @@ void DeliveryQueue::editDelivery(){
                         edit->cboStaffing->setCurrentText(QString::fromStdString(token));
                     else if(count == 8)      // delivery date column
                         edit->dteDeliveryDate->setDate(QDate::fromString(QString::fromStdString(token), "dd/MM/yyyy"));
-
+                    else if(count == 8)      // delivery date column
+                        edit->dteDeliveryDate->setDate(QDate::fromString(QString::fromStdString(token), "dd/MM/yyyy"));
+                    else if(count == 11)      // delivery date column
+                        edit->dteDeliveryDate->setDate(QDate::fromString(QString::fromStdString(token), "dd/MM/yyyy"));
                     count++;    // move to next column in row
                 }
             }

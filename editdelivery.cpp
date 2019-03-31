@@ -25,6 +25,7 @@ frmEditDelivery::frmEditDelivery(QWidget *parent) :
     // connect edit delivery ui buttons and slots
     connect(editui->btnSubmit, &QPushButton::clicked, this, &frmEditDelivery::submit);
     connect(editui->btnCancel, &QPushButton::clicked, this, &frmEditDelivery::cancel);
+    //connect(addui->cboStaffing, SIGNAL(currentTextChanged(QString)), this, SLOT(comboboxItemChanged(QString)));
 }
 
 void frmEditDelivery::submit()

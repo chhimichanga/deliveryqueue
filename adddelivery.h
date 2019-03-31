@@ -33,6 +33,7 @@ private slots:
     void submit();
     void cancel();
 
+
 private:
     Ui::frmAddDelivery *addui;
 };
