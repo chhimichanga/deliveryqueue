@@ -1,0 +1,10 @@
+diff a/DeliveryQueueMaster.pro b/DeliveryQueueMaster.pro	(rejected hunks)
+@@ -52,7 +52,7 @@
+     frmDeliveryQueue.ui \
+     frmAddDelivery.ui \
+     frmEditDelivery.ui \
+-    frmChangeSchedule.ui
++    ChangeSchedule.ui
+ 
+ # Default rules for deployment.
+ qnx: target.path = /tmp/$${TARGET}/bin
