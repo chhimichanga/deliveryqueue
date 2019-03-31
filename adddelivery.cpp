@@ -35,11 +35,9 @@ frmAddDelivery::frmAddDelivery(QWidget *parent) :
     // connect add delivery ui buttons and slots
     connect(addui->btnSubmit, &QPushButton::clicked, this, &frmAddDelivery::submit);
     connect(addui->btnCancel, &QPushButton::clicked, this, &frmAddDelivery::cancel);
-
 }
 
 // save delivery, then send to queue
-
 void frmAddDelivery::submit()
 {
     // load save file to write to
