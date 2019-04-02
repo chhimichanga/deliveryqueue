@@ -612,7 +612,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Miachel</string>
+    <string>Michahel</string>
    </property>
   </widget>
   <widget class="QCheckBox" name="checkBox_3">
