@@ -19,19 +19,19 @@ frmChangeSchedule::frmChangeSchedule(QWidget *parent) :
     csui->setupUi(this);
 
     ifstream fileIn("schedule.txt");
-    schedule = new int[540];
+    schedule = new int[540];        //local array that can store 540 numbers
     string line, token;
-    getline(fileIn, line);
+    getline(fileIn, line);          // get the only line from the file
 
     istringstream iss(line);
-    getline(iss, token, ',');//skip the date
+    getline(iss, token, ',');       //skip the date
 
 
-    for(int i = 0; i < 540; i++){
+    for(int i = 0; i < 540; i++){   // read the 540 numbers from the file
         getline(iss, token, ',');
-        schedule[i] = stoi(token);
+        schedule[i] = stoi(token);  // store them into local array
     }
-    fileIn.close();
+    fileIn.close(); //close the file
 
     // connect add delivery ui buttons and slots
     connect(csui->btnSubmit, &QPushButton::clicked, this, &frmChangeSchedule::submit);
@@ -43,12 +43,12 @@ frmChangeSchedule::frmChangeSchedule(QWidget *parent) :
 
 void frmChangeSchedule::submit()
 {
-    QDate selectedDate= csui->calendarWidget->selectedDate();
-    QDate currentDate = QDate::currentDate();
-    int diff = currentDate.daysTo(selectedDate);
+    QDate selectedDate= csui->calendarWidget->selectedDate();   // date that has been selected
+    QDate currentDate = QDate::currentDate();                   // current date
+    int diff = currentDate.daysTo(selectedDate);                // selected date - current date
 
-    if(csui->chkEmployee1->isChecked() == true) schedule[diff * 3] = 1;
-    else  schedule[diff * 3] = 0;
+    if(csui->chkEmployee1->isChecked() == true) schedule[diff * 3] = 1; // if the check box is checked, change the number to 1 which represents the staff is available
+    else  schedule[diff * 3] = 0;                                       // else change the  number to 0
     if(csui->chkEmployee2->isChecked() == true) schedule[diff * 3 + 1] = 1;
     else  schedule[diff * 3 + 1] = 0;
     if(csui->chkEmployee3->isChecked() == true) schedule[diff * 3 + 2] = 1;
@@ -57,7 +57,7 @@ void frmChangeSchedule::submit()
     ofstream fileOut;
     fileOut.open("tempSchedule.txt"); // load output stream
 
-    write = currentDate.toString("dd/MM/yyyy").toStdString() + ',';
+    write = currentDate.toString("dd/MM/yyyy").toStdString() + ',';  // update the current availability to file
     for(int i = 0; i < 540; i++){
         write += to_string(schedule[i]) + ",";
     }
@@ -81,11 +81,11 @@ frmChangeSchedule::~frmChangeSchedule()
 
 void frmChangeSchedule::on_calendarWidget_clicked(const QDate &date)
 {
-    QDate currentDate = QDate::currentDate();
-    int diff = currentDate.daysTo(date);
+    QDate currentDate = QDate::currentDate();  // current date
+    int diff = currentDate.daysTo(date);  // diff = the date that has been clicked - current date
 
-    if(schedule[diff * 3] == 1)
-        csui->chkEmployee1->setChecked(true);
+    if(schedule[diff * 3] == 1) // check if the staff 1 is available that day
+        csui->chkEmployee1->setChecked(true); // if he is available set the checkbox checked
     else {
         csui->chkEmployee1->setChecked(false);
     }
@@ -104,17 +104,17 @@ void frmChangeSchedule::on_calendarWidget_clicked(const QDate &date)
 }
 
 
-void frmChangeSchedule::on_chkEmployee1_clicked(bool checked)
+void frmChangeSchedule::on_chkEmployee1_clicked(bool checked) // if the first checkbox on the display is clicked
 {
     csui->chkEmployee1->setChecked(checked);
 }
 
-void frmChangeSchedule::on_chkEmployee2_clicked(bool checked)
+void frmChangeSchedule::on_chkEmployee2_clicked(bool checked) // if the second checkbox on the display is clicked
 {
     csui->chkEmployee2->setChecked(checked);
 }
 
-void frmChangeSchedule::on_chkEmployee3_clicked(bool checked)
+void frmChangeSchedule::on_chkEmployee3_clicked(bool checked) // if the third checkbox on the display is clicked
 {
     csui->chkEmployee3->setChecked(checked);
 }

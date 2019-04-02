@@ -18,33 +18,32 @@ using namespace std;
 Algorithm::Algorithm(Delivery *incomingDeliveries)
 {
     currentDeliveries = incomingDeliveries;
-    count = 0;
-    srand ( time(NULL) );
-    string temp;         // temorary storage for reading
+    count = 0;                   // the number of deliveries
+    string temp;                 // temorary storage for reading
 
     // load save file
     ifstream file("save.csv");
-    getline(file, temp); // skip the first line of headers
+    getline(file, temp);         // skip the first line of headers
 
-    vector<Schedule> schedule;  // vector of schedules
-    loadSchedule();
+    vector<Schedule> schedule;   // vector of schedules
+    loadSchedule();              // read shcedule information from the local file
 
-    while(getline(file, temp)){ // read file until reach the end
-        bool edit = false; // check if a delivery has been edited
-        istringstream iss(temp);
-        string token;
+    while(getline(file, temp)){  // read file until reach the end
+        bool edit = false;       // check if a delivery has been edited
+        istringstream iss(temp); // iss represents each delivery
+        string token;            // each filed
         int fieldNumber = 0;
         while(getline(iss, token, ',')){    // each line gets parsed with every field separated by a comma
             if(fieldNumber == 0){
-                currentDeliveries[count].set_TransmissionNumber(token);
+                currentDeliveries[count].set_TransmissionNumber(token);     // transmission num
             }else if(fieldNumber == 1){
                 currentDeliveries[count].set_Location(token);               // set location
             }else if(fieldNumber == 2){
-                currentDeliveries[count].set_TransitMethod(token);         // set shipping method
+                currentDeliveries[count].set_TransitMethod(token);          // set shipping method
             }else if(fieldNumber == 3){
-                currentDeliveries[count].set_ShipNameHullNumber(token);               // set required delivery date
+                currentDeliveries[count].set_ShipNameHullNumber(token);     // set ship hull number
             }else if(fieldNumber == 4){
-                currentDeliveries[count].set_ECN(token);                    // set required delivery date
+                currentDeliveries[count].set_ECN(token);                    // set ECN
             }else if(fieldNumber == 5){
                 currentDeliveries[count].set_MediaType(token);              // set media type
             }else if(fieldNumber == 6){
@@ -56,63 +55,63 @@ Algorithm::Algorithm(Delivery *incomingDeliveries)
             }else if(fieldNumber == 9){
                 currentDeliveries[count].set_DateDeliver(token);            // set required delivery date
             }else if(fieldNumber == 10){
-                currentDeliveries[count].set_DateShip(token);
+                currentDeliveries[count].set_DateShip(token);               // set ship date
             }else if(fieldNumber == 11){
-                if(token == "") {
+                if(token == "") {           // if a delivery has been edited, the filed of required start date is going to be empty
                     edit = true;
                 }
-                else{
+                else{                       // if a delivery has not been edited
                     edit = false;
                 }
             }
-            else if(fieldNumber == 12){
+            else if(fieldNumber == 12){     // set the assigned staffs if staffs are assigned already
                  currentDeliveries[count].set_Staff(token);
             }
-            fieldNumber++;    // move on to next field in line
+            fieldNumber++;                  // move on to next field in line
         }
 
-        if(fieldNumber == 10){// use for the deliveries that just have been added
-            calculateDateShip(count);
-            calculateDateStart(count, 0);
+        if(fieldNumber == 10){               // use for the deliveries that just have been added
+            calculateDateShip(count);        // calculate the ship date
+            calculateDateStart(count, 0);    // calculate the start date for the deliveries just added
         }
         else{
             if(edit == true){
-                calculateDateShip(count);
-                calculateDateStart(count, 1);
+                calculateDateShip(count);     // if the delivery is edited, recalculate the ship date
+                calculateDateStart(count, 1); // calculate the start date for deliveries that has assigned staffs
             }
             else{
-                calculateDateStart(count, 1);
+                calculateDateStart(count, 1); // calculate the start date for deliveries that has assigned staffs
             }
         }
 
         count++;   // move on to next line in file
     }
     ofstream fileOut;
-    fileOut.open("temp.csv"); // load output stream
+    fileOut.open("temp.csv");   // load output stream
     fileOut << "Transmission #,Ship Name & Hull #,Engineering Change #,Media Type,Location,Transit Method,Number of items,Classification,Staffing Level,Required Delivery Date,"
             "Required Ship Date,Required Start Date" << endl;
     for(int i = 0; i < count; i++){
-        string strDelivery; // string to add to save file
+        string strDelivery;     // string to add to save file
         // append edited delivery information to string
 
-        strDelivery += currentDeliveries[i].get_TransmissionNumber() + ',';                         // unique Transmission #
-        strDelivery += currentDeliveries[i].get_Location() + ',';                     // location
-        strDelivery += currentDeliveries[i].get_TransitMethod() + ',';                     // shipping method
-        strDelivery += currentDeliveries[i].get_ShipNameHullNumber() + ',';                      // ship name & hull #
-        strDelivery += currentDeliveries[i].get_ECN() + ',';                                  // ECN
-        strDelivery += currentDeliveries[i].get_MediaType() + ',';                    // media type
-        strDelivery += to_string(currentDeliveries[i].get_NumItems()) + ',';     // number of items
-        strDelivery += currentDeliveries[i].get_Classification() + ',';               // classification
-        strDelivery += to_string(currentDeliveries[i].get_StaffingLevel()) + ',';               // staffing level
-        strDelivery += currentDeliveries[i].get_DateDeliver() + ','; // delivery date
-        strDelivery += currentDeliveries[i].get_DateShip() + ",";
-        strDelivery += currentDeliveries[i].get_DateStart() + ",";
-        strDelivery += currentDeliveries[i].get_Staff() + ",";
-        fileOut << strDelivery << endl;    // send delivery to save file
+        strDelivery += currentDeliveries[i].get_TransmissionNumber() + ',';          // unique Transmission #
+        strDelivery += currentDeliveries[i].get_Location() + ',';                    // location
+        strDelivery += currentDeliveries[i].get_TransitMethod() + ',';               // shipping method
+        strDelivery += currentDeliveries[i].get_ShipNameHullNumber() + ',';          // ship name & hull #
+        strDelivery += currentDeliveries[i].get_ECN() + ',';                         // ECN
+        strDelivery += currentDeliveries[i].get_MediaType() + ',';                   // media type
+        strDelivery += to_string(currentDeliveries[i].get_NumItems()) + ',';         // number of items
+        strDelivery += currentDeliveries[i].get_Classification() + ',';              // classification
+        strDelivery += to_string(currentDeliveries[i].get_StaffingLevel()) + ',';    // staffing level
+        strDelivery += currentDeliveries[i].get_DateDeliver() + ',';                 // delivery date
+        strDelivery += currentDeliveries[i].get_DateShip() + ",";                    // ship date
+        strDelivery += currentDeliveries[i].get_DateStart() + ",";                   // start date
+        strDelivery += currentDeliveries[i].get_Staff() + ",";                       // assigened staffs
+        fileOut << strDelivery << endl;                                              // send delivery to save file
 
     }
-    fileOut.close();
-    file.close();
+    fileOut.close(); //close output file
+    file.close();   //close input file
 
     // delete original file
     remove("save.csv");
@@ -122,104 +121,96 @@ Algorithm::Algorithm(Delivery *incomingDeliveries)
 
 }
 
-int Algorithm::getCount(){
+int Algorithm::getCount(){// get the number of deliveries
     return count;
 }
 void Algorithm::loadSchedule(){
-    QString currentDate = QDate::currentDate().toString("dd/MM/yyyy");
+    QString currentDate = QDate::currentDate().toString("dd/MM/yyyy"); // current date
 
-    if(QFileInfo("schedule.txt").exists() && !QDir("schedule.txt").exists()){
-        //The file exists and is not a folder
+    if(QFileInfo("schedule.txt").exists() && !QDir("schedule.txt").exists()){ //The file exists and is not a folder
+
         ifstream fileIn("schedule.txt");
-        if(!fileIn.is_open())
-            MessageBoxA(NULL, "Cannot open schedule file.", "error", MB_OK);
-        else { // add delivery to save file
-            fileIn.seekg(0);        // move cursor to beginning of schedule.txt
+        if(!fileIn.is_open())                                                 // check if the program can open the local file
+            MessageBoxA(NULL, "Cannot open schedule file.", "error", MB_OK);  // if it cannot open the file, an error message will be poped up
+        else {                                                                // the program can open the local schedule file
+            fileIn.seekg(0);                                                  // move cursor to beginning of schedule.txt
             string line, token, date;
 
-            getline(fileIn, line);
+            getline(fileIn, line);                                            // read the line
             istringstream iss(line);
-            getline(iss, token, ',');//read the date
+            getline(iss, token, ',');                                         //the first string separated by comma is the date
             date = token;
-
-            if(date == currentDate.toStdString()){ // if user opens the program at the same date
-                int i = 0;    
-                while(getline(iss, token, ',')){
-                    QDate issueDate = QDate::currentDate().addDays(i);
-                    Schedule newSchedule(issueDate.toString("dd/MM/yyyy").toStdString());
-                    int availability[3];
-                    for(int p = 0; p < 3; p++){
-                        if(p!=0) getline(iss, token, ','); // read a value
-                        availability[p] = stoi(token);
+            if(date == currentDate.toStdString()){                            // if user opens the program at the same date
+                int i = 0;                                                    // represent the number of days ahead the current day
+                while(getline(iss, token, ',')){                              // each token is the availbility of a staff
+                    QDate issueDate = QDate::currentDate().addDays(i);                    // check which day does the data in the file belong to
+                    Schedule newSchedule(issueDate.toString("dd/MM/yyyy").toStdString()); //  create a new shceudle object
+                    int availability[3];                                        // local variable to store the availability of each staff
+                    for(int p = 0; p < 3; p++){                                 // there are three numbers that represent the availability of staffs within a day
+                        if(p!=0) getline(iss, token, ',');                      // read a value
+                        availability[p] = stoi(token);                          // store the value into the local variable
                     }
-                    newSchedule.setStaffingLevel(availability);
-                    schedule.push_back(newSchedule);
-                    i++;
+                    newSchedule.setStaffingLevel(availability);                 // pass the availability of staffs to the new schedule object
+                    schedule.push_back(newSchedule);                            // push the new object into the vector
+                    i++;                                                        // next three numbers belong represent schedule of (i++) day from current day
                 }
-                fileIn.close();
+                fileIn.close();                                                 // close the schedule file
             }
-            else{   // if the user opens the program on a different day
-                string write;
+            else{                                                               // if the user opens the program on a different day
+                string write;                                                   // new data to write
                 ofstream fileOut;
-                fileOut.open("tempSchedule.txt"); // load output stream
+                fileOut.open("tempSchedule.txt");                               // load output stream, create a new output file
                 for(int temp = 0; temp < 3; temp++){
-                    getline(iss, token, ',');// get rid of first three numbers
+                    getline(iss, token, ',');                                   // get rid of first three numbers that represent the availability of three staffs from the past day
                 }
-                write = currentDate.toStdString() + ",";
-                int i = 0;
-                while(getline(iss, token, ',')){
+                write = currentDate.toStdString() + ",";                        // first write the current day
+                int i = 0;                                                      // the number of days away from the current day
+                while(getline(iss, token, ',')){                                // read until the end
 
-                    int availability[3];
-                    QDate issueDate = QDate::currentDate().addDays(i);
-                    Schedule newSchedule(issueDate.toString("dd/MM/yyyy").toStdString());
+                    int availability[3];                                        // local variable to store the availability of three staffs
+                    QDate issueDate = QDate::currentDate().addDays(i);          // check what date is it based on the number of days away from the current day
+                    Schedule newSchedule(issueDate.toString("dd/MM/yyyy").toStdString());//  create a new shceudle object
                     for(int p = 0; p < 3; p++){
-                        if(p!=0) getline(iss, token, ','); // read a value
-                        write += token + ",";
-                        availability[p] = stoi(token);
+                        if(p!=0) getline(iss, token, ',');                       // read a value
+                        write += token + ",";                                    // store the value into the write string
+                        availability[p] = stoi(token);                           // store the value into local variable
                     }
-                    newSchedule.setStaffingLevel(availability);
-                    schedule.push_back(newSchedule);
-                    i++;
+                    newSchedule.setStaffingLevel(availability);                  // pass the availability of staffs to the new schedule object
+                    schedule.push_back(newSchedule);                            // push the new object into the vector
+                    i++;                                                        // next three numbers belong represent schedule of (i++) day from current day
                 }
-                int avail[3] = {1,1,1};
-                Schedule newSchedule(QDate::currentDate().addDays(179).toString("dd/yyyy").toStdString());
-                newSchedule.setStaffingLevel(avail);
-                schedule.push_back(newSchedule);
-                write += "1,1,1,";
+                int avail[3] = {1,1,1};                                         // defult availability
+                Schedule newSchedule(QDate::currentDate().addDays(179).toString("dd/yyyy").toStdString());  // create a new schedule object that represents the schedule of the date 180 days ahead
+                newSchedule.setStaffingLevel(avail);                            // pass the default availability to the new object
+                schedule.push_back(newSchedule);                                // push object in to the vector
+                write += "1,1,1,";                                              // write the schedule of a new day into the file
 
-                fileOut << write << endl;
-                fileOut.close();
+                fileOut << write << endl;                                        // output the data to the file
+                fileOut.close();                                                 //close the file
                 fileIn.close();
                 remove("schedule.txt");
 
                 // rename temp.csv to save.csv
                 rename("tempSchedule.txt","schedule.txt");
-
             }
-
         }
-
-
     }
     else{
-
         //The file doesn't exist, either the path doesn't exist or is the path of a folder
-        //create a new file that contains a date and 180 "3," string
-
+        //create a new file that contains a date and 540 "1," string
         string write;
-        ofstream fileOut("schedule.txt");
+        ofstream fileOut("schedule.txt");              // load output stream, create a new output file
         write += currentDate.toStdString() + ",";
-        for(int i = 0; i < 180; i++){ // 180 days
-            for(int j = 0; j < 3; j++){ // 3 staffs
-                write += "1,";
+        for(int i = 0; i < 180; i++){                   // 180 days
+            for(int j = 0; j < 3; j++){                 // 3 staffs
+                write += "1,";                          // availability
             }
-            QDate issueDate = QDate::currentDate().addDays(i);
-            Schedule newSchedule(issueDate.toString("dd/MM/yyyy").toStdString());
-            schedule.push_back(newSchedule);
+            QDate issueDate = QDate::currentDate().addDays(i);      // calculate the date i days ahead of the current day
+            Schedule newSchedule(issueDate.toString("dd/MM/yyyy").toStdString());   // create a new schedule object
+            schedule.push_back(newSchedule);                       // push the object to the vector
         }
         fileOut << write << endl;
-
-        fileOut.close();
+        fileOut.close();                        // close file
     }
 
 
@@ -380,14 +371,17 @@ void Algorithm::calculateDateStart(int count, bool set){
     int dateStartFound = 0;     // find the perfect day to start preparing delivery
     char bufferDateStart[80];   // buffer to store the required start date
     bool staff[3] = {false, false, false}; // chosen staffs for a delivery
+
+    // if a delivery is alread set with assigned staffs
     if(set == 1){
-        string assignedStaffs = currentDeliveries[count].get_Staff();
+        string assignedStaffs = currentDeliveries[count].get_Staff(); // get the assigned staffs from the object
         istringstream iss(assignedStaffs);
-        while(getline(iss, token, ';')){
+        while(getline(iss, token, ';')){                              // read until the end
             for(int three = 0; three < 3; three++){
-                if(token == currentDeliveries[count].get_StaffName()[three]){
-                    staff[three] = true;
-                    requiredPeople--;
+                if(token == currentDeliveries[count].get_StaffName()[three]){ // if the data matches the name
+                    staff[three] = true;                                      // then set the staff to be true working on the delivery
+                    requiredPeople--;                                         // needed person minus one
+                    break;                                                    // go back to the outer loop to read next staff in the string
                 }
             }
         }
@@ -423,6 +417,7 @@ void Algorithm::calculateDateStart(int count, bool set){
             bool staff_oneday[3] = {false, false, false};
             int order[3]; // order[0] stores the number of staff who has the most time left, order[2] stores the number of staff who has the least time left
             // go through each staff's working schedule for the day being checked
+            // find out who has the most sufficient time in a day and sort them in order
             if(minutesAvailable[0] >= minutesAvailable[1]){
                 if(minutesAvailable[1] >= minutesAvailable[2]){
                     order[0] = 0;
@@ -461,23 +456,21 @@ void Algorithm::calculateDateStart(int count, bool set){
                     }
                 }
             }
-
+            // order[0] represents the person who has the most sufficient time,
             for(int p = 0; p < 3; p++){
 
-                int n = order[p];
-
-                //qDebug() << n;
+                int n = order[p]; // check the person who the most sufficient time first
                 // the required preparing time can be fit into the delivery staff's working schedule
-                if (totalWork == 0)
+                if (totalWork == 0)                         // if the total man-hours needed is 0, then break the loop
                     break;
                 if (requiredPeople == 0 && staff[n] == false) // if staffs are already chosen for a delivery, and this staff is not the chosen one, jump to next loop
                     continue;
-                if (requiredPeople != 0 && staff[n] == true)
+                if (requiredPeople != 0 && staff[n] == true)    // if the delivery still needs other staffs to do it, and this staff is not one of the other staffs, jump to next loop
                     continue;
                 // worker has enough time to work on the delivery
                 if (minutesAvailable[n] >= requiredMinutes && totalWork >= requiredMinutes){
                     staff[n] = true;                                   // staff n can work on that delivery on that date
-                    staff_oneday[n] = true;
+                    staff_oneday[n] = true;                                     // this staff has done this job this day
                     minutesAvailable[n] -= requiredMinutes;                     // update staff n's schedule
                     totalWork -= requiredMinutes;                               // update the total working time for all staff
                     if(requiredPeople != 0)
@@ -487,13 +480,13 @@ void Algorithm::calculateDateStart(int count, bool set){
                 }
                 // worker can finish the rest of the work
                 else if (minutesAvailable[n] >= totalWork && totalWork <= requiredMinutes){
-                    staff[n] = true;
-                    staff_oneday[n] = true;
-                    minutesAvailable[n] = minutesAvailable[n] - totalWork;
+                    staff[n] = true;                                           // staff n can work on that delivery on that date
+                    staff_oneday[n] = true;                                    // this staff has done this job this day
+                    minutesAvailable[n] = minutesAvailable[n] - totalWork;       // update the total working time for all staff
                     totalWork = 0;                                              // set total work to 0
                     if(requiredPeople != 0)
                         --requiredPeople;
-                    schedule.at(index).setMinutesAvailable(minutesAvailable);
+                    schedule.at(index).setMinutesAvailable(minutesAvailable); // update minutes available for staff n
                 }
             }
 
@@ -504,30 +497,30 @@ void Algorithm::calculateDateStart(int count, bool set){
             else{
 
                 // find a delivery staff who still has some available time left.
-                for(int m = 0; m < 3; m ++){
-                    if(requiredPeople == 0 && staff[m] == true && staff_oneday[m] == false && minutesAvailable[m] != 0){
-                        totalWork -= minutesAvailable[m];
-                        minutesAvailable[m] = 0;
-                        schedule.at(index).setMinutesAvailable(minutesAvailable);
+                for(int m = 0; m < 3; m ++){ // go through three staffs
+                    if(requiredPeople == 0 && staff[m] == true && staff_oneday[m] == false && minutesAvailable[m] != 0){ // if the staff is one of the assigned staffs and he has not
+                        totalWork -= minutesAvailable[m];                                                                // working on this delivery today yet, but he still has some left time
+                        minutesAvailable[m] = 0;                                                                        // upodate the total man-hours needed and the available minute the staffs
+                        schedule.at(index).setMinutesAvailable(minutesAvailable);                                        // have left
 
                     }
-                    if(requiredPeople != 0 && staff[m] == false && staff_oneday[m] == false && minutesAvailable[m] != 0){
-                        totalWork -= minutesAvailable[m];
+                    if(requiredPeople != 0 && staff[m] == false && staff_oneday[m] == false && minutesAvailable[m] != 0){// if the staff has not been assigned to the delivery job yet and he still
+                        totalWork -= minutesAvailable[m];                                                               // has some time left at the day
                         minutesAvailable[m] = 0;
-                        schedule.at(index).setMinutesAvailable(minutesAvailable);
-                        staff[m] = true;
+                        schedule.at(index).setMinutesAvailable(minutesAvailable);                                       // update the available time the staff has left
+                        staff[m] = true;                                                                                // and set staff to be one of the assigned staffs
                         --requiredPeople;
                     }
 
                 }
 
-                datePlusDays(&dateStartTemp, -1);
-                strftime(bufferDateStart, sizeof(bufferDateStart), "%d/%m/%Y", &dateStartTemp);
+                datePlusDays(&dateStartTemp, -1);                                                                       // if the loop goes through to this point, meaning that the job still has work left to do
+                strftime(bufferDateStart, sizeof(bufferDateStart), "%d/%m/%Y", &dateStartTemp);                         // so we push the required start date forward by one day
                 dateStart = bufferDateStart;
             }
         }
     }
-    if(set == 0) currentDeliveries[count].set_Staff(staff);
-    currentDeliveries[count].set_DateStart(dateStart);
+    if(set == 0) currentDeliveries[count].set_Staff(staff);// if the assigned staffs are being set for the first time, then set the assigned staffs
+    currentDeliveries[count].set_DateStart(dateStart);      // update the calcaulted required start date
     return;
 }
