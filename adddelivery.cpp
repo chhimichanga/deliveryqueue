@@ -37,10 +37,9 @@ frmAddDelivery::frmAddDelivery(QWidget *parent) :
     connect(addui->btnCancel, &QPushButton::clicked, this, &frmAddDelivery::cancel);
 }
 
-// save delivery, then send to queue TODO DUPLICATE TRANSMISSION ID
+// save delivery, then send to queue
 void frmAddDelivery::submit(){
-    // load save file to write to
-    QFile fileIn("save.csv");
+    QFile fileIn("save.csv");       // load save file to write to
     QTextStream fileOut(&fileIn);   // load output stream
     QString line, transmissionID;   // strings for reading each line and transmission ID
 
@@ -56,7 +55,7 @@ void frmAddDelivery::submit(){
 
         // if duplicate transmission ID not found, continue writing new delivery to save file
         if(!duplicateFound(fileIn)){
-            QString strDelivery;    // string to add to save file
+            QString strDelivery;                                                        // string to add to save file
             strDelivery += addui->ledTransmission->text() + ',';                        // unique Transmission #
             strDelivery += addui->cboLocation->currentText() + ',';                     // location
             strDelivery += addui->cboTransitMethod->currentText() + ',';                // transit method
@@ -78,15 +77,15 @@ void frmAddDelivery::submit(){
             // close file, get ship date, then open again (within this function)
             fileIn.close();
             Delivery currentDeliveries[MAX_DELIVERIES]; // array of current deliveries
-            Algorithm algorithm(currentDeliveries); // declare new instance of Algorithm, pass in current deliveries
+            Algorithm algorithm(currentDeliveries);     // declare new instance of Algorithm, pass in current deliveries
             fileIn.open(QIODevice::ReadWrite | QIODevice::Append | QIODevice::Text);
 
             // check ship date to determine need for planning alert
             fileIn.seek(0);
             while(!fileIn.atEnd()){
-                line = fileIn.readLine();   // store line
-                QStringList lineList = line.split(",");    // split line
-                transmissionID = lineList.at(0);     // read line until first comma
+                line = fileIn.readLine();                   // store line
+                QStringList lineList = line.split(",");     // split line
+                transmissionID = lineList.at(0);            // read line until first comma
 
                 // if selected delivery's ID and the ID being read from the file match, edit that delivery
                 if(transmissionID == addui->ledTransmission->text()){
@@ -98,8 +97,8 @@ void frmAddDelivery::submit(){
             }
             fileIn.close();
 
+            // display success dialog after delivery is added
             QMessageBox::information(this, "Success", "Successfully submitted a delivery.");
-
         }
     }
 }
@@ -113,10 +112,11 @@ bool frmAddDelivery::duplicateFound(QFile &fileIn){
     QString line, transmissionID;
     fileIn.seek(0);
 
+    // read to end of file
     while(!fileIn.atEnd()){
-        line = fileIn.readLine();   // store line
-        QStringList lineList = line.split(",");    // split line
-        transmissionID = lineList.at(0);     // read line until first comma
+        line = fileIn.readLine();                   // store line
+        QStringList lineList = line.split(",");     // split line
+        transmissionID = lineList.at(0);            // read line until first comma
 
         // if selected delivery's ID and the ID being read from the file match, edit that delivery
         if(transmissionID == addui->ledTransmission->text()){

@@ -15,22 +15,23 @@
 
 using namespace std;
 
+// creates form to edit delivery
 Algorithm::Algorithm(Delivery *incomingDeliveries)
 {
     currentDeliveries = incomingDeliveries;
     count = 0;
     srand ( time(NULL) );
-    string temp;         // temorary storage for reading
 
-    // load save file
-    ifstream file("save.csv");
-    getline(file, temp); // skip the first line of headers
+    ifstream file("save.csv");  // load save file
+    string temp;                // temorary storage for reading each line in save file
+    getline(file, temp);        // skip the first line of headers
 
-    vector<Schedule> schedule;  // vector of schedules
+    vector<Schedule> schedule;  // vector of employee schedules
     loadSchedule();
 
-    while(getline(file, temp)){ // read file until reach the end
-        bool edit = false; // check if a delivery has been edited
+    // read file until reach the end
+    while(getline(file, temp)){
+        bool edit = false;          // check if a delivery has been edited
         istringstream iss(temp);
         string token;
         int fieldNumber = 0;
@@ -40,9 +41,9 @@ Algorithm::Algorithm(Delivery *incomingDeliveries)
             }else if(fieldNumber == 1){
                 currentDeliveries[count].set_Location(token);               // set location
             }else if(fieldNumber == 2){
-                currentDeliveries[count].set_TransitMethod(token);         // set shipping method
+                currentDeliveries[count].set_TransitMethod(token);          // set shipping method
             }else if(fieldNumber == 3){
-                currentDeliveries[count].set_ShipNameHullNumber(token);               // set required delivery date
+                currentDeliveries[count].set_ShipNameHullNumber(token);     // set required delivery date
             }else if(fieldNumber == 4){
                 currentDeliveries[count].set_ECN(token);                    // set required delivery date
             }else if(fieldNumber == 5){
@@ -71,22 +72,22 @@ Algorithm::Algorithm(Delivery *incomingDeliveries)
             fieldNumber++;    // move on to next field in line
         }
 
-        if(fieldNumber == 10){// use for the deliveries that just have been added
+        // use for the deliveries that just have been added
+        if(fieldNumber == 10){
             calculateDateShip(count);
             calculateDateStart(count, 0);
-        }
-        else{
+        } else{
             if(edit == true){
                 calculateDateShip(count);
                 calculateDateStart(count, 1);
-            }
-            else{
+            } else{
                 calculateDateStart(count, 1);
             }
         }
 
         count++;   // move on to next line in file
     }
+
     ofstream fileOut;
     fileOut.open("temp.csv"); // load output stream
     fileOut << "Transmission #,Ship Name & Hull #,Engineering Change #,Media Type,Location,Transit Method,Number of items,Classification,Staffing Level,Required Delivery Date,"
@@ -125,6 +126,7 @@ Algorithm::Algorithm(Delivery *incomingDeliveries)
 int Algorithm::getCount(){
     return count;
 }
+
 void Algorithm::loadSchedule(){
     QString currentDate = QDate::currentDate().toString("dd/MM/yyyy");
 
@@ -313,6 +315,7 @@ void Algorithm::calculateDateShip(int count){
     return;
 }
 
+// calculate the start date of a delivery based on ship date, number of items, staffing level, and staff schedule
 void Algorithm::calculateDateStart(int count, bool set){
     int itemCount = currentDeliveries[count].get_NumItems();
     int staffingLevel = currentDeliveries[count].get_StaffingLevel();

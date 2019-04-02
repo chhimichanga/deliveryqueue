@@ -69,6 +69,7 @@ void Delivery::set_NumItems(int numItemsNew){
 void Delivery::set_StaffingLevel(int staffinglevelNew){
     staffinglevel = staffinglevelNew;
 }
+
 void Delivery::set_Staff(bool *bool_staff){
 
     for(int i = 0; i < 3; i++){
