@@ -95,7 +95,7 @@
          </property>
          <item>
           <property name="text">
-           <string>Transmission #</string>
+           <string>Transmittal #</string>
           </property>
          </item>
          <item>
@@ -140,17 +140,17 @@
          </item>
          <item>
           <property name="text">
-           <string>Required Delivery Date</string>
+           <string>Delivery Date</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>Required Ship Date</string>
+           <string>Ship Date</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>Required Start Date</string>
+           <string>Start Date</string>
           </property>
          </item>
          <item>

@@ -7,7 +7,7 @@
 #include <QtWidgets>
 
 namespace Ui {
-class DeliveryQueue;
+    class DeliveryQueue;
 }
 
 class DeliveryQueue : public QMainWindow

@@ -17,22 +17,23 @@ public: // public functions
     explicit frmAddDelivery(QWidget *parent = nullptr);
     ~frmAddDelivery();
 
-    QLineEdit *transmission;
-    QLineEdit *ECN;
-    QComboBox *shipnumber;
-    QComboBox *location;
-    QComboBox *classification;
-    QComboBox *shipping;
-    QComboBox *mediaType;
-    QComboBox *staffing;
-    QDateEdit *deliveryDate;
-    QSpinBox *numberOfItems;
-    string transmissionN;
+    // form objects
+    QLineEdit *ledTransmittal;
+    QLineEdit *ledECN;
+    QComboBox *cboShipHull;
+    QComboBox *cboDestination;
+    QComboBox *cboClassification;
+    QComboBox *cboTransitMethod;
+    QComboBox *cboMediaType;
+    QComboBox *cboStaffingLevel;
+    QDateEdit *dteDeliveryDate;
+    QSpinBox *spnNumberOfItems;
+    string transmittalNumber;
 
 private slots:
     void submit();
     void cancel();
-    bool duplicateFound(QFile &fileIn);
+    bool duplicateFound(QFile &fileIn); // prevents duplicate transmittal IDs when submitting new delivery
 
 private:
     Ui::frmAddDelivery *addui;

@@ -20,11 +20,8 @@ private slots:
     void cancel();
 
     void on_calendarWidget_clicked(const QDate &date);
-
     void on_chkEmployee1_clicked(bool checked);
-
     void on_chkEmployee2_clicked(bool checked);
-
     void on_chkEmployee3_clicked(bool checked);
 
 private:

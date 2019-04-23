@@ -1,8 +1,8 @@
 #include "delivery.h"
 
 Delivery::Delivery(){   // initialize Delivery variables
-    transmissionNumber = '\0';
-    location = '\0';
+    transmittalNumber = '\0';
+    destination = '\0';
     transitMethod= '\0';
     shipNameHullNumber = '\0';
     ECN = '\0';
@@ -26,8 +26,8 @@ void Delivery::set_ShipNameHullNumber(string shipnameNew){
 
 }
 
-void Delivery::set_TransmissionNumber(string transmissionNew){
-    transmissionNumber = transmissionNew;
+void Delivery::set_TransmittalNumber(string transmissionNew){
+    transmittalNumber = transmissionNew;
 }
 
 void Delivery::set_ECN(string ecnNew){
@@ -38,8 +38,8 @@ void Delivery::set_DateDeliver(string dateDeliverNew){
     dateDeliver = dateDeliverNew;
 }
 
-void Delivery::set_Location(string locationNew){
-    location = locationNew;
+void Delivery::set_Destination(string locationNew){
+    destination = locationNew;
 }
 
 void  Delivery::set_Classification(string classificationNew){

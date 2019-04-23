@@ -12,11 +12,12 @@ class Algorithm
     int count;
     vector <Schedule> schedule;
     Delivery *currentDeliveries;
+
 public:
     void loadSchedule();
     Algorithm(Delivery *currentDeliveries);
     int getCount();
-    int weekDay (int day, int week, int year);
+    int weekDay(int day, int week, int year);
     void calculateDateShip(int count);
     void calculateDateStart(int count, bool set);
     void datePlusDays( struct tm* date, int days );

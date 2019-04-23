@@ -6,8 +6,8 @@ using namespace std;
 
 class Delivery  // delivery variables
 {
-   string   transmissionNumber,
-            location,
+   string   transmittalNumber,
+            destination,
             transitMethod,
             shipNameHullNumber,
             ECN,
@@ -27,8 +27,8 @@ public:
    Delivery();
 
    // Set delivery variables
-   void   set_TransmissionNumber(string transmissionNew);
-   void   set_Location(string locationNew);
+   void   set_TransmittalNumber(string transmittalNew);
+   void   set_Destination(string destinationNew);
    void   set_TransitMethod(string transitMethodNew);
    void   set_ShipNameHullNumber(string shipNameNew);
    void   set_ECN(string ecnNew);
@@ -41,9 +41,10 @@ public:
    void   set_DateStart(string dateStartNew);
    void   set_Staff(bool *staff);
    void   set_Staff(string staFF);
+
    // Get delivery variables
-   string get_TransmissionNumber() {return transmissionNumber;}
-   string get_Location() {return location;}
+   string get_TransmittalNumber() {return transmittalNumber;}
+   string get_Destination() {return destination;}
    string get_TransitMethod() {return transitMethod;}
    string get_ShipNameHullNumber() {return shipNameHullNumber;}
    string get_ECN() {return ECN;}
@@ -54,8 +55,8 @@ public:
    string get_DateDeliver() {return dateDeliver;}
    string get_DateShip() {return dateShip;}
    string get_DateStart() {return dateStart;}
-   string  get_Staff(){return staff;}
-   string*  get_StaffName(){return staff_name;}
+   string get_Staff() {return staff;}
+   string*  get_StaffName() {return staff_name;}
    void   print_delivery_info();
 };
 #endif // DELIVERY_H

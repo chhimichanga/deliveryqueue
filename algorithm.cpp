@@ -20,26 +20,25 @@ Algorithm::Algorithm(Delivery *incomingDeliveries)
 {
     currentDeliveries = incomingDeliveries;
 
-    count = 0;                   // the number of deliveries
-    string temp;                 // temorary storage for reading
+    count = 0;                      // the number of deliveries
+    string temp;                    // temporary storage for reading
 
-    // load save file
-    ifstream file("save.csv");
-    getline(file, temp);         // skip the first line of headers
+    ifstream file("save.csv");      // load save file
+    getline(file, temp);            // skip the first line of headers
 
-    vector<Schedule> schedule;   // vector of schedules
-    loadSchedule();              // read shcedule information from the local file
+    vector<Schedule> schedule;      // vector of schedules
+    loadSchedule();                 // read schedule information from the local file
 
-    while(getline(file, temp)){  // read file until reach the end
-        bool edit = false;       // check if a delivery has been edited
-        istringstream iss(temp); // iss represents each delivery
-        string token;            // each filed
+    while(getline(file, temp)){     // read file until reach the end
+        bool edit = false;          // check if a delivery has been edited
+        istringstream iss(temp);    // iss represents each delivery
+        string token;
         int fieldNumber = 0;
         while(getline(iss, token, ',')){    // each line gets parsed with every field separated by a comma
             if(fieldNumber == 0){
-                currentDeliveries[count].set_TransmissionNumber(token);     // transmission num
+                currentDeliveries[count].set_TransmittalNumber(token);      // transmission num
             }else if(fieldNumber == 1){
-                currentDeliveries[count].set_Location(token);               // set location
+                currentDeliveries[count].set_Destination(token);            // set location
             }else if(fieldNumber == 2){
                 currentDeliveries[count].set_TransitMethod(token);          // set shipping method
             }else if(fieldNumber == 3){
@@ -91,14 +90,13 @@ Algorithm::Algorithm(Delivery *incomingDeliveries)
 
     ofstream fileOut;
     fileOut.open("temp.csv");   // load output stream
-    fileOut << "Transmission #,Ship Name & Hull #,Engineering Change #,Media Type,Location,Transit Method,Number of items,Classification,Staffing Level,Required Delivery Date,"
-            "Required Ship Date,Required Start Date" << endl;
+    fileOut << "Transmittal #, Destination, Transit Method, Ship Name/Hull #, ECN/TECN, Media Type, # of Items, Classification, Staffing Level, Delivery Date, Ship Date, Start Date, Assigned Staff" << endl;
     for(int i = 0; i < count; i++){
         string strDelivery;     // string to add to save file
         // append edited delivery information to string
 
-        strDelivery += currentDeliveries[i].get_TransmissionNumber() + ',';          // unique Transmission #
-        strDelivery += currentDeliveries[i].get_Location() + ',';                    // location
+        strDelivery += currentDeliveries[i].get_TransmittalNumber() + ',';           // unique Transmission #
+        strDelivery += currentDeliveries[i].get_Destination() + ',';                 // location
         strDelivery += currentDeliveries[i].get_TransitMethod() + ',';               // shipping method
         strDelivery += currentDeliveries[i].get_ShipNameHullNumber() + ',';          // ship name & hull #
         strDelivery += currentDeliveries[i].get_ECN() + ',';                         // ECN
@@ -263,7 +261,7 @@ void Algorithm::datePlusDays( struct tm* date, int days )
 // use the required delivery date to calculate the required ship date based on the delivery's location
 void Algorithm::calculateDateShip(int count){
     string dateDeliver = currentDeliveries[count].get_DateDeliver();
-    string Location = currentDeliveries[count].get_Location();
+    string Location = currentDeliveries[count].get_Destination();
     struct tm dateShipTemp = { 0, 0, 0, 0, 0, 0, 0, 0, -1 };    // store delivery date here, then subtract as many days as needed to get ship date
     string dateShip;         // return value
 
@@ -463,7 +461,6 @@ void Algorithm::calculateDateStart(int count, bool set){
             }
             // order[0] represents the person who has the most sufficient time,
             for(int p = 0; p < 3; p++){
-
                 int n = order[p]; // check the person who the most sufficient time first
                 // the required preparing time can be fit into the delivery staff's working schedule
                 if (totalWork == 0)                         // if the total man-hours needed is 0, then break the loop

@@ -16,20 +16,34 @@ class frmEditDelivery : public QWidget
 public: // public functions
     explicit frmEditDelivery(QWidget *parent = nullptr);
     ~frmEditDelivery();
-    QLineEdit *ledTransmission;
+
+    // form objects
+    QLineEdit *ledTransmittal;
     QLineEdit *ledECN;
     QComboBox *cboShipHull;
-    QComboBox *cboLocation;
+    QComboBox *cboDestination;
     QComboBox *cboClassification;
     QComboBox *cboTransitMethod;
     QComboBox *cboMediaType;
-    QComboBox *cboStaffing;
+    QComboBox *cboStaffingLevel;
     QDateEdit *dteDeliveryDate;
     QSpinBox *spnNumberOfItems;
-    string transmissionNumber;
-    QCheckBox *staff1;
-    QCheckBox *staff2;
-    QCheckBox *staff3;
+    QCheckBox *chkEmployee1;
+    QCheckBox *chkEmployee2;
+    QCheckBox *chkEmployee3;
+
+    // public variables
+    QString transmittalID;
+    QString destination;
+    QString transitMethod;
+    QString shipHull;
+    QString ECN;
+    QString mediaType;
+    int numItems;
+    QString classification;
+    int staffingLevel;
+    QDate deliveryDate;
+
 
 private slots:
     void submit();
